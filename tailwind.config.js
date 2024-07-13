@@ -7,7 +7,10 @@ module.exports = {
     extend: {
       fontFamily:{
         nunito:['Nunito']
-      }
+      },
+      backgroundImage: theme => ({
+        'login-pattern': "url('/assets/images/bg_login_enlace.png')"
+      })
     },
   },
   plugins: [],

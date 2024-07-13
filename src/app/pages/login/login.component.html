@@ -1,5 +1,5 @@
-<div  class="flex flex-row w-full h-full fixed bg-gradient-to-r from-white to-indigo-50 items-center justify-center">
-    <div class="flex flex-col lg:flex-row xl:flex-row 2xl:flex-row  w-10/12 h-5/6 bg-white rounded-xl shadow-xl shadow-indigo-100">
+<div class="flex flex-row w-full h-full fixed  items-center justify-center bg-login-pattern bg-cover">
+    <!--<div class="flex flex-col lg:flex-row xl:flex-row 2xl:flex-row  w-10/12 h-5/6 bg-white rounded-xl shadow-xl shadow-indigo-100">
 
         <div class="flex w-full h-24 mt-5 items-center justify-center lg:hidden xl:hidden 2xl:hidden">
             <img class="object-contain flex w-6/12 h-full" src="/assets/images/logo_enlace.png" alt="">
@@ -20,5 +20,43 @@
         </div>
 
 
+    </div>-->
+
+    <div class="w-5/6 h-4/6 flex p-5 bg-white rounded-lg lg:w-2/6 lg:h-4/6">
+        <div class="flex flex-col w-full h-full items-center space-y-5">
+            <div class="flex w-full h-16 items-center justify-center ">
+                <img class="object-contain flex w-6/12 h-full" src="/assets/images/logo_enlace.png" alt="">
+            </div>
+            <h1 class="font-nunito text-xl lg:text-2xl font-bold text-slate-600 lg:mt-3">Bienvenido a Enlace CRM</h1>
+
+            <div class="flex h-4/6 w-full p-5">
+                <form class="flex flex-col w-full h-full">
+                    <div class="flex flex-col">
+                        <p class="text-sm font-nunito font-bold tracking-tight pb-2">Usuario</p>
+                        <div class="relative flex items-center">
+                            <input class="flex h-12 w-full rounded-xl border p-5 pr-12 shadow-lg shadow-indigo-50 placeholder:font-nunito placeholder:font-light"
+                                type="text" placeholder="Ingrese su usuario" />
+                            <img src="/assets/svg/user.svg" class="absolute right-4 h-6 w-6 text-gray-400"
+                                alt="Icono de usuario" />
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col pt-5">
+                        <p class="text-sm font-nunito font-bold tracking-tight pb-2">Password</p>
+                        <div class="relative flex items-center">
+                            <input class="flex h-12 w-full rounded-xl border p-5 pr-12 shadow-lg shadow-indigo-50 placeholder:font-nunito placeholder:font-light"
+                                type="text" placeholder="Ingrese su usuario" />
+                            <img src="/assets/svg/eye-open.svg" class="absolute right-4 h-6 w-6 text-gray-400"
+                                alt="Icono de usuario" />
+                        </div>
+                    </div>
+                    <button
+                        class="flex transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 w-full h-12 rounded-lg mt-10 items-center justify-center bg-indigo-500 shadow-lg shadow-indigo-500/50 text-white font-nunito font-sm">
+                        Ingresar
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
+
 </div>
