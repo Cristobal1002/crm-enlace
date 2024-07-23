@@ -1,30 +1,34 @@
-<div class="w-full h-full fixed flex bg-gradient-to-r from-gray-100 to-blue-50">
-    <app-sidebar></app-sidebar>
-    <app-header></app-header>
-    <div
-        class=" overflow-auto h-5/6 absolute bottom-0 w-full pl-7 pr-7 pb-7  lg:w-4/5 xl:w-4/5 2xl:w-4/5 lg:h-5/6 xl:h-5/6 2xl:h-5/6  lg:flex xl:flex 2xl:flex lg:absolute xl:absolute 2xl:absolute lg:bottom-0 xl:bottom-0 2xl:bottom-0 lg:right-0 xl:right-0 2xl:lg:right-0 lg:pl-9 lg:pr-7 lg:pb-7 xl:pl-9 xl:pr-7 xl:pb-7 2xl:pl-9 2xl:pr-7 2xl:pb-7">
-        <div class=" flex w-full h-screen lg:h-full xl:h-full 2xl:h-full flex-col space-y-7  lg:space-x-7 xl:space-x-7 2xl:space-x-7 lg:space-y-0 xl:space-y-0 2xl:space-y-0 lg:flex-row xl:flex-row 2xl:flex-row ">
-            <div
-                class="w-full h-full relative border border-slate-100 lg:w-1/2 lg:h-1/2 flex flex-col bg-white rounded-2xl p-5">
-                <img class="h-6 w-6 absolute top-3 right-3" src="/assets/svg/pin.svg" alt="">
-                <div class="flex w-full h-1/6 flex-col">
-                    <div class="flex w-full h-full items-center justify-center ">
-                        <p class="font-nunito text-lg tracking-tight font-bold w-full">Sigo confiando en él</p>
+<div class="flex relative h-screen w-screen bg-gradient-to-r from-gray-100 to-blue-50">
+    <!--Aside-->
+    <div class="hidden lg:flex lg:h-full lg:w-3/12">
+        <app-sidebar></app-sidebar>
+    </div>
+
+    <div class="flex flex-col w-full lg:w-9/12 h-full">
+        <div class="flex h-20">
+            <app-header></app-header>
+        </div>
+
+        <div class=" overflow-auto h-full w-full p-7 mt-9 mb-7 lg:mb-0 ">
+            <div class=" space-y-5 lg:flex-row lg:flex h-full w-full lg:space-x-5 lg:space-y-0">
+                <div class="flex flex-col relative w-full lg:w-2/4 h-1/2 bg-white rounded-xl pb-5">
+                    <div class="h-5 w-5 absolute top-2 right-2">
+                        <img class="w-full h-full object-contain" src="assets/svg/pin.svg" alt="">
                     </div>
-                    <p class="font-nunito text-xs tracking-tight font-bold text-slate-600 justify-start text-start">
-                        Salmos 9:10</p>
-                </div>
-
-                <div
-                    class="w-full h-2/5 flex border border-purple-200 bg-purple-50 rounded-xl mt-5 p-3 items-center justify-center">
-                    <p class="font-nunito tracking-tight text-xs font-light">"En ti confían los que conocen tu nombre,
-                        porque tú, Señor, proteges a los que te buscan"</p>
-                </div>
-
-                <div class="flex h-3/5 w-full mt-5">
-                    <div class="h-full w-full lg:w-1/2 flex flex-col space-y-2">
-                        <div class="flex h-1/2 w-full items-center space-x-3">
-                            <div class="flex h-12 w-12 bg-emerald-100 rounded-full items-center justify-center">
+                    <div class="h-1/5 w-full flex flex-col p-5 mt-3 justify-center">
+                        <h1 class="font-nunito font-bold text-xl tracking-tighter">Sigo confiando en él</h1>
+                        <p class="font-nunito text-sm text-slate-500 tracking-tighter">Salmos 9:10</p>
+                    </div>
+                    <div class="w-full h-2/5 flex p-5">
+                        <div
+                            class=" flex w-full h-full rounded-xl border border-purple-200 bg-purple-50 p-3 justify-center items-center">
+                            <p class="font-nunito text-xs font-light text-slate-700 tracking-tighter">"En ti confían los
+                                que conocen tu nombre, porque tú, Señor, proteges a los que te buscan"</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full h-2/5 pl-5 pr-5 space-y-4 lg:space-y-3">
+                        <div class="w-full flex h-1/2 items-center space-x-2">
+                            <div class="flex h-10 w-10 bg-emerald-100 rounded-full items-center justify-center">
                                 <img class="h-6 w-6" src="/assets/svg/phone-calling.svg" alt="">
                             </div>
                             <div class="flex flex-col">
@@ -32,27 +36,36 @@
                                 <p class="font-nunito text-sm font-thin tracking-tight">10.000 Llamadas</p>
                             </div>
                         </div>
-                        <div class="flex h-1/2 w-full items-center space-x-3 z-10">
-                            <div class="flex h-12 w-12 bg-orange-100 rounded-full items-center justify-center">
-                                <img class="h-6 w-6" src="/assets/svg/phone-incoming.svg" alt="">
+                        <div class="w-full flex h-1/2">
+                            <div class="w-full flex h-1/2 items-center space-x-2">
+                                <div class="flex h-10 w-10 bg-orange-100 rounded-full items-center justify-center">
+                                    <img class="h-6 w-6" src="/assets/svg/phone-incoming.svg" alt="">
+                                </div>
+                                <div class="flex flex-col">
+                                    <p class="font-nunito text-sm font-bold tracking-tight">Llamadas registradas</p>
+                                    <p class="font-nunito text-sm font-thin tracking-tight">10.000 Llamadas</p>
+                                </div>
                             </div>
-                            <div class="flex flex-col">
-                                <p class="font-nunito text-sm font-bold tracking-tight">Llamadas registradas</p>
-                                <p class="font-nunito text-sm font-thin tracking-tight">5.000</p>
+                        </div>
+                        <div class="absolute bottom-0 right-0 flex w-1/3 h-2/5 items-end rounded-br-xl bg-red-100">
+                            <div class="w-full h-full items-end  rounded-br-xl overflow-hidden">
+                                <img class="w-full h-full object-cover" src="/assets/images/cohete-esquina.png" alt="">
                             </div>
                         </div>
                     </div>
-                    <div class="  absolute bottom-1 right-1 lg:right-3  flex w-1/2 h-1/2 justify-end items-end">
-                        <img class=" h-24 w-24 lg:h-36 lg:w-36" src="/assets/images/rocket-ilustracion.jpg" alt="">
-                    </div>
                 </div>
-            </div>
-            <div class="w-full h-1/2 border border-slate-100 lg:w-1/4 xl:w-1/4 2xl:w-1/4  lg:h-1/2 xl:h-1/2 2xl:h-1/2 flex flex-col bg-white rounded-2xl">
+
+                <div class="w-full lg:w-1/4 h-1/2 bg-white rounded-xl">
+
+                </div>
+                <div class="w-full lg:w-1/4 h-1/2 bg-white rounded-xl">
+
+                </div>
 
             </div>
-            <div class="w-full h-1/2 border border-slate-100 lg:w-1/4 xl:w-1/4 2xl:w-1/4  lg:h-1/2 xl:h-1/2 2xl:h-1/2 flex flex-col bg-white rounded-2xl">
 
-            </div>
         </div>
+
     </div>
+
 </div>
