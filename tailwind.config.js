@@ -10,7 +10,8 @@ module.exports = {
       },
       backgroundImage: theme => ({
         'login-pattern': "url('/assets/images/bg_login_enlace.png')",
-        'home-pattern': "url('/assets/images/construir-cohete.png')"
+        'home-pattern': "url('/assets/images/construir-cohete.png')",
+        'banner-box':"url('/assets/images/banner_ancho.png')"
       })
     },
   },
