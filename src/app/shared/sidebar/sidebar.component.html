@@ -9,47 +9,32 @@
     <!-- Menú -->
     <div class="h-5/6 w-full overflow-auto">
       <div class="flex flex-col h-4/5 w-full pt-10 space-y-3">
-        <a [routerLink]="['/home']" routerLinkActive="bg-blue-50"
-          class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
-          <img class="h-6 w-6 flex items-center" src="/assets/svg/home-smile.svg" alt="">
-          <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal">Home</p>
-        </a>
-        <a [routerLink]="['/podium']" routerLinkActive="bg-blue-50"
-          class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
-          <img class="h-6 w-6 flex items-center" src="/assets/svg/podium.svg" alt="">
-          <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal">Podium</p>
-        </a>
-        <a [routerLink]="['/donaciones']" routerLinkActive="bg-blue-50"
-          class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
-          <img class="h-6 w-6 flex items-center" src="/assets/svg/donacion.svg" alt="">
-          <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal">Donaciones</p>
-        </a>
-        <a [routerLink]="['/reportes']" routerLinkActive="bg-blue-50"
-          class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
-          <img class="h-6 w-6 flex items-center" src="/assets/images/seo-report.png" alt="">
-          <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal">Reportes</p>
-        </a>
-        <button class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center pr-5"
-          (click)="toggleMenu()">
-          <img class="h-6 w-6" src="/assets/svg/admin.svg" alt="">
-          <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal flex-1">Administración</p>
-          <i *ngIf="!isExpanded" class="fas fa-chevron-down ml-auto"></i>
-          <i *ngIf="isExpanded" class="fas fa-chevron-up ml-auto"></i>
-        </button>
-        <div *ngIf="isExpanded" class="flex flex-col ml-12 space-y-3 mt-3">
-          <a [routerLink]="['/administracion/usuarios']" routerLinkActive="bg-blue-50"
-            class="flex h-8 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
-            <p class="font-nunito text-sm tracking-tighter flex pt-1 font-normal">Usuarios</p>
-          </a>
-          <a [routerLink]="['/administracion/bancos']" routerLinkActive="bg-blue-50"
-            class="flex h-8 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
-            <p class="font-nunito text-sm tracking-tighter flex pt-1 font-normal">Bancos</p>
-          </a>
-          <a [routerLink]="['/administracion/configuraciones']" routerLinkActive="bg-blue-50"
-            class="flex h-8 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
-            <p class="font-nunito text-sm tracking-tighter flex pt-1 font-normal">Configuraciones</p>
-          </a>
-        </div>
+        <ng-container *ngFor="let item of menuItems">
+          <ng-container *ngIf="!item.submenu">
+            <a [routerLink]="[item.routerLink]" routerLinkActive="bg-blue-50"
+               class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
+              <img class="h-6 w-6 flex items-center" [src]="item.icon" alt="">
+              <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal">{{ item.label }}</p>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="item.submenu">
+            <button class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center pr-5"
+                    (click)="toggleMenu()">
+              <img class="h-6 w-6" [src]="item.icon" alt="">
+              <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal flex-1">{{ item.label }}</p>
+              <i *ngIf="!isExpanded" class="fas fa-chevron-down ml-auto"></i>
+              <i *ngIf="isExpanded" class="fas fa-chevron-up ml-auto"></i>
+            </button>
+            <div *ngIf="isExpanded" class="flex flex-col ml-12 space-y-3 mt-3">
+              <ng-container *ngFor="let subItem of item.submenu">
+                <a [routerLink]="[subItem.routerLink]" routerLinkActive="bg-blue-50"
+                   class="flex h-8 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
+                  <p class="font-nunito text-sm tracking-tighter flex pt-1 font-normal">{{ subItem.label }}</p>
+                </a>
+              </ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
       </div>
     </div>
 

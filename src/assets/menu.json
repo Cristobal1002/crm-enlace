@@ -1,0 +1,51 @@
+{
+  "menu": [
+    {
+      "label": "Home",
+      "icon": "/assets/svg/home-smile.svg",
+      "routerLink": "/home",
+      "roles": ["admin", "basic"]
+    },
+    {
+      "label": "Podium",
+      "icon": "/assets/svg/podium.svg",
+      "routerLink": "/podium",
+      "roles": ["admin", "basic"]
+    },
+    {
+      "label": "Donaciones",
+      "icon": "/assets/svg/donacion.svg",
+      "routerLink": "/donaciones",
+      "roles": ["admin", "basic"]
+    },
+    {
+      "label": "Reportes",
+      "icon": "/assets/images/seo-report.png",
+      "routerLink": "/reportes",
+      "roles": ["admin"]
+    },
+    {
+      "label": "Administración",
+      "icon": "/assets/svg/admin.svg",
+      "routerLink": "/administracion",
+      "roles": ["admin"],
+      "submenu": [
+        {
+          "label": "Usuarios",
+          "routerLink": "/administracion/usuarios",
+          "roles": ["admin"]
+        },
+        {
+          "label": "Bancos",
+          "routerLink": "/administracion/bancos",
+          "roles": ["admin"]
+        },
+        {
+          "label": "Donaciones",
+          "routerLink": "/administracion/donaciones",
+          "roles": ["admin"]
+        }
+      ]
+    }
+  ]
+}
