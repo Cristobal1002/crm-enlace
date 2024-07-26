@@ -41,8 +41,8 @@
           "roles": ["admin"]
         },
         {
-          "label": "Donaciones",
-          "routerLink": "/administracion/donaciones",
+          "label": "Configuración",
+          "routerLink": "/administracion/configuraciones",
           "roles": ["admin"]
         }
       ]
