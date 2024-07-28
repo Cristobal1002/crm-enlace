@@ -9,15 +9,25 @@
             <app-header></app-header>
         </div>
 
-        <div class=" overflow-auto h-full w-full p-7 mt-9 mb-7 lg:mb-0">
+        <div class="h-full w-full p-7 mt-9 mb-7 lg:mb-0">
             <div class=" space-y-5 lg:flex-row lg:flex h-full w-full lg:space-x-5 lg:space-y-0">
                <div class=" h-full w-full flex flex-col space-y-5">
                     <div class="flex h-1/6 w-full space-x-3 lg:space-x-5">
-                        <div class="h-full w-8/12 lg:w-10/12 flex rounded-xl border bg-banner-box bg-right-bottom bg-cover">
-
+                        <div class="h-full w-8/12 lg:w-10/12 flex flex-col rounded-xl border  bg-banner-box bg-right-bottom bg-cover lg:pl-5 lg:pt-3 p-3">
+                            <p class="text-xs font-nunito tracking-tighter text-purple-950 font-bold">Campaña activa</p>
+                            <h1 class="text-lg font-nunito tracking-tighter font-bold">Sigo confiando en él</h1>
                         </div>
-                        <div class="h-full w-4/12 lg:w-2/12 flex rounded-xl border bg-white">
-        
+                        <div class="h-full w-4/12 lg:w-2/12 flex rounded-xl border shadow-lg bg-blue-300 lg:p-2 ">
+                            <button class="flex flex-col w-full h-full p-3 ">
+                                <div class="flex h-1/2 w-full flex-col  items-start justify-center">
+                                    <div class="h-8 w-8 flex bg-blue-100 rounded-lg items-center justify-center">
+                                        <img class="w-6 h-6" src="/assets/svg/plus-square.svg" alt="">
+                                    </div>
+                                </div>
+                                <div class="h-1/2 w-full  items-end justify-start flex whitespace-nowrap ">
+                                    <p class="font-nunito lg:text-sm text-xs font-semibold text-white tracking-tighter text-ellipsis overflow-hidden">Nueva Campaña</p>
+                                </div>
+                            </button>
                         </div>
                     </div>
                     <div class="h-5/6 w-full flex bg-white border rounded-2xl">

@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, NavigationEnd, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Menu, MenuItem } from '../../interfaces/menu';
 
 @Component({
