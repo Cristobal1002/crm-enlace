@@ -19,7 +19,7 @@
                             <h1 class="text-lg font-nunito tracking-tighter font-bold">Sigo confiando en él</h1>
                         </div>
                         <div class="h-full w-4/12 lg:w-2/12 flex rounded-xl border shadow-lg bg-blue-300 lg:p-2 ">
-                            <button class="flex flex-col w-full h-full p-3 ">
+                            <button class="flex flex-col w-full h-full p-3 " (click)="showModal()">
                                 <div class="flex h-1/2 w-full flex-col  items-start justify-center">
                                     <div class="h-8 w-8 flex bg-blue-100 rounded-lg items-center justify-center">
                                         <img class="w-6 h-6" src="/assets/svg/plus-square.svg" alt="">
@@ -48,7 +48,8 @@
                             </div>
 
                         </div>
-
+                        <!--Modal de creacion-->
+                        <app-create-campaign-modal *ngIf="isModalOpen" (close)="closeModal()"></app-create-campaign-modal>
                         <!--Tabla-->
                         <div class="border border-gray-200 rounded-xl flex w-full h-4/6 lg:mt-3 mt-5">
                             <div class="overflow-x-auto w-full ">

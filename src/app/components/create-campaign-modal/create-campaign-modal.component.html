@@ -1,0 +1,28 @@
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" (click)="closeModal()">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-11/12" (click)="$event.stopPropagation()">
+      <h2 class="text-xl font-semibold mb-4 font-nunito tracking-tight">Crear Campaña</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <label for="nombre" class="block text-sm font-medium text-gray-700 font-nunito">Nombre de la campaña</label>
+          <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+          <label for="rhema" class="block text-sm font-medium text-gray-700 font-nunito">Palabra Rhema</label>
+          <input type="text" id="rhema" [(ngModel)]="rhema" name="rhema" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+          <label for="meta" class="block text-sm font-medium text-gray-700 font-nunito">Meta de llamadas</label>
+          <input type="number" id="meta" [(ngModel)]="meta" name="meta" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-4">
+          <label for="texto" class="block text-sm font-medium text-gray-700 font-nunito">Texto Rhema</label>
+          <textarea id="texto" [(ngModel)]="texto" name="texto" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+        </div>
+        <div class="flex justify-end">
+          <button type="button" (click)="closeModal()" class="mr-4 bg-gray-200 text-gray-700 py-2 px-4 rounded-md">Cancelar</button>
+          <button type="submit" class="bg-purple-600 text-white py-2 px-4 rounded-md">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
