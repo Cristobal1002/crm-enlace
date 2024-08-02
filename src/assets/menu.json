@@ -15,8 +15,20 @@
     {
       "label": "Donaciones",
       "icon": "/assets/svg/donacion.svg",
-      "routerLink": "/donaciones",
-      "roles": ["admin", "basic"]
+      "routerLink": "/admindon",
+      "roles": ["admin", "basic"],
+      "submenu":[
+        {
+          "label": "Donantes",
+          "routerLink": "/donaciones/donantes",
+          "roles": ["admin", "basic"]
+        },
+        {
+          "label": "Crear donación",
+          "routerLink": "/donaciones/manage",
+          "roles": ["admin", "basic"]
+        }
+      ]
     },
     {
       "label": "Reportes",

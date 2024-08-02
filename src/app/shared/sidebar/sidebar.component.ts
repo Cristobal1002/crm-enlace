@@ -14,7 +14,8 @@ import { Menu, MenuItem } from '../../interfaces/menu';
 export class SidebarComponent implements OnInit {
 
   menuItems: MenuItem[] = [];
-  isExpanded = false;
+  isExpandedAdmin = false;
+  isExpandedDonations = false;
   userRole: string = 'admin'; // Cambia esto según el rol del usuario
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -45,11 +46,16 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  toggleMenu() {
-    this.isExpanded = !this.isExpanded;
+  toggleAdminMenu() {
+    this.isExpandedAdmin = !this.isExpandedAdmin;
+  }
+
+  toggleDonationsMenu() {
+    this.isExpandedDonations = !this.isExpandedDonations;
   }
 
   private checkIfSubmenuShouldBeExpanded(url: string): void {
-    this.isExpanded = url.startsWith('/administracion');
+    this.isExpandedAdmin = url.startsWith('/administracion');
+    this.isExpandedDonations = url.startsWith('/donaciones');
   }
 }

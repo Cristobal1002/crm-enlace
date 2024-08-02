@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { BanksComponent } from './pages/banks/banks.component';
 import { ConfigurationsComponent } from './pages/configurations/configurations.component';
+import { CustomersComponent } from './pages/customers/customers.component';
 import { DonationsComponent } from './pages/donations/donations.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -12,7 +13,13 @@ export const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'home', component: HomeComponent },
     { path: 'podium', component: PodiumComponent },
-    { path: 'donaciones', component: DonationsComponent },
+    {
+        path: 'donaciones', children: [
+            { path: 'donantes', component: CustomersComponent },
+            { path: 'manage', component: DonationsComponent },
+        ]
+    },
+
     { path: 'reportes', component: ReportsComponent },
     {
         path: 'administracion', children: [

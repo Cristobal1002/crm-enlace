@@ -2,13 +2,13 @@
   <div class="w-full h-full flex flex-col bg-white rounded-3xl shadow-lg shadow-blue-100">
 
     <!-- logo y título -->
-    <div class="w-full h-14 flex mt-3 justify-center items-center space-x-3">
+    <div class="w-full h-14 flex mt-4 justify-center items-center space-x-2">
       <img class="h-8 w-8" src="/assets/images/Icono_enlace.png" alt="">
       <p class="font-nunito text-xl tracking-tight font-extrabold text-slate-600">Enlace CRM</p>
     </div>
     <!-- Menú -->
     <div class="h-5/6 w-full overflow-auto">
-      <div class="flex flex-col h-4/5 w-full pt-10 space-y-3">
+      <div class=" h-full w-full pt-10 space-y-3">
         <ng-container *ngFor="let item of menuItems">
           <ng-container *ngIf="!item.submenu">
             <a [routerLink]="[item.routerLink]" routerLinkActive="bg-blue-50"
@@ -18,14 +18,30 @@
             </a>
           </ng-container>
           <ng-container *ngIf="item.submenu">
-            <button class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center pr-5"
-                    (click)="toggleMenu()">
+            <button *ngIf="item.label === 'Administración'" class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center pr-5"
+                    (click)="toggleAdminMenu()">
               <img class="h-6 w-6" [src]="item.icon" alt="">
               <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal flex-1">{{ item.label }}</p>
-              <i *ngIf="!isExpanded" class="fas fa-chevron-down ml-auto"></i>
-              <i *ngIf="isExpanded" class="fas fa-chevron-up ml-auto"></i>
+              <i *ngIf="!isExpandedAdmin" class="fas fa-chevron-down ml-auto"></i>
+              <i *ngIf="isExpandedAdmin" class="fas fa-chevron-up ml-auto"></i>
             </button>
-            <div *ngIf="isExpanded" class="flex flex-col ml-12 space-y-3 mt-3">
+            <div *ngIf="isExpandedAdmin && item.label === 'Administración'" class="flex flex-col ml-12 space-y-3 mt-3">
+              <ng-container *ngFor="let subItem of item.submenu">
+                <a [routerLink]="[subItem.routerLink]" routerLinkActive="bg-blue-50"
+                   class="flex h-8 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
+                  <p class="font-nunito text-sm tracking-tighter flex pt-1 font-normal">{{ subItem.label }}</p>
+                </a>
+              </ng-container>
+            </div>
+
+            <button *ngIf="item.label === 'Donaciones'" class="flex h-12 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center pr-5"
+                    (click)="toggleDonationsMenu()">
+              <img class="h-6 w-6" [src]="item.icon" alt="">
+              <p class="font-nunito text-base tracking-tighter flex pt-1 font-normal flex-1">{{ item.label }}</p>
+              <i *ngIf="!isExpandedDonations" class="fas fa-chevron-down ml-auto"></i>
+              <i *ngIf="isExpandedDonations" class="fas fa-chevron-up ml-auto"></i>
+            </button>
+            <div *ngIf="isExpandedDonations && item.label === 'Donaciones'" class="flex flex-col ml-12 space-y-3 mt-3">
               <ng-container *ngFor="let subItem of item.submenu">
                 <a [routerLink]="[subItem.routerLink]" routerLinkActive="bg-blue-50"
                    class="flex h-8 w-11/12 rounded-tr-full rounded-br-full pl-10 space-x-3 items-center">
