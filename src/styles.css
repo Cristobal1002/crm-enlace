@@ -1,4 +1,27 @@
+
+/* Estilos globales para Pikaday */
+@import '../node_modules/pikaday/css/pikaday.css';
+.pika-single {
+  z-index: 9999;
+  display: block;
+  position: relative;
+  color: #333;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-bottom-color: #bbb;
+  font-family: "Nunito";
+}
+
+.pika-button:hover,
+.pika-row.pick-whole-week:hover .pika-button {
+    color: #fff;
+    background: #60a5fa !important;
+    box-shadow: none;
+    border-radius: 3px;
+}
+
 /* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
