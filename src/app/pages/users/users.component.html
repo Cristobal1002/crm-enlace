@@ -9,10 +9,138 @@
             <app-header></app-header>
         </div>
 
-        <div class=" overflow-auto h-full w-full p-7 mt-9 mb-7 lg:mb-0">
-            <div class=" space-y-5 lg:flex-row lg:flex h-full w-full lg:space-x-5 lg:space-y-0">
-               
-                <p>users works!</p>
+        <div class="flex h-full w-full p-7 mt-9 mb-7 lg:mb-0">
+            <div class="space-y-5 lg:flex-row lg:flex h-full w-full lg:space-x-5 lg:space-y-0">
+                <div class="h-full w-full flex flex-col space-y-5">
+                  
+                    <div class="h-full w-full flex bg-white border rounded-2xl p-5 flex-col lg:space-y-3 space-y-10">
+                        <div class="h-2/6 lg:h-16 w-full flex flex-col lg:flex-row lg:items-center lg:space-y-0 space-y-2">
+                            <p class="font-nunito font-bold text-base tracking-tight lg:w-2/6">Listado de usuarios</p>
+
+                            <div class="flex flex-col lg:flex-row lg:w-4/6 w-full h-full items-center justify-end lg:space-x-2 lg:space-y-0 space-y-2">
+                                <div class="lg:w-1/3 w-full flex relative">
+                                    <select name="" id="" class="font-nunito text-xs tracking-tight font-semibold h-10 w-full pl-12 pr-5 rounded-lg border shadow-lg shadow-blue-50 bg-gray-100">
+                                        <option value="">Criterio de búsqueda</option>
+                                        <option value=""># de Documento</option>
+                                        <option value="">Nombre</option>
+                                        <option value="">Teléfono</option>
+                                    </select>
+                                    <i class="fas fa-filter absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400"></i>
+                                </div>
+                                <div class="relative flex items-center lg:w-1/3 w-full">
+                                    <input
+                                        class="flex h-10 w-full rounded-lg border p-5 pr-12 shadow-lg shadow-blue-50 bg-gray-100 placeholder:font-nunito placeholder:font-semibold placeholder:text-black placeholder:text-sm"
+                                        type="text" placeholder="Buscar" />
+                                    <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-600"></i>
+                                </div>
+                                <button class="bg-white text-blue-400 font-nunito text-sm font-semibold items-center justify-center flex w-full lg:w-1/3 h-10 border shadow-lg shadow-blue-50 rounded-xl">
+                                    Nuevo usuario
+                                </button>
+                            </div>
+                        </div>
+                        <!--Tabla-->
+                        <div class="border border-gray-200 rounded-xl flex w-full h-5/6 lg:mt-3 mt-5">
+                            <div class="overflow-x-auto w-full">
+                                <table class="table-auto w-full">
+                                    <thead class="border-b">
+                                        <tr class="whitespace-nowrap">
+                                            <th class="text-xs font-nunito font-bold p-3 text-left">Nombre<i
+                                                    class="fa fa-sort ml-3"></i></th>
+                                            <th class="text-xs font-nunito font-bold p-3 text-left">Documento<i
+                                                    class="bx bxs-sort-alt"></i></th>
+                                            <th class="text-xs font-nunito font-bold p-3 text-left">Email<i
+                                                    class="bx bxs-sort-alt"></i> </th>
+                                            <th class="text-xs font-nunito font-bold p-3 text-left">Teléfono<i class="bx bxs-sort-alt"></i> </th>
+                                            <th class="text-xs font-nunito font-bold p-3 text-left">Perfil<i class="bx bxs-sort-alt"></i> </th>
+                                            <th
+                                                class="text-xs font-nunito font-bold p-3 text-left text-ellipsis overflow-hidden">
+                                                Estado</th>
+                                            <th class="text-xs font-nunito font-bold p-3 text-left">Acciones<i
+                                                    class="bx bxs-sort-alt"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b" *ngFor="let user of users">
+                                            <td class="text-xs font-nunito p-3">
+                                                {{user.nombre}}
+                                            </td>
+                                            <td class="text-xs font-nunito p-3">
+                                                {{user.document}}
+                                            </td>
+                                            <td class="text-xs font-nunito p-3">
+                                                {{user.email}}
+                                            </td>
+                                            <td class="text-xs font-nunito p-3">
+                                                {{user.phone}}
+                                            </td>
+                                            <td class="text-xs font-nunito p-3">
+                                                {{user.perfil}}
+                                            </td>
+                                            <td class="pl-3">
+                                                <div class="h-5 lg:w-1/2 w-full rounded-lg items-center justify-center flex"
+                                                    [ngClass]="{'bg-green-100': user.status === 'active', 'bg-red-100': user.status === 'inactive'}">
+                                                    <p class="text-xs font-nunito p-3"
+                                                        [ngClass]="{'text-green-400': user.status === 'active', 'text-red-400': user.status === 'inactive'}">
+                                                        {{user.status}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="pl-3">
+                                                <div class="flex space-x-2 ">
+                                                    <button
+                                                        class="h-6  w-6 bg-blue-100 rounded-lg items-center justify-center">
+                                                        <i
+                                                            class="fa-regular fa-pen-to-square w-5 h-5 text-blue-400"></i>
+                                                    </button>
+                                                    <button
+                                                        class="h-6  w-6 bg-red-100 rounded-lg items-center justify-center">
+                                                        <i class="fa-regular fa-trash-can text-red-500 "></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--Paginacion-->
+                        <!-- Contenedor Principal de Paginación -->
+                        <div
+                            class="flex justify-center lg:justify-end lg:items-center lg:p-0 items-center space-x-2 lg:space-x-4  lg:mt-7 text-xs font-nunito  lg:h-1/6">
+
+                            <!-- Selector de Elementos por Página -->
+                            <div class="flex flex-col lg:flex-row items-center space-x-2 font-nunito">
+                                <label for="elementosPorPagina" class="text-xs font-medium text-gray-700">Items per
+                                    page:</label>
+                                <select id="elementosPorPagina"
+                                    class="block w-20 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+
+                            <!-- Controles de Paginación -->
+                            <div class="flex items-center space-x-0 font-nunito">
+                                <button
+                                    class="px-2 py-1 text-xs font-medium text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:text-gray-300 disabled:bg-white">
+                                    Previous
+                                </button>
+
+                                <span class="text-xs font-medium font-nunito text-gray-700 flex">
+                                    1 of 100
+                                </span>
+
+                                <button
+                                    class="px-2 py-1 text-xs font-medium font-nunito text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:text-gray-300 disabled:bg-white">
+                                    Next
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
 

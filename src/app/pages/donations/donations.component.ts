@@ -25,6 +25,13 @@ export class DonationsComponent implements AfterViewInit {
         trigger: this.datepickerButton.nativeElement,
         format: 'DD-MM-YYYY',
         yearRange: [1900, 2100], // Ajusta según tus necesidades
+        i18n: {
+          previousMonth: 'Mes Anterior',
+          nextMonth: 'Mes Siguiente',
+          months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+        },
         onSelect: (date: Date) => {
           if (this.datepickerInput) {
             this.datepickerInput.nativeElement.value = moment(date).format('DD-MM-YYYY');
