@@ -7,7 +7,7 @@ import { Menu, MenuItem } from '../../interfaces/menu';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet, RouterModule, HttpClientModule],
+  imports: [CommonModule,RouterModule, RouterLink, RouterOutlet, HttpClientModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })

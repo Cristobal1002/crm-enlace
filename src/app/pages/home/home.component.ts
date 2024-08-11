@@ -13,10 +13,11 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 export class HomeComponent implements AfterViewInit {
 
   ngAfterViewInit() {
-    this.createChart();
+    this.createPaymentChart();
+    this.createCallsChart();
   }
 
-  createChart() {
+  createPaymentChart() {
     const ctx = document.getElementById('paymentChart') as HTMLCanvasElement;
     new Chart(ctx, {
       type: 'bar',
@@ -38,7 +39,7 @@ export class HomeComponent implements AfterViewInit {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            display: true
+            display: false
           }
         },
         scales: {
@@ -50,6 +51,43 @@ export class HomeComponent implements AfterViewInit {
           }
         }
       }
-    });
+    }); 
+  }
+
+  createCallsChart() {
+    const ctx = document.getElementById('callsChart') as HTMLCanvasElement;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['L', 'M', 'M', 'J', 'V', 'S', 'D'],
+        datasets: [
+          {
+            label: 'Recaudo',
+            data: [40, 20, 30, 100, 50, 160, 70],
+            backgroundColor: '#4f46e5',
+            borderRadius: 10,
+            barThickness: 10,
+            borderSkipped: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            display: true
+          },
+          y: {
+            display: true
+          }
+        }
+      }
+    }); 
   }
 }

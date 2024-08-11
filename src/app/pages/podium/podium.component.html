@@ -86,9 +86,9 @@
                                             </td>
                                             <td class="pl-3">
                                                 <div class="h-5 lg:w-1/2 w-full rounded-lg items-center justify-center flex"
-                                                    [ngClass]="{'bg-green-100': item.status === 'active', 'bg-red-100': item.status === 'inactive'}">
+                                                    [class]="{'bg-green-100': item.status === 'active', 'bg-red-100': item.status === 'inactive'}">
                                                     <p class="text-xs font-nunito p-3"
-                                                        [ngClass]="{'text-green-400': item.status === 'active', 'text-red-400': item.status === 'inactive'}">
+                                                        [class]="{'text-green-400': item.status === 'active', 'text-red-400': item.status === 'inactive'}">
                                                         {{item.status}}</p>
                                                 </div>
                                             </td>

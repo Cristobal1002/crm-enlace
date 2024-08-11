@@ -1,4 +1,4 @@
-<div class="flex flex-row w-full h-full fixed  items-center justify-center bg-login-pattern bg-cover">
+<div class="flex flex-row w-full h-full fixed items-center justify-center bg-login-pattern bg-cover">
     <div class="w-5/6 h-auto flex p-5 bg-white rounded-lg lg:w-2/6">
         <div class="flex flex-col w-full h-full items-center space-y-5">
             <div class="flex w-full h-16 items-center justify-center ">
@@ -7,34 +7,56 @@
             <h1 class="font-nunito text-xl lg:text-2xl font-bold text-slate-600 lg:mt-3">Bienvenido a Enlace CRM</h1>
 
             <div class="flex h-4/6 w-full p-5">
-                <form class="flex flex-col w-full h-full">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col w-full h-full">
                     <div class="flex flex-col">
                         <p class="text-sm font-nunito font-bold tracking-tight pb-2">Usuario</p>
                         <div class="relative flex items-center">
-                            <input class="flex h-12 w-full rounded-xl border p-5 pr-12 shadow-lg shadow-indigo-50 placeholder:font-nunito placeholder:font-light"
+                            <input 
+                                formControlName="user"
+                                class="flex h-12 w-full rounded-xl border p-5 pr-12 shadow-lg shadow-indigo-50 placeholder:font-nunito placeholder:font-light"
                                 type="text" placeholder="Ingrese su usuario" />
-                            <img src="/assets/svg/user.svg" class="absolute right-4 h-6 w-6 text-gray-400"
-                                alt="Icono de usuario" />
+                            <img src="/assets/svg/user.svg" class="absolute right-4 h-6 w-6 text-gray-400" alt="Icono de usuario" />
+                        </div>
+                        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="text-red-500 text-sm mt-2">
+                            <div *ngIf="username?.errors?.['required']">El usuario es requerido.</div>
                         </div>
                     </div>
 
                     <div class="flex flex-col pt-5">
                         <p class="text-sm font-nunito font-bold tracking-tight pb-2">Password</p>
                         <div class="relative flex items-center">
-                            <input class="flex h-12 w-full rounded-xl border p-5 pr-12 shadow-lg shadow-indigo-50 placeholder:font-nunito placeholder:font-light"
-                                type="text" placeholder="Ingrese su usuario" />
-                            <img src="/assets/svg/eye-open.svg" class="absolute right-4 h-6 w-6 text-gray-400"
-                                alt="Icono de usuario" />
+                            <input 
+                                formControlName="password"
+                                [type]="isPasswordVisible ? 'text' : 'password'" 
+                                class="flex h-12 w-full rounded-xl border p-5 pr-12 shadow-lg shadow-indigo-50 placeholder:font-nunito placeholder:font-light"
+                                placeholder="Ingrese su contraseña" />
+                            <img 
+                                [src]="isPasswordVisible ? '/assets/svg/eye-closed.svg' : '/assets/svg/eye-open.svg'"
+                                class="absolute right-4 h-6 w-6 text-gray-400 cursor-pointer"
+                                alt="Icono de contraseña" 
+                                (click)="togglePasswordVisibility()" /> 
+                        </div>
+                        <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-red-500 text-sm mt-2">
+                            <div *ngIf="password?.errors?.['required']">La contraseña es requerida.</div>
+                            <div *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
                         </div>
                     </div>
+
+                    <div *ngIf="isLoading" class="w-full h-14 flex items-center justify-center mt-5">
+                        <img src="/assets/gifs/loading-2.gif" alt="">
+                    </div>
+
+                    <div *ngIf="alert" class="w-full h-14 mt-5 flex items-center justify-center shadow-lg shadow-purple-100 rounded-lg bg-purple-50 p-3">
+                        <p class="font-nunito text-sm font-semibold tracking-tight text-purple-950">{{alertMessage}}</p>
+                    </div>
+
                     <button
                         class="flex transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 w-full h-12 rounded-lg mt-10 items-center justify-center bg-indigo-500 shadow-lg shadow-indigo-500/50 text-white font-nunito font-sm"
-                        routerLink="/home">
+                        [disabled]="loginForm.invalid">
                         Ingresar
                     </button>
                 </form>
             </div>
         </div>
     </div>
-
 </div>
