@@ -1,225 +1,208 @@
-<div class="flex relative h-screen w-screen bg-gradient-to-r from-gray-100 to-blue-50">
-    <!--Aside-->
-    <div class="hidden lg:flex lg:h-full lg:w-3/12">
-        <app-sidebar></app-sidebar>
+<div class="h-full w-full bg-white rounded-xl flex flex-col space-y-3 pb-5">
+    <div class="h-10 w-full p-5">
+        <p class="text-lg font-nunito tracking-tighter font-bold">Registro de donación</p>
     </div>
-
-    <div class="flex flex-col w-full lg:w-9/12 h-full">
-        <div class="flex h-1/6 w-full">
-            <app-header></app-header>
-        </div>
-
-
-        <div class=" w-full h-5/6 p-7 pt-0 overflow-auto">
-            <div class="h-full w-full bg-white rounded-xl flex flex-col space-y-3 pb-5">
-                <div class="h-10 w-full p-5">
-                    <p class="text-lg font-nunito tracking-tighter font-bold">Registro de donación</p>
+    <!--Donantes-->
+    <div class="h-full w-full overflow-auto">
+        <form class="h-full flex flex-col w-full bg-white rounded-xl p-5 lg:space-y-3 space-y-2">
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+                <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Consulta de donante</p>
+                    <div class="relative flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="Documento" />
+                        <button
+                            class="fas fa-search absolute right-0 top-1/2 transform -translate-y-1/2 text-white h-full lg:w-12 w-2/12 bg-blue-400 rounded-br-lg rounded-tr-lg"></button>
+                    </div>
                 </div>
-                <!--Donantes-->
-                <div class="h-full w-full overflow-auto">
-                    <form class="h-full flex flex-col w-full bg-white rounded-xl p-5 lg:space-y-3 space-y-2">
-                        <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
-                            <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Consulta de donante</p>
-                                <div class="relative flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="text" placeholder="Documento" />
-                                    <button
-                                        class="fas fa-search absolute right-0 top-1/2 transform -translate-y-1/2 text-white h-full lg:w-12 w-2/12 bg-blue-400 rounded-br-lg rounded-tr-lg"></button>
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Nombre o razón social</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="text" placeholder="" />
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Celular</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="text" placeholder="" />
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
-                            <div class="flex flex-col h-auto w-full lg:w-2/6 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Email</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="email" placeholder="" />
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Fecha de nacimiento</p>
-                                <div class="relative flex items-center w-full">
-                                    <input #datepickerInput
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="text" placeholder="DD-MM-YYYY" />
-                                    <button #datepickerButton
-                                        class="fa fa-calendar-days absolute right-0 top-1/2 transform -translate-y-1/2 text-white h-full lg:w-12 w-2/12 bg-blue-400 rounded-br-lg rounded-tr-lg"></button>
-                                </div>
-                            </div>
-
-
-                            <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Sexo</p>
-                                <div class="flex items-center w-full">
-                                    <select name="" id=""
-                                        class="font-nunito text-sm tracking-tight text-slate-600 font-semibold h-10 w-full p-2 rounded-lg border">
-                                        <option value="">Selección </option>
-                                        <option value="">Masculino</option>
-                                        <option value="">Femenino</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Pais</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="text" placeholder="" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
-                            <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Ciudad</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="email" placeholder="" />
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Departamento</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="email" placeholder="" />
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Barrio</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="email" placeholder="" />
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-2/5 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Dirección</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="email" placeholder="" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--Motivos de oracion-->
-                        <div>
-                            <p class="text-lg font-nunito tracking-tighter font-bold">Motivos de oración</p>
-                        </div>
-
-                        <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
-                            <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Indique los motivos de
-                                    oración</p>
-                                <div class="flex items-center w-full">
-                                    <select
-                                        class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Novedades</p>
-                                <div class="flex items-center w-full">
-                                    <select
-                                        class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
-                            <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Petición</p>
-                                <div class="flex items-center w-full">
-                                    <textarea
-                                        class="flex h-20 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        name="" id="" cols="30" rows="10"></textarea>
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Testimonio</p>
-                                <div class="flex items-center w-full">
-                                    <textarea
-                                        class="flex h-20 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        name="" id="" cols="30" rows="10"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <p class="text-lg font-nunito tracking-tighter font-bold">Valor de donación</p>
-                        </div>
-                        <!--Donacion-->
-                        <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
-                            <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Indique los motivos de
-                                    oración</p>
-                                <div class="flex items-center w-full">
-                                    <select
-                                        class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Número de pagos</p>
-                                <div class="flex items-center w-full">
-                                    <select
-                                        class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Valor de la cuota</p>
-                                <div class="flex items-center w-full">
-                                    <input
-                                        class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="text" placeholder="" />
-                                </div>
-                            </div>
-                            <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                                <p class="text-sm font-nunito tracking-tight font-semibold">Total</p>
-                                <div class="flex items-center w-full">
-                                    <input disabled
-                                        class="disabled:bg-blue-50 flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                        type="text" placeholder="" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex h-auto pt-5 pb-5 lg:pt-10 lg:pb-10 w-full">
-                            <div class="h-10 w-full flex items-center justify-center space-x-5">
-                                <button
-                                    class="h-full w-1/2 flex bg-white shadow-lg shadow-blue-50 border font-nunito text-sm text-blue-400 font-semibold items-center justify-center rounded-xl">Cancelar</button>
-                                <button
-                                    class="h-full w-1/2 flex bg-purple-400 shadow-lg shadow-purple-50 text-white border font-nunito text-sm font-semibold items-center justify-center rounded-xl">Guardar</button>
-                            </div>
-                        </div>
-
-                    </form>
+                <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Nombre o razón social</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Celular</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
                 </div>
 
             </div>
-        </div>
 
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+                <div class="flex flex-col h-auto w-full lg:w-2/6 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Email</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="email" placeholder="" />
+                    </div>
+                </div>
+
+                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Fecha de nacimiento</p>
+                    <div class="relative flex items-center w-full">
+                        <input #datepickerInput
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="DD-MM-YYYY" />
+                        <button #datepickerButton
+                            class="fa fa-calendar-days absolute right-0 top-1/2 transform -translate-y-1/2 text-white h-full lg:w-12 w-2/12 bg-blue-400 rounded-br-lg rounded-tr-lg"></button>
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Sexo</p>
+                    <div class="flex items-center w-full">
+                        <select name="" id=""
+                            class="font-nunito text-sm tracking-tight text-slate-600 font-semibold h-10 w-full p-2 rounded-lg border">
+                            <option value="">Selección </option>
+                            <option value="">Masculino</option>
+                            <option value="">Femenino</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Pais</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Ciudad</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="email" placeholder="" />
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Departamento</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="email" placeholder="" />
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Barrio</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="email" placeholder="" />
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-2/5 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Dirección</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="email" placeholder="" />
+                    </div>
+                </div>
+            </div>
+
+            <!--Motivos de oracion-->
+            <div>
+                <p class="text-lg font-nunito tracking-tighter font-bold">Motivos de oración</p>
+            </div>
+
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+                <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Indique los motivos de
+                        oración</p>
+                    <div class="flex items-center w-full">
+                        <select
+                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Novedades</p>
+                    <div class="flex items-center w-full">
+                        <select
+                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+                <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Petición</p>
+                    <div class="flex items-center w-full">
+                        <textarea
+                            class="flex h-20 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            name="" id="" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Testimonio</p>
+                    <div class="flex items-center w-full">
+                        <textarea
+                            class="flex h-20 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            name="" id="" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p class="text-lg font-nunito tracking-tighter font-bold">Valor de donación</p>
+            </div>
+            <!--Donacion-->
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+                <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Indique los motivos de
+                        oración</p>
+                    <div class="flex items-center w-full">
+                        <select
+                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Número de pagos</p>
+                    <div class="flex items-center w-full">
+                        <select
+                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Valor de la cuota</p>
+                    <div class="flex items-center w-full">
+                        <input
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Total</p>
+                    <div class="flex items-center w-full">
+                        <input disabled
+                            class="disabled:bg-blue-50 flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex h-auto pt-5 pb-5 lg:pt-10 lg:pb-10 w-full">
+                <div class="h-10 w-full flex items-center justify-center space-x-5">
+                    <button
+                        class="h-full w-1/2 flex bg-white shadow-lg shadow-blue-50 border font-nunito text-sm text-blue-400 font-semibold items-center justify-center rounded-xl">Cancelar</button>
+                    <button
+                        class="h-full w-1/2 flex bg-purple-400 shadow-lg shadow-purple-50 text-white border font-nunito text-sm font-semibold items-center justify-center rounded-xl">Guardar</button>
+                </div>
+            </div>
+
+        </form>
     </div>
+
 </div>
