@@ -43,6 +43,7 @@ export class AuthServiceService {
     try {
       const decoded = jwtDecode<any>(token);
       this.currentUser.next(decoded);
+      console.log('current user',this.currentUser)
       console.log('Decode:', decoded)
     } catch (error) {
       console.error('Error decoding token', error);
@@ -75,11 +76,23 @@ export class AuthServiceService {
   }
 
   getCurrentUser() {
-    return this.currentUser.asObservable();
+    return this.currentUser.asObservable();  
   }
 
   hasRole(role: string) {
     const user = this.currentUser.value;
     return user && user.role === role;
+  }
+
+  getUserData(){
+    const {role} = this.currentUser.value
+    role === 'admin' ? this.currentUser.value.displayRole = 'Administrador' : this.currentUser.value.displayRole = 'Agente'
+    return this.currentUser.value
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.currentUser.next(null);
+    this.router.navigate(['/login']); // Redirigir a la página de login
   }
 }

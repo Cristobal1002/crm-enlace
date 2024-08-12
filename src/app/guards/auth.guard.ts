@@ -15,13 +15,13 @@ export const authGuard: CanActivateFn = (route, state) => {
         return true;
       } else {
         // Redirigir al login con un query param `sessionExpired`
-        router.navigate(['/'], { queryParams: { sessionExpired: true } });
+        router.navigate(['/login'], { queryParams: { sessionExpired: true } });
         return false;
       }
     }),
     catchError(error => {
       console.error('Error en el guard:', error);
-      router.navigate(['/'], { queryParams: { sessionExpired: true } }); // Redirigir al login en caso de error
+      router.navigate(['/login'], { queryParams: { sessionExpired: true } }); // Redirigir al login en caso de error
       return of(false);
     })
   );

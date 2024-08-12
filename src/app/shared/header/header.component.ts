@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, NavigationEnd, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { Menu, MenuItem } from '../../interfaces/menu';
+import { AuthServiceService } from '../../services/auth-service.service';
 
 @Component({
   selector: 'app-header',
@@ -16,10 +17,11 @@ export class HeaderComponent {
   menuItems: MenuItem[] = [];
   isExpandedAdmin = false;
   isExpandedDonations = false;
-  userRole: string = 'admin'; // Cambia esto según el rol del usuario
+  userRole: any; 
+  user: any;
   asideMenu = false
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private authService: AuthServiceService) {}
 
   ngOnInit(): void {
     this.loadMenu();
@@ -30,6 +32,8 @@ export class HeaderComponent {
         this.checkIfSubmenuShouldBeExpanded(event.urlAfterRedirects);
       }
     });
+    this.user = this.authService.getUserData()
+    this.userRole = this.user.role
   }
 
   loadMenu() {
@@ -62,6 +66,10 @@ export class HeaderComponent {
 
   setAside(){
     !this.asideMenu
+  }
+
+  logout(){
+    this.authService.logout()
   }
 
 }

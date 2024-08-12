@@ -10,7 +10,7 @@
       "label": "Podium",
       "icon": "/assets/svg/podium.svg",
       "routerLink": "/podium",
-      "roles": ["admin", "basic"]
+      "roles": ["admin"]
     },
     {
       "label": "Donaciones",
