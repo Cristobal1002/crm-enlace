@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GetUrlsService } from './get-urls.service';
+import { PodiumService } from './podium.service';
 
-describe('GetUrlsService', () => {
-  let service: GetUrlsService;
+describe('PodiumService', () => {
+  let service: PodiumService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GetUrlsService);
+    service = TestBed.inject(PodiumService);
   });
 
   it('should be created', () => {

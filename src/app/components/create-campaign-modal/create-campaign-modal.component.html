@@ -1,28 +1,56 @@
 <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" (click)="closeModal()">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-11/12" (click)="$event.stopPropagation()">
-      <h2 class="text-xl font-semibold mb-4 font-nunito tracking-tight">Crear Campaña</h2>
-      <form (ngSubmit)="onSubmit()">
-        <div class="mb-4">
-          <label for="nombre" class="block text-sm font-medium text-gray-700 font-nunito">Nombre de la campaña</label>
-          <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-11/12" (click)="$event.stopPropagation()">
+    <h2 class="text-xl font-semibold mb-4 font-nunito tracking-tight">
+      {{ isEditMode ? 'Editar Campaña' : 'Crear Campaña' }}
+    </h2>
+    <form [formGroup]="campaignForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700 font-nunito">Nombre de la campaña</label>
+        <input id="name" formControlName="name" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+        <div *ngIf="campaignForm.controls['name'].invalid && (campaignForm.controls['name'].dirty || campaignForm.controls['name'].touched)" class="text-red-500 text-xs mt-1">
+          <div *ngIf="campaignForm.controls['name'].errors?.['required']">El nombre es requerido.</div>
         </div>
-        <div class="mb-4">
-          <label for="rhema" class="block text-sm font-medium text-gray-700 font-nunito">Palabra Rhema</label>
-          <input type="text" id="rhema" [(ngModel)]="rhema" name="rhema" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+
+      <div class="mb-4">
+        <label for="rhema" class="block text-sm font-medium text-gray-700 font-nunito">Palabra Rhema</label>
+        <input id="rhema" formControlName="rhema" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+        <div *ngIf="campaignForm.controls['rhema'].invalid && (campaignForm.controls['rhema'].dirty || campaignForm.controls['rhema'].touched)" class="text-red-500 text-xs mt-1">
+          <div *ngIf="campaignForm.controls['rhema'].errors?.['required']">Rhema es requerido.</div>
         </div>
-        <div class="mb-4">
-          <label for="meta" class="block text-sm font-medium text-gray-700 font-nunito">Meta de llamadas</label>
-          <input type="number" id="meta" [(ngModel)]="meta" name="meta" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+
+      <div class="mb-4">
+        <label for="goal" class="block text-sm font-medium text-gray-700 font-nunito">Meta de llamadas</label>
+        <input id="goal" formControlName="goal" type="number" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+        <div *ngIf="campaignForm.controls['goal'].invalid && (campaignForm.controls['goal'].dirty || campaignForm.controls['goal'].touched)" class="text-red-500 text-xs mt-1">
+          <div *ngIf="campaignForm.controls['goal'].errors?.['required']">La meta es requerida.</div>
+          <div *ngIf="campaignForm.controls['goal'].errors?.['min']">La meta debe ser mayor o igual a 1.</div>
         </div>
-        <div class="mb-4">
-          <label for="texto" class="block text-sm font-medium text-gray-700 font-nunito">Texto Rhema</label>
-          <textarea id="texto" [(ngModel)]="texto" name="texto" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+      </div>
+
+      <div class="mb-4">
+        <label for="phrase" class="block text-sm font-medium text-gray-700 font-nunito">Texto Rhema</label>
+        <textarea id="phrase" formControlName="phrase" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+        <div *ngIf="campaignForm.controls['phrase'].invalid && (campaignForm.controls['phrase'].dirty || campaignForm.controls['phrase'].touched)" class="text-red-500 text-xs mt-1">
+          <div *ngIf="campaignForm.controls['phrase'].errors?.['required']">La frase es requerida.</div>
         </div>
-        <div class="flex justify-end">
-          <button type="button" (click)="closeModal()" class="mr-4 bg-gray-200 text-gray-700 py-2 px-4 rounded-md">Cancelar</button>
-          <button type="submit" class="bg-purple-600 text-white py-2 px-4 rounded-md">Crear</button>
-        </div>
-      </form>
-    </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700 font-nunito">Estado</label>
+        <select id="status" formControlName="status" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="flex justify-end space-x-2">
+        <button type="button" (click)="closeModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Cancelar</button>
+        <button type="submit" [disabled]="campaignForm.invalid" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+          {{ isEditMode ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </form>
   </div>
-  
+</div>

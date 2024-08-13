@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, AfterViewInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
+import { PodiumService } from '../../services/podium.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
@@ -11,8 +13,15 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements AfterViewInit {
+  activeCampaign: any
+
+  constructor(private podiumService: PodiumService){
+    this.activeCampaign = {}
+    this.getActiveCampaign();
+  }
 
   ngAfterViewInit() {
+    
     this.createPaymentChart();
     this.createCallsChart();
   }
@@ -90,4 +99,14 @@ export class HomeComponent implements AfterViewInit {
       }
     }); 
   }
+
+  async getActiveCampaign (){
+    return this.podiumService.getActiveCampaign().subscribe((response:any) => {
+      console.log('response en Get Actve para ver campaña uno',response)
+      this.activeCampaign = response.data[0]   
+    })
+  }
+
+  //TODO graficas y numero de llanadas registradas
+
 }

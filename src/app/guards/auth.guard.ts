@@ -5,7 +5,6 @@ import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  console.log('paso por el guard');
   const authService = inject(AuthServiceService);
   const router = inject(Router);
 

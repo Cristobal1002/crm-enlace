@@ -1,140 +1,123 @@
-<div class=" space-y-5 lg:flex-row lg:flex h-full w-full lg:space-x-5 lg:space-y-0">
-    <div class=" h-full w-full flex flex-col space-y-5">
-        <div class="flex h-1/6 w-full space-x-3 lg:space-x-5">
-            <div
-                class="h-full w-8/12 lg:w-10/12 flex flex-col rounded-xl border  bg-banner-box bg-right-bottom bg-cover lg:pl-5 lg:pt-3 p-3">
-                <p class="text-xs font-nunito tracking-tighter text-purple-950 font-bold">Campaña activa</p>
-                <h1 class="text-lg font-nunito tracking-tighter font-bold">Sigo confiando en él</h1>
-            </div>
-            <div class="h-full w-4/12 lg:w-2/12 flex rounded-xl border shadow-lg bg-blue-300 lg:p-2 ">
-                <button class="flex flex-col w-full h-full p-3 " (click)="showModal()">
-                    <div class="flex h-1/2 w-full flex-col  items-start justify-center">
-                        <div class="h-8 w-8 flex bg-blue-100 rounded-lg items-center justify-center">
-                            <img class="w-6 h-6" src="/assets/svg/plus-square.svg" alt="">
-                        </div>
-                    </div>
-                    <div class="h-1/2 w-full  items-end justify-start flex whitespace-nowrap ">
-                        <p
-                            class="font-nunito lg:text-sm text-xs font-semibold text-white tracking-tighter text-ellipsis overflow-hidden">
-                            Nueva Campaña</p>
-                    </div>
-                </button>
-            </div>
+<div class="space-y-5 lg:flex-row lg:flex h-full w-full lg:space-x-5 lg:space-y-0">
+    <div class="h-full w-full flex flex-col space-y-5">
+      <div class="flex h-1/6 w-full space-x-3 lg:space-x-5">
+        <div class="h-full w-8/12 lg:w-10/12 flex flex-col rounded-xl border bg-banner-box bg-right-bottom bg-cover lg:pl-5 lg:pt-3 p-3">
+          <p class="text-xs font-nunito tracking-tighter text-purple-950 font-bold">Campaña activa</p>
+          <h1 class="text-lg font-nunito tracking-tighter font-bold">{{activeCampaign.name || 'No exite una campaña activa'}}</h1>
         </div>
-        <div class="h-5/6 w-full flex bg-white border rounded-2xl p-5 flex-col ">
-            <div class="h-16 w-full flex flex-col lg:flex-row  lg:items-center lg:space-y-0 space-y-2">
-                <p class="font-nunito font-bold text-base tracking-tight lg:w-1/2">Listado de campañas</p>
-
-                <div class="flex lg:w-1/2 w-full h-full items-center justify-end">
-                    <div class="relative flex items-center lg:w-1/2 w-full ">
-                        <input
-                            class="flex h-10 w-full rounded-lg border p-5 pr-12 shadow-lg shadow-blue-50 bg-gray-100 placeholder:font-nunito placeholder:font-semibold placeholder:text-black placeholder:text-sm"
-                            type="text" placeholder="Buscar" />
-                        <img src="/assets/svg/search.svg" class="absolute right-4 h-6 w-6 text-slate-600"
-                            alt="Icono de usuario" />
-                    </div>
-                </div>
-
+        <div class="h-full w-4/12 lg:w-2/12 flex rounded-xl border shadow-lg bg-blue-300 lg:p-2">
+          <button class="flex flex-col w-full h-full p-3" (click)="showCreateModal()">
+            <div class="flex h-1/2 w-full flex-col items-start justify-center">
+              <div class="h-8 w-8 flex bg-blue-100 rounded-lg items-center justify-center">
+                <img class="w-6 h-6" src="/assets/svg/plus-square.svg" alt="">
+              </div>
             </div>
-            <!--Modal de creacion-->
-            <app-create-campaign-modal *ngIf="isModalOpen" (close)="closeModal()"></app-create-campaign-modal>
-            <!--Tabla-->
-            <div class="border border-gray-200 rounded-xl flex w-full h-4/6 lg:mt-3 mt-5">
-                <div class="overflow-x-auto w-full ">
-                    <table class="table-auto w-full">
-                        <thead class="border-b">
-                            <tr class="whitespace-nowrap">
-                                <th class="text-xs font-nunito font-bold p-3 text-left">Nombre<i
-                                        class="bx bxs-sort-alt"></i></th>
-                                <th class="text-xs font-nunito font-bold p-3 text-left">Rhema<i
-                                        class="bx bxs-sort-alt"></i> </th>
-                                <th class="text-xs font-nunito font-bold p-3 text-left">Meta<i
-                                        class="bx bxs-sort-alt"></i> </th>
-                                <th
-                                    class="text-xs font-nunito font-bold p-3 text-left text-ellipsis overflow-hidden">
-                                    Fecha de creación</th>
-                                <th class="text-xs font-nunito font-bold p-3 text-left ">Estado</th>
-                                <th class="text-xs font-nunito font-bold p-3 text-left">Acciones<i
-                                        class="bx bxs-sort-alt"></i></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b" *ngFor="let item of items">
-                                <td class="text-xs font-nunito p-3">
-                                    {{item.nombre}}
-                                </td>
-                                <td class="text-xs font-nunito p-3">
-                                    {{item.rhema}}
-                                </td>
-                                <td class="text-xs font-nunito p-3">
-                                    {{item.meta}}
-                                </td>
-                                <td class="text-xs font-nunito p-3">
-                                    {{item.fechaCreacion}}
-                                </td>
-                                <td class="pl-3">
-                                    <div class="h-5 lg:w-1/2 w-full rounded-lg items-center justify-center flex"
-                                        [class]="{'bg-green-100': item.status === 'active', 'bg-red-100': item.status === 'inactive'}">
-                                        <p class="text-xs font-nunito p-3"
-                                            [class]="{'text-green-400': item.status === 'active', 'text-red-400': item.status === 'inactive'}">
-                                            {{item.status}}</p>
-                                    </div>
-                                </td>
-                                <td class="pl-3">
-                                    <div class="flex space-x-2 ">
-                                        <button
-                                            class="h-6  w-6 bg-orange-100 rounded-lg items-center justify-center">
-                                            <i
-                                                class="fa-regular fa-pen-to-square w-5 h-5 text-orange-300"></i>
-                                        </button>
-                                        <button
-                                            class="h-6  w-6 bg-red-100 rounded-lg items-center justify-center">
-                                            <i class="fa-regular fa-trash-can text-red-500 "></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="h-1/2 w-full items-end justify-start flex whitespace-nowrap">
+              <p class="font-nunito lg:text-sm text-xs font-semibold text-white tracking-tighter text-ellipsis overflow-hidden">
+                Nueva Campaña
+              </p>
             </div>
-
-            <!--Paginacion-->
-            <!-- Contenedor Principal de Paginación -->
-            <div class="flex justify-center lg:justify-end lg:p-0 items-center space-x-2 lg:space-x-4 mt-2 lg:mt-5 text-xs font-nunito">
-
-                <!-- Selector de Elementos por Página -->
-                <div class="flex flex-col lg:flex-row items-center space-x-2 font-nunito">
-                    <label for="elementosPorPagina"
-                        class="text-xs font-medium text-gray-700">Items per page:</label>
-                    <select id="elementosPorPagina"
-                        class="block w-20 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                    </select>
-                </div>
-
-                <!-- Controles de Paginación -->
-                <div class="flex items-center space-x-0 font-nunito">
-                    <button
-                        class="px-2 py-1 text-xs font-medium text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:text-gray-300 disabled:bg-white">
-                        Previous
-                    </button>
-
-                    <span class="text-xs font-medium font-nunito text-gray-700 flex">
-                     1 of 100
-                    </span>
-
-                    <button
-                        class="px-2 py-1 text-xs font-medium font-nunito text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:text-gray-300 disabled:bg-white">
-                        Next
-                    </button>
-                </div>
-
-            </div>
-
+          </button>
         </div>
+      </div>
+  
+      <div class="h-5/6 w-full flex bg-white border rounded-2xl p-5 flex-col">
+        <div class="h-16 w-full flex flex-col lg:flex-row lg:items-center lg:space-y-0 space-y-2">
+          <p class="font-nunito font-bold text-base tracking-tight lg:w-1/2">Listado de campañas</p>
+  
+          <div class="flex lg:w-1/2 w-full h-full items-center justify-end">
+            <div class="relative flex items-center lg:w-1/2 w-full">
+              <input
+                class="flex h-10 w-full rounded-lg border p-5 pr-12 shadow-lg shadow-blue-50 bg-gray-100 placeholder:font-nunito placeholder:font-semibold placeholder:text-black placeholder:text-sm"
+                type="text" placeholder="Buscar" />
+              <img src="/assets/svg/search.svg" class="absolute right-4 h-6 w-6 text-slate-600" alt="Icono de usuario" />
+            </div>
+          </div>
+        </div>
+  
+        <!-- Modal de creación y edición -->
+        <app-create-campaign-modal *ngIf="isModalOpen" 
+          [campaign]="currentCampaign"
+          [isEditMode]="isEditMode"
+          (close)="closeModal()">
+        </app-create-campaign-modal>
+  
+        <!-- Tabla -->
+        <div class="border border-gray-200 rounded-xl flex w-full lg:h-72 h-4/6 lg:mt-3 mt-5">
+          <div class="overflow-x-auto w-full">
+            <table class="table-auto w-full">
+              <thead class="border-b">
+                <tr class="whitespace-nowrap">
+                  <th class="text-xs font-nunito font-bold p-3 text-left">Nombre<i class="bx bxs-sort-alt"></i></th>
+                  <th class="text-xs font-nunito font-bold p-3 text-left">Rhema<i class="bx bxs-sort-alt"></i></th>
+                  <th class="text-xs font-nunito font-bold p-3 text-left">Meta<i class="bx bxs-sort-alt"></i></th>
+                  <th class="text-xs font-nunito font-bold p-3 text-left text-ellipsis overflow-hidden">Fecha de creación</th>
+                  <th class="text-xs font-nunito font-bold p-3 text-left">Estado</th>
+                  <th class="text-xs font-nunito font-bold p-3 text-left">Acciones<i class="bx bxs-sort-alt"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b" *ngFor="let item of list">
+                  <td class="text-xs font-nunito p-3">{{item.name}}</td>
+                  <td class="text-xs font-nunito p-3">{{item.rhema}}</td>
+                  <td class="text-xs font-nunito p-3">{{item.goal}}</td>
+                  <td class="text-xs font-nunito p-3">{{item.createdAt | dateFormat}}</td>
+                  <td class="pl-3">
+                    <div class="h-5 lg:w-1/2 w-full rounded-lg items-center justify-center flex"
+                      [class]="{'bg-green-100': item.status === true, 'bg-red-100': item.status === false}">
+                      <p class="text-xs font-nunito p-3"
+                        [class]="{'text-green-400': item.status === true, 'text-red-400': item.status === false}">
+                        {{item.status | statusLabel}}
+                      </p>
+                    </div>
+                  </td>
+                  <td class="pl-3">
+                    <div class="flex space-x-2">
+                      <button class="h-6 w-6 bg-orange-100 rounded-lg items-center justify-center" (click)="showEditModal(item)">
+                        <i class="fa-regular fa-pen-to-square w-5 h-5 text-orange-300"></i>
+                      </button>
+                      <button class="h-6 w-6 bg-red-100 rounded-lg items-center justify-center">
+                        <i class="fa-regular fa-trash-can text-red-500"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+  
+        <!-- Paginación -->
+        <div class="flex justify-center lg:justify-end lg:p-0 items-center space-x-2 lg:space-x-4 mt-2 lg:mt-5 text-xs font-nunito">
+          <div class="flex flex-col lg:flex-row items-center space-x-2 font-nunito">
+            <label for="elementosPorPagina" class="text-xs font-medium text-gray-700">Items per page:</label>
+            <select id="elementosPorPagina"
+              class="block w-20 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              [(ngModel)]="pageSize"
+              (change)="loadCampaignList()">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+  
+          <div class="flex items-center space-x-0 font-nunito">
+            <button
+              class="px-2 py-1 text-xs font-medium text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:text-gray-300 disabled:bg-white"
+              [disabled]="page <= 1"
+              (click)="changePage(page - 1)">
+              Previous
+            </button>
+            <span class="text-xs font-medium font-nunito text-gray-700 flex">{{page}} of {{totalPages}}</span>
+            <button
+              class="px-2 py-1 text-xs font-medium font-nunito text-gray-700 bg-white rounded-md hover:bg-gray-100 disabled:text-gray-300 disabled:bg-white"
+              [disabled]="page >= totalPages"
+              (click)="changePage(page + 1)">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-
-</div>
+  </div>
+  
