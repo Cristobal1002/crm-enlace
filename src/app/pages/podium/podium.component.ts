@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, NgModule } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CreateCampaignModalComponent } from '../../components/create-campaign-modal/create-campaign-modal.component';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { StatusLabelPipe } from '../../pipes/status-label.pipe';
+import { AuthServiceService } from '../../services/auth-service.service';
 import { PodiumService } from '../../services/podium.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
@@ -21,8 +22,7 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
     CreateCampaignModalComponent,
     StatusLabelPipe,
     DateFormatPipe,
-    FormsModule
-  ],
+    FormsModule  ],
   templateUrl: './podium.component.html',
   styleUrls: ['./podium.component.css']
 })
@@ -36,8 +36,10 @@ export class PodiumComponent {
   pageSize = 5;
   totalItems = 0;
   totalPages = 0;
+  currentUser: any;
 
-  constructor(private podiumService: PodiumService) {
+  constructor(private podiumService: PodiumService, private authService: AuthServiceService) {
+    this.currentUser = this.authService.getUserData();
     this.getActiveCampaign();
     this.loadCampaignList();
   }
@@ -59,9 +61,9 @@ export class PodiumComponent {
     this.loadCampaignList();
   }
 
-  loadCampaignList() {
+  loadCampaignList(name?:string) {
     this.getActiveCampaign()
-    this.podiumService.getCampaignListPag(this.page, this.pageSize).subscribe((response: any) => {
+    this.podiumService.getCampaignListPag(this.page, this.pageSize, name).subscribe((response: any) => {
       this.list = response.data.items;
       this.totalItems = response.data.totalItems;
       this.totalPages = Math.ceil(this.totalItems / this.pageSize);
@@ -80,5 +82,42 @@ export class PodiumComponent {
       this.page = newPage;
       this.loadCampaignList();
     }
+  }
+
+
+  toggleStatus(item: any): void {
+    if (!item.status) {
+      // Desactivar todas las demás campañas
+      this.list.forEach(campaign => {
+        if (campaign !== item) {
+          campaign.status = false;
+        }
+      });
+    }
+    // Activar o desactivar la campaña seleccionada
+    item.status = !item.status;
+
+    // Aquí debes hacer la llamada a tu servicio para actualizar el estado en tu base de datos
+    this.updateCampaignStatus(item);
+  }
+
+  updateCampaignStatus(item: any): void {
+   const id = item.id
+   const updated_by = this.currentUser.user
+   if(item.id == this.activeCampaign.id){
+    this.updateCampaign();
+    this.loadCampaignList();
+  }else{
+    this.podiumService.activateCampaign({id, updated_by}).subscribe(response=>{
+      console.log('respnse en activate podium',response)
+      this.loadCampaignList();
+     })
+   }
+  }
+
+  updateCampaign(){
+    this.podiumService.updateCampaign(this.activeCampaign.id,{updated_by: this.currentUser.user, status:false}).subscribe(response => {
+      console.log('update solo', response)
+    })
   }
 }

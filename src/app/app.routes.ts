@@ -15,7 +15,7 @@ import { UsersComponent } from './pages/users/users.component';
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     {
-        path: '', component: PagesComponent, children: [
+        path: '', canActivate: [authGuard], component: PagesComponent, children: [
             { path: 'home', component: HomeComponent, canActivate: [authGuard] },
             { path: 'podium', component: PodiumComponent, canActivate: [authGuard, adminGuard] },
             {

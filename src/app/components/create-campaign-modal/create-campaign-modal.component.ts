@@ -79,6 +79,10 @@ export class CreateCampaignModalComponent implements OnChanges {
   }
 
   updateCampaign() {
+    const {status} = this.campaignForm.value
+    if(status === true){
+      this.updateCampaignStatus(this.campaign)
+    }
     this.podiumService.updateCampaign(this.campaign.id, this.updateCampaignData()).subscribe(() => {
       Swal.fire('Éxito!', 'Campaña actualizada con éxito.', 'success').then(() => {
         this.closeModal();
@@ -121,4 +125,12 @@ export class CreateCampaignModalComponent implements OnChanges {
       updated_by: this.currentUser.user
     };
   }
+  updateCampaignStatus(item: any): void {
+    const id = item.id
+    const updated_by = this.currentUser.user
+    console.log({id,updated_by})
+    this.podiumService.activateCampaign({id, updated_by}).subscribe(response=>{
+     console.log('respnse en activate podium',response)
+    })
+   }
 }

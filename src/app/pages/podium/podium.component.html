@@ -27,7 +27,7 @@
   
           <div class="flex lg:w-1/2 w-full h-full items-center justify-end">
             <div class="relative flex items-center lg:w-1/2 w-full">
-              <input
+              <input #inputValue (keyup.enter)="loadCampaignList(inputValue.value)"
                 class="flex h-10 w-full rounded-lg border p-5 pr-12 shadow-lg shadow-blue-50 bg-gray-100 placeholder:font-nunito placeholder:font-semibold placeholder:text-black placeholder:text-sm"
                 type="text" placeholder="Buscar" />
               <img src="/assets/svg/search.svg" class="absolute right-4 h-6 w-6 text-slate-600" alt="Icono de usuario" />
@@ -51,7 +51,7 @@
                   <th class="text-xs font-nunito font-bold p-3 text-left">Nombre<i class="bx bxs-sort-alt"></i></th>
                   <th class="text-xs font-nunito font-bold p-3 text-left">Rhema<i class="bx bxs-sort-alt"></i></th>
                   <th class="text-xs font-nunito font-bold p-3 text-left">Meta<i class="bx bxs-sort-alt"></i></th>
-                  <th class="text-xs font-nunito font-bold p-3 text-left text-ellipsis overflow-hidden">Fecha de creación</th>
+                  <th class="text-xs font-nunito font-bold p-3 text-left">Fecha de creación</th>
                   <th class="text-xs font-nunito font-bold p-3 text-left">Estado</th>
                   <th class="text-xs font-nunito font-bold p-3 text-left">Acciones<i class="bx bxs-sort-alt"></i></th>
                 </tr>
@@ -64,26 +64,29 @@
                   <td class="text-xs font-nunito p-3">{{item.createdAt | dateFormat}}</td>
                   <td class="pl-3">
                     <div class="h-5 lg:w-1/2 w-full rounded-lg items-center justify-center flex"
-                      [class]="{'bg-green-100': item.status === true, 'bg-red-100': item.status === false}">
+                         [class]="{'bg-green-100': item.status === true, 'bg-red-100': item.status === false}">
                       <p class="text-xs font-nunito p-3"
-                        [class]="{'text-green-400': item.status === true, 'text-red-400': item.status === false}">
+                         [class]="{'text-green-400': item.status === true, 'text-red-400': item.status === false}">
                         {{item.status | statusLabel}}
                       </p>
                     </div>
                   </td>
                   <td class="pl-3">
                     <div class="flex space-x-2">
-                      <button class="h-6 w-6 bg-orange-100 rounded-lg items-center justify-center" (click)="showEditModal(item)">
-                        <i class="fa-regular fa-pen-to-square w-5 h-5 text-orange-300"></i>
+                      <button class="h-6 w-6 bg-gray-200 rounded-lg items-center justify-center"
+                              [class.bg-green-200]="item.status"
+                              (click)="toggleStatus(item)">
+                        <i class="fa-solid" [class.fa-toggle-on]="item.status" [class.fa-toggle-off]="!item.status"></i>
                       </button>
-                      <button class="h-6 w-6 bg-red-100 rounded-lg items-center justify-center">
-                        <i class="fa-regular fa-trash-can text-red-500"></i>
+                      <button class="h-6 w-6 bg-sky-100 rounded-lg items-center justify-center" (click)="showEditModal(item)">
+                        <i class="fa-regular fa-pen-to-square w-5 h-5 text-sky-500"></i>
                       </button>
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
+            
           </div>
         </div>
   

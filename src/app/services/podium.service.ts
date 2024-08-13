@@ -31,8 +31,12 @@ export class PodiumService {
       );
   }
 
-  getCampaignListPag(page: number, pageSize: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/campaign/list?page=${page}&pageSize=${pageSize}`,{ headers: this.headers });
+  getCampaignListPag(page: number, pageSize: number, search?:string): Observable<any> {
+    if (search){
+      return this.http.get<any>(`${this.baseUrl}/campaign/list?name=${search}&page=${page}&pageSize=${pageSize}`,{ headers: this.headers });
+    }else{
+      return this.http.get<any>(`${this.baseUrl}/campaign/list?page=${page}&pageSize=${pageSize}`,{ headers: this.headers });
+    }
   }
 
   createCampaign(campaign: { name: string, rhema: string, goal: number, phrase: string, status: boolean, created_by: number, updated_by: number }): Observable<any> {
@@ -62,7 +66,14 @@ export class PodiumService {
   }
 
   updateCampaign(id:number, data:{}){
-    return this.http.put(`${this.baseUrl}/campaign/${id}`, data, { headers: this.headers })
-    return throwError(() => new Error('Ocurrió un error en la solicitud'));
+    return this.http.put(`${this.baseUrl}/campaign/${id}`, data, { headers: this.headers }).pipe(
+      catchError(this.handleError)
+    );
   }
+
+  activateCampaign(data:{id:number, updated_by:number}){
+    return this.http.put(`${this.baseUrl}/campaign/activate`, data, { headers: this.headers }).pipe(
+      catchError(this.handleError)
+    );
+  } 
 }
