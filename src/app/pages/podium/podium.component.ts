@@ -106,18 +106,19 @@ export class PodiumComponent {
    const updated_by = this.currentUser.user
    if(item.id == this.activeCampaign.id){
     this.updateCampaign();
-    this.loadCampaignList();
   }else{
     this.podiumService.activateCampaign({id, updated_by}).subscribe(response=>{
       console.log('respnse en activate podium',response)
       this.loadCampaignList();
      })
    }
+   
   }
 
   updateCampaign(){
     this.podiumService.updateCampaign(this.activeCampaign.id,{updated_by: this.currentUser.user, status:false}).subscribe(response => {
       console.log('update solo', response)
+      this.loadCampaignList();
     })
   }
 }

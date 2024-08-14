@@ -23,7 +23,7 @@ export class DonationsComponent implements AfterViewInit {
       this.pikadayInstance = new Pikaday({
         field: this.datepickerInput.nativeElement,
         trigger: this.datepickerButton.nativeElement,
-        format: 'DD-MM-YYYY',
+        format: 'YYYY-MM-DD',
         yearRange: [1900, 2100], // Ajusta según tus necesidades
         i18n: {
           previousMonth: 'Mes Anterior',
@@ -34,7 +34,7 @@ export class DonationsComponent implements AfterViewInit {
         },
         onSelect: (date: Date) => {
           if (this.datepickerInput) {
-            this.datepickerInput.nativeElement.value = moment(date).format('DD-MM-YYYY');
+            this.datepickerInput.nativeElement.value = moment(date).format('YYYY-MM-DD');
           }
         }
       });
