@@ -1,4 +1,4 @@
-import { CommonModule,} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Pikaday from 'pikaday';
@@ -9,7 +9,7 @@ import moment from 'moment';
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './customer-modal.component.html',
-  styleUrl: './customer-modal.component.css'
+  styleUrls: ['./customer-modal.component.css']
 })
 export class CustomerModalComponent implements AfterViewInit {
   @ViewChild('datepickerInput') datepickerInput: ElementRef<HTMLInputElement> | undefined;
@@ -18,8 +18,8 @@ export class CustomerModalComponent implements AfterViewInit {
   @Input() customerData: any;
 
   customerForm: FormGroup;
-  isModalOpen = false
-  @Input() customer: any; // Campaña para editar
+  isModalOpen = false;
+  @Input() customer: any; // Donante para editar
   @Input() isEditMode: boolean = false; // Modo de edición
   @Output() close = new EventEmitter<void>();
 
@@ -38,6 +38,7 @@ export class CustomerModalComponent implements AfterViewInit {
       address: ['', Validators.required],
     });
   }
+
   ngOnInit() {
     if (this.isEditMode && this.customerData) {
       this.customerForm.patchValue(this.customerData);
@@ -59,8 +60,6 @@ export class CustomerModalComponent implements AfterViewInit {
     this.close.emit();
   }
 
- 
-
   ngAfterViewInit(): void {
     if (this.datepickerInput && this.datepickerButton) {
       this.pikadayInstance = new Pikaday({
@@ -78,12 +77,18 @@ export class CustomerModalComponent implements AfterViewInit {
         onSelect: (date: Date) => {
           if (this.datepickerInput) {
             this.datepickerInput.nativeElement.value = moment(date).format('YYYY-MM-DD');
+            this.customerForm.get('birthday')?.setValue(moment(date).format('YYYY-MM-DD'));
           }
         }
       });
 
       // Abrir Pikaday cuando se haga clic en el botón
       this.datepickerButton.nativeElement.addEventListener('click', () => {
+        this.pikadayInstance?.show();
+      });
+
+      // Abrir Pikaday cuando se haga clic en el campo de entrada
+      this.datepickerInput.nativeElement.addEventListener('click', () => {
         this.pikadayInstance?.show();
       });
     }
