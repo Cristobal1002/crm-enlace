@@ -6,11 +6,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink,RouterModule, CommonModule, HttpClientModule,SidebarComponent, HeaderComponent],
+  imports: [RouterOutlet, RouterLink,RouterModule, CommonModule, HttpClientModule,SidebarComponent, HeaderComponent, ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule,  Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { PodiumService } from '../../services/podium.service';
@@ -9,7 +9,7 @@ import { catchError, of } from 'rxjs';
 @Component({
   selector: 'app-create-campaign-modal',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [ ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './create-campaign-modal.component.html',
   styleUrls: ['./create-campaign-modal.component.css']
 })

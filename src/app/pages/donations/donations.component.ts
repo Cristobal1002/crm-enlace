@@ -59,7 +59,7 @@ stateConfig = {
   constructor(private fb: FormBuilder, private locationService: LocationService) {
     this.getCountries()
     this.donationForm = this.fb.group({
-      documentType: ['CC', Validators.required],
+      documentType: ['', Validators.required],
       documentNumber: ['', Validators.required],
       companyName: [''],
       firstName: [''],
@@ -144,8 +144,6 @@ stateConfig = {
       this.states = response.data
       console.log('states',id, this.states)
       this.selectedState = this.states[0]
-      console.log('Selected State:', this.selectedState)
-    this.donationForm.setValue({state: this.selectedState});
     })
   }
 
