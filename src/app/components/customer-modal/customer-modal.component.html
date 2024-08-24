@@ -1,169 +1,212 @@
 <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" (click)="closeModal()">
-    <div class="bg-white p-4 rounded-lg shadow-lg h-5/6 w-full lg:h-auto lg:w-4/5  overflow-auto" (click)="$event.stopPropagation()">
-        <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="h-full flex flex-col w-full rounded-xl p-5 lg:space-y-5 space-y-2 bg-white">
+    <div class="bg-white p-4 rounded-lg shadow-lg h-5/6 w-full lg:h-auto lg:w-4/5 overflow-auto"
+        (click)="$event.stopPropagation()">
+        <form [formGroup]="customerForm" (ngSubmit)="onSubmit()"
+            class="h-full flex flex-col w-full rounded-xl p-5 lg:space-y-5 space-y-2 bg-white">
             <h2 class="text-xl font-semibold mb-2 font-nunito tracking-tight">
                 {{ isEditMode ? 'Editar donante' : 'Crear donante' }}
             </h2>
 
             <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
                 <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Número de documento</p>
+                    <label for="documentNumber" class="text-sm font-nunito tracking-tight font-semibold">Número de
+                        documento</label>
                     <div class="relative flex items-center w-full">
-                        <input formControlName="documentNumber"
-                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <input id="documentNumber" formControlName="documentNumber"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="text" placeholder="Documento" />
                     </div>
-                    <div *ngIf="documentNumberError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ documentNumberError }}</div>
+                    <div *ngIf="documentNumberError"
+                        class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ documentNumberError }}
+                    </div>
                 </div>
 
-
                 <div class="flex flex-col h-auto w-full lg:w-2/12 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Tipo de documento</p>
-                    <select name="documentType" id="documentType" formControlName="documentType"
-                        (change)="onDocumentTypeChange()"
-                        class="flex h-10 w-full rounded-lg border pl-3 text-ellipsis overflow-hidden  text-slate-700  font-nunito text-sm">
+                    <label for="documentType" class="text-sm font-nunito tracking-tight font-semibold">Tipo de
+                        documento</label>
+                    <select id="documentType" formControlName="documentType" (change)="onDocumentTypeChange()"
+                        class="flex h-10 w-full rounded-lg border pl-3 text-ellipsis overflow-hidden text-slate-700 font-nunito text-sm">
                         <option *ngFor="let type of documentTypes" [value]="type.type">{{type.name}}</option>
                     </select>
-                    <div *ngIf="documentTypeError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ documentTypeError }}</div>
+                    <div *ngIf="documentTypeError"
+                        class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ documentTypeError }}
+                    </div>
                 </div>
 
                 <div class="flex flex-col h-auto w-full lg:w-3/6 space-y-1" *ngIf="isCompany">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Razón social</p>
+                    <label for="companyName" class="text-sm font-nunito tracking-tight font-semibold">Razón
+                        social</label>
                     <div class="flex items-center w-full">
-                        <input formControlName="companyName"
-                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <input id="companyName" formControlName="companyName"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="text" placeholder="" />
                     </div>
-                    <div *ngIf="companyNameError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ companyNameError }}</div>
-                </div>
-                <div class="flex flex-col h-auto w-full lg:flex-row lg:w-3/6 lg:space-x-3" *ngIf="!isCompany">
-                    <div class="lg:w-1/2  w-full  flex flex-col space-y-1">
-                        <p class="text-sm font-nunito tracking-tight font-semibold">Nombres</p>
-                        <div class="flex items-center w-full">
-                            <input formControlName="firstName"
-                                class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                                type="text" placeholder="" />
-                        </div>
-                        <div *ngIf="nameError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ nameError }}</div>
+                    <div *ngIf="companyNameError"
+                        class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ companyNameError }}
                     </div>
-                    <div class="lg:w-1/2  w-full  flex flex-col space-y-1">
-                        <p class="text-sm font-nunito tracking-tight font-semibold">Apellidos</p>
+                </div>
+
+                <div class="flex flex-col h-auto w-full lg:flex-row lg:w-3/6 lg:space-x-3" *ngIf="!isCompany">
+                    <div class="lg:w-1/2 w-full flex flex-col space-y-1">
+                        <label for="firstName" class="text-sm font-nunito tracking-tight font-semibold">Nombres</label>
                         <div class="flex items-center w-full">
-                            <input formControlName="lastName"
-                                class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            <input id="firstName" formControlName="firstName"
+                                class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                                 type="text" placeholder="" />
                         </div>
-                        <div *ngIf="lastNameError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ lastNameError }}</div>
+                        <div *ngIf="nameError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                            {{ nameError }}
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 w-full flex flex-col space-y-1">
+                        <label for="lastName" class="text-sm font-nunito tracking-tight font-semibold">Apellidos</label>
+                        <div class="flex items-center w-full">
+                            <input id="lastName" formControlName="lastName"
+                                class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                                type="text" placeholder="" />
+                        </div>
+                        <div *ngIf="lastNameError"
+                            class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                            {{ lastNameError }}
+                        </div>
                     </div>
                 </div>
 
                 <div class="flex flex-col h-auto w-full lg:w-1/6 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Celular</p>
+                    <label for="phone" class="text-sm font-nunito tracking-tight font-semibold">Celular</label>
                     <div class="flex items-center w-full">
-                        <input formControlName="phone"
-                            class="flex h-10 w-full rounded-lg border p-5 pr-5  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <input id="phone" formControlName="phone"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-5 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="text" placeholder="" />
                     </div>
-                    <div *ngIf="phoneError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ phoneError }}</div>
+                    <div *ngIf="phoneError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ phoneError }}
+                    </div>
                 </div>
-
             </div>
 
             <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
                 <div class="flex flex-col h-auto w-full lg:w-2/6 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Email</p>
+                    <label for="email" class="text-sm font-nunito tracking-tight font-semibold">Email</label>
                     <div class="flex items-center w-full">
-                        <input formControlName="email"
-                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <input id="email" formControlName="email"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="email" placeholder="" />
                     </div>
-                    <div *ngIf="emailError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ emailError }}</div>
+                    <div *ngIf="emailError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ emailError }}
+                    </div>
                 </div>
 
                 <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Fecha de nacimiento</p>
+                    <label for="birthday" class="text-sm font-nunito tracking-tight font-semibold">Fecha de
+                        nacimiento</label>
                     <div class="relative flex items-center w-full">
-                        <input #datepickerInput formControlName="birthday"
+                        <input id="birthday" #datepickerInput formControlName="birthday"
                             class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="text" placeholder="YYYY-MM-DD" />
-                        <button #datepickerButton type="button"
-                        [disabled]="isCompany"
-                            class="fa fa-calendar-days absolute right-0 top-1/2 transform -translate-y-1/2 text-white h-full lg:w-12 w-2/12 bg-blue-400 rounded-br-lg rounded-tr-lg"></button>
+                        <button type="button" #datepickerButton [disabled]="isCompany"
+                            class="fa fa-calendar-days absolute right-0 top-1/2 transform -translate-y-1/2 text-white h-full lg:w-12 w-2/12 bg-blue-400 rounded-br-lg rounded-tr-lg">
+                        </button>
                     </div>
-                    <div *ngIf="birthdayError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ birthdayError }}</div>
+                    <div *ngIf="birthdayError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ birthdayError }}
+                    </div>
                 </div>
 
-
                 <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Sexo</p>
+                    <label for="gender" class="text-sm font-nunito tracking-tight font-semibold">Sexo</label>
                     <div class="flex items-center w-full">
-                        <select name="" id="" formControlName="gender"
+                        <select id="gender" formControlName="gender"
                             class="font-nunito text-sm tracking-tight text-slate-600 font-semibold h-10 w-full p-2 rounded-lg border">
                             <option value="">Selección </option>
                             <option value="masculino">Masculino</option>
                             <option value="femenino">Femenino</option>
                         </select>
                     </div>
-                    <div *ngIf="genderError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ genderError }}</div>
+                    <div *ngIf="genderError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ genderError }}
+                    </div>
                 </div>
 
                 <!-- Selección de país -->
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Pais</p>
+                    <label for="country" class="text-sm font-nunito tracking-tight font-semibold">País</label>
                     <div class="flex items-center w-full h-auto">
-                        <ngx-select-dropdown class="w-full font-nunito tracking-tigh text-sm font-semibold"
-                            [options]="countries" [config]="countryConfig" (change)="onCountryChange($event)">
+                        <ngx-select-dropdown id="country" formControlName="country"
+                            class="w-full font-nunito tracking-tigh text-sm font-semibold" [options]="countries"
+                            [config]="countryConfig" (change)="onCountryChange($event)">
                         </ngx-select-dropdown>
                     </div>
-                    <div *ngIf="countryError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ countryError }}</div>
+                    <div *ngIf="countryError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ countryError }}
+                    </div>
                 </div>
-
             </div>
 
             <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
                 <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Ciudad</p>
+                    <label for="city" class="text-sm font-nunito tracking-tight font-semibold">Ciudad</label>
                     <div class="flex items-center w-full h-auto">
-                        <ngx-select-dropdown class="w-full font-nunito tracking-tigh text-sm font-semibold"
-                            [options]="cities" [config]="cityConfig" (change)="onCityChange($event)">
+                        <ngx-select-dropdown id="city" formControlName="city"
+                            class="w-full font-nunito tracking-tigh text-sm font-semibold" [options]="cities"
+                            [config]="cityConfig" (change)="onCityChange($event)">
                         </ngx-select-dropdown>
                     </div>
-                    <div *ngIf="cityError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ cityError }}</div>
+                    <div *ngIf="cityError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ cityError }}
+                    </div>
+                </div>
 
-                </div>
                 <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Departamento</p>
+                    <label for="state" class="text-sm font-nunito tracking-tight font-semibold">Departamento</label>
                     <div class="flex items-center w-full">
-                        <ngx-select-dropdown class="w-full font-nunito tracking-tigh text-sm font-semibold"
-                            [options]="states" [config]="stateConfig" >
+                        <ngx-select-dropdown id="state" formControlName="state"
+                            class="w-full font-nunito tracking-tigh text-sm font-semibold" [options]="states"
+                            [config]="stateConfig">
                         </ngx-select-dropdown>
                     </div>
-                    <div *ngIf="stateError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ stateError }}</div>
-                </div>
-                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Barrio</p>
-                    <div class="flex items-center w-full">
-                        <input formControlName="neighborhood"
-                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                            type="email" placeholder="" />
+                    <div *ngIf="stateError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ stateError }}
                     </div>
-                    <div *ngIf="stateError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ stateError }}</div>
                 </div>
+
+                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
+                    <label for="neighborhood" class="text-sm font-nunito tracking-tight font-semibold">Barrio</label>
+                    <div class="flex items-center w-full">
+                        <input id="neighborhood" formControlName="neighborhood"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+                    <div *ngIf="neighborhoodError"
+                        class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ neighborhoodError }}
+                    </div>
+                </div>
+
                 <div class="flex flex-col h-auto w-full lg:w-2/5 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Dirección</p>
+                    <label for="address" class="text-sm font-nunito tracking-tight font-semibold">Dirección</label>
                     <div class="flex items-center w-full">
-                        <input formControlName="address"
-                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
-                            type="email" placeholder="" />
+                        <input id="address" formControlName="address"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
                     </div>
-                    <div *ngIf="addressError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">{{ addressError }}</div>
-
+                    <div *ngIf="addressError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ addressError }}
+                    </div>
                 </div>
             </div>
 
             <div class="h-full w-full flex items-center justify-end space-x-5 pb-8 pt-5 lg:pb-0 lg:pt-2">
-                <button type="button" (click)="closeModal()" class="w-1/2 lg:w-1/4 h-10 bg-white text-blue-400 rounded-lg border font-nunito hover:bg-gray-300">Cancelar</button>
-                <button type="submit" class="w-1/2 lg:w-1/4 h-10 bg-purple-400 text-white rounded-lg hover:bg-purple-500">
+                <button type="button" (click)="closeModal()"
+                    class="w-1/2 lg:w-1/4 h-10 bg-white text-blue-400 rounded-lg border font-nunito hover:bg-gray-300">
+                    Cancelar
+                </button>
+                <button type="submit"
+                    class="w-1/2 lg:w-1/4 h-10 bg-purple-400 text-white rounded-lg hover:bg-purple-500">
                     {{ isEditMode ? 'Actualizar' : 'Crear' }}
                 </button>
             </div>

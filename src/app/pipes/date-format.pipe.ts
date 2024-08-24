@@ -8,6 +8,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateFormatPipe implements PipeTransform {
 
   transform(value: string): string {
+    if (!value) {
+      return 'No aplica';
+    }
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(value, 'dd-MM-yyyy') || '';
   }

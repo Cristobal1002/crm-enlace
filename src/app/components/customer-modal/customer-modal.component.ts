@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import Pikaday from 'pikaday';
 import moment from 'moment';
@@ -24,11 +24,12 @@ export class CustomerModalComponent implements AfterViewInit {
   countries: any[] = [];
   cities: any[] = [];
   states: any[] = [];
-  selectedCountry = {};
+  selectedCountry: any = {};
   selectedCity = {};
   selectedState: any;
   currentUser: any;
   isLoading = false;
+  getCountry = {}
 
   countryConfig = {
     displayFn: (item: any) => `${item.emoji} ${item.name}` || 'name', // Key to display in the dropdown
@@ -86,6 +87,7 @@ export class CustomerModalComponent implements AfterViewInit {
       neighborhood: ['', Validators.required],
       address: ['', Validators.required],
     });
+
   }
 
   @ViewChild('datepickerInput') datepickerInput: ElementRef<HTMLInputElement> | undefined;
@@ -189,6 +191,7 @@ export class CustomerModalComponent implements AfterViewInit {
     }
     return null;
   }
+
   get genderError(): string | null {
     const documentControl = this.customerForm.get('gender');
     if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
@@ -250,53 +253,69 @@ export class CustomerModalComponent implements AfterViewInit {
   }
 
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['customer'] && this.isEditMode && this.customer) {
+      const data = this.setCustomerData(this.customer);
+      this.customerForm.patchValue(data);
+      this.isCompany = data.documentType === 'NIT';
+      this.updateFieldsValidation();
+    }
+    this.updateFieldsValidation();
+  }
 
 
   ngOnInit() {
-
     if (this.isEditMode && this.customerData) {
       this.customerForm.patchValue(this.customerData);
+
+      // Determinar si es empresa o no
+      this.isCompany = this.customerData.documentType === 'NIT';
+      this.updateFieldsValidation();
     }
 
-    // Verificar el estado inicial del campo
-    this.updateFieldsValidation();
-
+    // Suscribirse a los cambios en el tipo de documento
     this.customerForm.get('documentType')?.valueChanges.subscribe((value) => {
       this.isCompany = value === 'NIT';
       this.updateFieldsValidation();
-
-      if (this.isCompany) {
-        this.customerForm.get('firstName')?.reset();
-        this.customerForm.get('lastName')?.reset();
-        this.customerForm.get('birthday')?.reset();
-        this.customerForm.get('gender')?.reset();
-        this.customerForm.get('birthday')?.disable();
-        this.customerForm.get('gender')?.disable();
-      } else {
-        this.customerForm.get('companyName')?.reset();
-        this.customerForm.get('birthday')?.enable();
-        this.customerForm.get('gender')?.enable();
-      }
     });
   }
 
-  onSubmit() {
-    console.log('Formulario:', this.customerForm.value)
 
-    // Marcar todos los controles como tocados
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.close.emit();
+    this.isModalOpen = false;
+  }
+
+
+  onSubmit() {
+    console.log('Formulario:', this.customerForm.value);
+
     this.markAllAsTouched(this.customerForm);
 
-    this.createCustomerData()
     if (this.customerForm.valid) {
+      // Ajusta la fecha de nacimiento antes de enviarla
+      const birthdayControl = this.customerForm.get('birthday');
+      if (birthdayControl) {
+        const birthdayValue = birthdayControl.value;
+        const adjustedDate = moment(birthdayValue).startOf('day').toISOString();
+        birthdayControl.setValue(adjustedDate);
+      }
+
       if (this.isEditMode) {
         // Lógica de actualización
       } else {
-        console.log('Entra a crear en onSubmit')
-        this.createCustomer()
+        console.log('Entra a crear en onSubmit');
+        this.createCustomer();
       }
       this.closeModal();
     }
   }
+
 
   async createCustomer() {
     this.isLoading = true; // Activar el estado de carga
@@ -306,7 +325,7 @@ export class CustomerModalComponent implements AfterViewInit {
       Swal.fire({
         title: 'Enviando...',
         html: 'Por favor, espere mientras se envían los datos.',
-        imageUrl: '/assets/gifs/loading-2.gif', 
+        imageUrl: '/assets/gifs/loading-2.gif',
         imageAlt: 'Cargando',
         showConfirmButton: false,
         allowOutsideClick: false
@@ -340,10 +359,6 @@ export class CustomerModalComponent implements AfterViewInit {
     }
   }
 
-
-  closeModal() {
-    this.close.emit();
-  }
 
   ngAfterViewInit(): void {
     if (this.datepickerInput && this.datepickerButton) {
@@ -386,32 +401,40 @@ export class CustomerModalComponent implements AfterViewInit {
     const birthdayControl = this.customerForm.get('birthday');
     const genderControl = this.customerForm.get('gender');
 
-
     if (this.isCompany) {
-      // Si es empresa, validamos companyName y eliminamos validaciones de firstName y lastName
-      companyNameControl?.setValidators([Validators.required, Validators.minLength(8)]);
-      firstNameControl?.clearValidators();
-      lastNameControl?.clearValidators();
-      birthdayControl?.clearAsyncValidators();
-      genderControl?.clearValidators();
+        companyNameControl?.setValidators([Validators.required, Validators.minLength(8)]);
+        firstNameControl?.clearValidators();
+        lastNameControl?.clearValidators();
+        birthdayControl?.clearValidators();
+        genderControl?.clearValidators();
 
+        birthdayControl?.disable();
+        genderControl?.disable();
     } else {
-      // Si no es empresa, validamos firstName y lastName, y eliminamos validaciones de companyName
-      firstNameControl?.setValidators([Validators.required, Validators.minLength(3)]);
-      lastNameControl?.setValidators([Validators.required, Validators.minLength(3)]);
-      birthdayControl?.setValidators([Validators.required]);
-      genderControl?.setValidators([Validators.required]);
-      companyNameControl?.clearValidators();
+        firstNameControl?.setValidators([Validators.required, Validators.minLength(3)]);
+        lastNameControl?.setValidators([Validators.required, Validators.minLength(3)]);
+        birthdayControl?.setValidators([Validators.required]);
+        genderControl?.setValidators([Validators.required]);
+
+        companyNameControl?.clearValidators();
+
+        birthdayControl?.enable();
+        genderControl?.enable();
     }
 
     // Actualizar validez de los controles
     companyNameControl?.updateValueAndValidity();
     firstNameControl?.updateValueAndValidity();
     lastNameControl?.updateValueAndValidity();
-  }
+    birthdayControl?.updateValueAndValidity();
+    genderControl?.updateValueAndValidity();
+}
+
+
 
   onDocumentTypeChange() {
     const documentType = this.customerForm.get('documentType')?.value;
+    console.log('Document type en onDocumentTypeChange:', documentType)
     this.isCompany = documentType === 'NIT';
 
     // Si es empresa, se limpian los campos de nombre y apellidos
@@ -422,6 +445,8 @@ export class CustomerModalComponent implements AfterViewInit {
       // Si no es empresa, se limpia el campo de razón social
       this.customerForm.get('companyName')?.reset();
     }
+
+    this.updateFieldsValidation();
   }
 
 
@@ -441,24 +466,28 @@ export class CustomerModalComponent implements AfterViewInit {
     return this.locationService.getStateByCity(selectedState).subscribe(response => {
       this.states = response.data
       this.selectedState = this.states[0]
-      this.customerForm.get('state')?.setValue(this.selectedState);
+      this.customerForm.get('state')?.setValue(this.selectedState.value);
     })
   }
 
   onCountryChange(selectedCountry: any): void {
     let countryCode: number;
     this.selectedCountry = selectedCountry;
-    this.customerForm.get('country')?.setValue(selectedCountry);
+    this.customerForm.get('country')?.setValue(selectedCountry.value);
     countryCode = selectedCountry.value.id
-    this.getCitiesByCountry(countryCode)
+    if (selectedCountry.value.length == 0) { this.getCountries() } else {
+      this.getCitiesByCountry(countryCode)
+    }
   }
 
   onCityChange(selectedCity: any) {
     let stateCode: number;
+    let countryCode = this.customerForm.get('country')?.value.id
+    console.log('Country code:', countryCode)
     this.selectedCity = selectedCity;
-    this.customerForm.get('city')?.setValue(selectedCity);
+    this.customerForm.get('city')?.setValue(selectedCity.value);
     stateCode = selectedCity.value.state_id
-    this.getStateByCity(stateCode)
+    selectedCity.value.length == 0 ? this.getCitiesByCountry(countryCode) : this.getStateByCity(stateCode)
   }
 
   createCustomerData() {
@@ -504,6 +533,33 @@ export class CustomerModalComponent implements AfterViewInit {
         this.markAllAsTouched(control); // Recursivamente para los FormGroups anidados
       }
     });
+  }
+
+  setCustomerData(customer: any) {
+    const { first_name, last_name, company_name, document_type, document, CityModel, CountryModel, StateModel,
+      phone, email, birthday, neighborhood, address, gender } = customer
+    if (company_name) {
+      this.isCompany = true;
+      this.updateFieldsValidation()
+      this.customerForm.patchValue({ documentType: 'NIT' });
+      this.onDocumentTypeChange()
+    }
+
+    return {
+      firstName: first_name,
+      lastName: last_name,
+      companyName: company_name,
+      documentType: document_type,
+      documentNumber: document,
+      country: CountryModel,
+      city: CityModel,
+      state: StateModel,
+      phone,
+      email,
+      birthday,
+      neighborhood,
+      address, gender
+    }
   }
 
 }
