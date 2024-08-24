@@ -307,7 +307,8 @@ export class CustomerModalComponent implements AfterViewInit {
       }
 
       if (this.isEditMode) {
-        // Lógica de actualización
+        console.log('Entra a editar en onSubmit');
+        this.updateCustomer()
       } else {
         console.log('Entra a crear en onSubmit');
         this.createCustomer();
@@ -321,43 +322,110 @@ export class CustomerModalComponent implements AfterViewInit {
     this.isLoading = true; // Activar el estado de carga
 
     try {
-      // Mostrar el GIF de carga
-      Swal.fire({
-        title: 'Enviando...',
-        html: 'Por favor, espere mientras se envían los datos.',
-        imageUrl: '/assets/gifs/loading-2.gif',
-        imageAlt: 'Cargando',
-        showConfirmButton: false,
-        allowOutsideClick: false
-      });
+        // Mostrar el GIF de carga
+        Swal.fire({
+            title: 'Enviando...',
+            html: 'Por favor, espere mientras se envían los datos.',
+            imageUrl: '/assets/gifs/loading-2.gif',
+            imageAlt: 'Cargando',
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
 
-      // Ejecutar la petición
-      const response = await this.customerService.createCustomer(this.createCustomerData()).toPromise();
-      console.log('response en create customer:', response);
+        // Ejecutar la petición
+        const response: any = await this.customerService.createCustomer(this.createCustomerData()).toPromise();
+        console.log('response en create customer:', response);
 
-      // Mostrar mensaje de éxito
-      Swal.fire({
-        icon: 'success',
-        title: 'Éxito!',
-        text: 'Donante creado con exito',
-        confirmButtonText: 'Aceptar'
-      }).then(() => {
-        this.closeModal();
-      });
+        if (response.error) {
+            // Mostrar mensaje de error si el documento ya existe
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.error,
+                confirmButtonText: 'Aceptar'
+            });
+        } else {
+            // Mostrar mensaje de éxito
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito!',
+                text: 'Donante creado con éxito',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                this.closeModal();
+            });
+        }
     } catch (error) {
-      console.error('Error en create customer:', error);
+        console.error('Error en create customer:', error);
 
-      // Mostrar mensaje de error
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'Hubo un problema al crear el donante. Por favor, intente nuevamente.',
-        confirmButtonText: 'Aceptar'
-      });
+        // Mostrar mensaje de error genérico
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Hubo un problema al crear el donante. Por favor, intente nuevamente.',
+            confirmButtonText: 'Aceptar'
+        });
     } finally {
-      this.isLoading = false; // Desactivar el estado de carga
+        this.isLoading = false; // Desactivar el estado de carga
     }
-  }
+}
+
+
+  async updateCustomer() {
+    this.isLoading = true; // Activar el estado de carga
+    let customerToUpdate = this.customer;
+    console.log('Customer to update:', customerToUpdate);
+    
+    try {
+        // Mostrar el GIF de carga
+        Swal.fire({
+            title: 'Enviando...',
+            html: 'Por favor, espere mientras se envían los datos.',
+            imageUrl: '/assets/gifs/loading-2.gif',
+            imageAlt: 'Cargando',
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+
+        // Ejecutar la petición
+        const response:any = await this.customerService.updateCustomer(customerToUpdate.id, this.createCustomerData()).toPromise();
+        console.log('response en create customer:', response);
+
+        // Verificar si hay un error en la respuesta
+        if (response.error) {
+            // Mostrar mensaje de error
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.error, // Mostrar el mensaje de error específico del servidor
+                confirmButtonText: 'Aceptar'
+            });
+        } else {
+            // Mostrar mensaje de éxito
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito!',
+                text: 'Cliente actualizado con éxito',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                this.closeModal();
+            });
+        }
+    } catch (error) {
+        console.error('Error en update customer:', error);
+
+        // Mostrar mensaje de error genérico
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Hubo un problema al actualizar el cliente. Por favor, intente nuevamente.',
+            confirmButtonText: 'Aceptar'
+        });
+    } finally {
+        this.isLoading = false; // Desactivar el estado de carga
+    }
+}
+
 
 
   ngAfterViewInit(): void {
@@ -494,9 +562,9 @@ export class CustomerModalComponent implements AfterViewInit {
     const { documentNumber, documentType, companyName, firstName, lastName, phone, email, birthday, gender, country, state, city, neighborhood, address } = this.customerForm.value;
 
     const user = this.currentUser.user;
-    const country_id = country.value.id;
-    const state_id = city.value.state_id;
-    const city_id = city.value.id;
+    const country_id = country.id;
+    const state_id = city.state_id;
+    const city_id = city.id;
 
     const customerData: any = {
       document: documentNumber,
@@ -509,6 +577,41 @@ export class CustomerModalComponent implements AfterViewInit {
       neighborhood,
       address,
       created_by: user,
+      updated_by: user
+    };
+
+    // Agregar propiedades según 'isCompany'
+    if (this.isCompany) {
+      customerData.company_name = companyName;
+    } else {
+      customerData.first_name = firstName;
+      customerData.last_name = lastName;
+      customerData.birthday = birthday;
+      customerData.gender = gender
+    }
+
+    console.log('Customer Data:', customerData)
+    return customerData;
+  }
+
+  updateCustomerData() {
+    const { documentNumber, documentType, companyName, firstName, lastName, phone, email, birthday, gender, country, state, city, neighborhood, address } = this.customerForm.value;
+
+    const user = this.currentUser.user;
+    const country_id = country.id;
+    const state_id = city.state_id;
+    const city_id = city.id;
+
+    const customerData: any = {
+      document: documentNumber,
+      document_type: documentType,
+      phone,
+      email,
+      country_id,
+      state_id,
+      city_id,
+      neighborhood,
+      address,
       updated_by: user
     };
 
@@ -561,5 +664,7 @@ export class CustomerModalComponent implements AfterViewInit {
       address, gender
     }
   }
+
+  //TODO - Validar que al actualizar o crear no exista uno con el mismo documento
 
 }

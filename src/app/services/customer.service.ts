@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { ConfigurationsService } from './configurations.service';
 
 @Injectable({
@@ -30,7 +30,18 @@ export class CustomerService {
   }): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/customer`, customer, { headers: this.headers })
       .pipe(
-        catchError(this.handleError)
+        map((response: any) => {
+          // Aquí puedes retornar la respuesta si la solicitud es exitosa
+          return { data: response, error: null };
+        }),
+        catchError((error) => {
+          // Manejo de errores para que no rompa la ejecución
+          let errorMsg = 'Ocurrió un error en la solicitud';
+          if (error.status === 400 && error.error && error.error.error) {
+            errorMsg = error.error.error; // Mensaje de error desde el backend
+          }
+          return of({ data: null, error: errorMsg });
+        })
       );
   }
 
@@ -54,6 +65,24 @@ export class CustomerService {
       headers: this.headers
     });
   }
+
+  updateCustomer(id: number, data: {}): Observable<any> {
+    return this.http.put(`${this.baseUrl}/customer/${id}`, data, { headers: this.headers }).pipe(
+      map((response: any) => {
+        // Aquí puedes retornar la respuesta si la solicitud es exitosa
+        return { data: response, error: null };
+      }),
+      catchError((error) => {
+        // Manejo de errores para que no rompa la ejecución
+        let errorMsg = 'Ocurrió un error en la solicitud';
+        if (error.status === 400 && error.error && error.error.error) {
+          errorMsg = error.error.error; // Mensaje de error desde el backend
+        }
+        return of({ data: null, error: errorMsg });
+      })
+    );
+  }
+  
 
 
 }
