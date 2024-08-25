@@ -57,8 +57,8 @@ export class PodiumComponent {
   }
 
   closeModal() {
-    this.isModalOpen = false;
     this.loadCampaignList();
+    this.isModalOpen = false;
   }
 
   loadCampaignList(name?:string) {

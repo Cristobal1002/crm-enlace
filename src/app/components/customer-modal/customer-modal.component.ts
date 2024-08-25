@@ -318,7 +318,7 @@ export class CustomerModalComponent implements AfterViewInit {
   }
 
 
-  async createCustomer() {
+  createCustomer() {
     this.isLoading = true; // Activar el estado de carga
 
     try {
@@ -333,7 +333,7 @@ export class CustomerModalComponent implements AfterViewInit {
         });
 
         // Ejecutar la petición
-        const response: any = await this.customerService.createCustomer(this.createCustomerData()).toPromise();
+        const response: any = this.customerService.createCustomer(this.createCustomerData()).toPromise();
         console.log('response en create customer:', response);
 
         if (response.error) {
@@ -371,7 +371,7 @@ export class CustomerModalComponent implements AfterViewInit {
 }
 
 
-  async updateCustomer() {
+  updateCustomer() {
     this.isLoading = true; // Activar el estado de carga
     let customerToUpdate = this.customer;
     console.log('Customer to update:', customerToUpdate);
@@ -388,7 +388,7 @@ export class CustomerModalComponent implements AfterViewInit {
         });
 
         // Ejecutar la petición
-        const response:any = await this.customerService.updateCustomer(customerToUpdate.id, this.createCustomerData()).toPromise();
+        const response:any = this.customerService.updateCustomer(customerToUpdate.id, this.createCustomerData()).toPromise();
         console.log('response en create customer:', response);
 
         // Verificar si hay un error en la respuesta
@@ -407,9 +407,7 @@ export class CustomerModalComponent implements AfterViewInit {
                 title: 'Éxito!',
                 text: 'Cliente actualizado con éxito',
                 confirmButtonText: 'Aceptar'
-            }).then(() => {
-                this.closeModal();
-            });
+            })
         }
     } catch (error) {
         console.error('Error en update customer:', error);
@@ -422,6 +420,7 @@ export class CustomerModalComponent implements AfterViewInit {
             confirmButtonText: 'Aceptar'
         });
     } finally {
+        this.closeModal()
         this.isLoading = false; // Desactivar el estado de carga
     }
 }

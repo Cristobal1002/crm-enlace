@@ -15,7 +15,7 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
   styleUrl: './customers.component.css'
 })
 export class CustomersComponent {
-  @Input() customers: any[] = [];
+  customers: any[] = [];
 
   searchCriteria: string = '';
   searchValue: string = '';
@@ -54,13 +54,14 @@ export class CustomersComponent {
 }
 
   closeModal() {
+    console.log('Entra a close modal')
+    
     this.isModalOpen = false;
     this.loadCustomerList()
   }
 
-  onSubmit() { }
 
-  async loadCustomerList() {
+  loadCustomerList() {
   
     let search: any
     if (!this.searchCriteria){
@@ -69,6 +70,7 @@ export class CustomersComponent {
     console.log('Search:', search)
     this.customerService.getCustomerListPag(this.page, this.pageSize, search )
       .subscribe((response: any) => {
+        console.log('response en load', response)
         this.customers = response.data.items;
         this.totalItems = response.data.totalItems;
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);

@@ -1,51 +1,40 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { ConfigurationsService } from './configurations.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomerService {
-
+export class BankService {
   private baseUrl: string;
   private headers: HttpHeaders;
 
-  constructor(private http: HttpClient, private config: ConfigurationsService, private router: Router) {
+  constructor(private config: ConfigurationsService, private http: HttpClient, private router: Router) {
     this.baseUrl = config.getApiUrl();
     this.headers = config.getHeaders();
   }
 
-  private handleError(error: any): Observable<never> {
-    console.error('Ocurrió un error:', error);
-    return throwError(() => new Error('Ocurrió un error en la solicitud'));
-  }
-
-  createCustomer(customer: {
-    document_type: string, document: number, company_name?: string,
-    first_name?: string, last_name?: string, phone: string, email: string,
-    birthday?: string, gender?: string, country_id: number, state_id: number, city_id: number,
-    neighborhood: string, address: string, created_by: number, updated_by: number
-  }){
-    return this.http.post<any>(`${this.baseUrl}/customer`, customer, { headers: this.headers })
-      .pipe(
-        map((response: any) => {
-          // Aquí puedes retornar la respuesta si la solicitud es exitosa
-          return { data: response, error: null };
-        }),
+  createBank(bank: {
+    name: string, account_number: string,
+    additional_data?: string, pay_link?: string, status: boolean
+  }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/bank`, bank, { headers: this.headers })
+      .pipe(map((response: any) => {
+        return { data: response, error: null };
+      }),
         catchError((error) => {
-          // Manejo de errores para que no rompa la ejecución
           let errorMsg = 'Ocurrió un error en la solicitud';
           if (error.status === 400 && error.error && error.error.error) {
             errorMsg = error.error.error; // Mensaje de error desde el backend
           }
           return of({ data: null, error: errorMsg });
         })
-      );
+      )
   }
 
-  getCustomerListPag(page: number, pageSize: number, search?: { [key: string]: string }) {
+  getBankListPag(page: number, pageSize: number, search?: { [key: string]: string }){
     let params: any = {
       page: page,
       pageSize: pageSize
@@ -60,14 +49,15 @@ export class CustomerService {
     }
 
     // Realizar la solicitud HTTP con los parámetros y encabezados
-    return this.http.get(`${this.baseUrl}/customer/list`, {
+    return this.http.get<any>(`${this.baseUrl}/bank/list`, {
       params: params,
       headers: this.headers
     });
   }
+  
 
-  updateCustomer(id: number, data: {}){
-    return this.http.put(`${this.baseUrl}/customer/${id}`, data, { headers: this.headers }).pipe(
+  updateBank(id: number, data: {}){
+    return this.http.put(`${this.baseUrl}/bank/${id}`, data, { headers: this.headers }).pipe(
       map((response: any) => {
         // Aquí puedes retornar la respuesta si la solicitud es exitosa
         return { data: response, error: null };
@@ -82,7 +72,6 @@ export class CustomerService {
       })
     );
   }
-  
 
 
 }

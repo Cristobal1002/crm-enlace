@@ -1,1 +1,91 @@
-<p>bank-modal works!</p>
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" (click)="closeModal()">
+    <div class="bg-white p-4 rounded-lg shadow-lg h-5/6 w-full lg:h-auto lg:w-3/5 overflow-auto"
+        (click)="$event.stopPropagation()">
+        <form  [formGroup]="bankForm" (ngSubmit)="onSubmit()"
+            class="h-full flex flex-col w-full rounded-xl p-5 lg:space-y-5 space-y-2 bg-white">
+            <h2 class="text-xl font-semibold mb-2 font-nunito tracking-tight">
+                {{ isEditMode ? 'Editar Banco' : 'Crear Banco' }}
+            </h2>
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+
+                <div class="flex flex-col h-auto w-full lg:w-1/2 space-y-1">
+                    <label for="name" class="text-sm font-nunito tracking-tight font-semibold">Nombre de la
+                        entidad</label>
+                    <div class="flex items-center w-full">
+                        <input id="name" formControlName="name"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+                    <div *ngIf="nameError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ nameError }}
+                    </div>
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-1/2 space-y-1">
+                    <label for="account" class="text-sm font-nunito tracking-tight font-semibold">Número de cuenta
+                        o convenio</label>
+                    <div class="flex items-center w-full">
+                        <input id="account" formControlName="accountNumber"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+                    <div *ngIf="nameError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ accountNumberError }}
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+
+                <div class="flex flex-col h-auto w-full lg:w-full space-y-1">
+                    <label for="additionalInfo" class="text-sm font-nunito tracking-tight font-semibold">Información
+                        adicional</label>
+                    <div class="flex items-center w-full">
+                        <input id="additionalInfo" formControlName="additionalInfo"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+
+                <div class="flex flex-col h-auto w-full lg:w-2/3 space-y-1">
+                    <label for="link" class="text-sm font-nunito tracking-tight font-semibold">Link de pagos</label>
+                    <div class="flex items-center w-full">
+                        <input id="link" formControlName="link"
+                            class="flex h-10 w-full rounded-lg border p-5 pr-12 placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                            type="text" placeholder="" />
+                    </div>
+
+                </div>
+                <div class="flex flex-col h-auto w-full lg:w-2/3 space-y-1">
+                    <label for="status" class="text-sm font-nunito tracking-tight font-semibold">Estado</label>
+                    <div class="flex items-center w-full">
+                        <select name="status" id="status" formControlName="status"
+                            class="flex h-10 w-full rounded-lg border pl-5 font-nunito text-sm ">
+                            <option [value]="true">Activo</option>
+                            <option [value]="false">Inactivo</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="h-full w-full flex items-center justify-end space-x-5 pb-8 pt-5 lg:pb-0 lg:pt-2">
+                <button type="button" (click)="closeModal()"
+                    class="w-1/2 lg:w-1/4 h-10 bg-white text-blue-400 rounded-lg border font-nunito hover:bg-gray-300">
+                    Cancelar
+                </button>
+                <button type="submit"
+                    class="w-1/2 lg:w-1/4 h-10 bg-purple-400 text-white rounded-lg hover:bg-purple-500">
+                    {{ isEditMode ? 'Actualizar' : 'Crear' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
