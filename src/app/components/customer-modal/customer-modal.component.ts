@@ -664,6 +664,5 @@ export class CustomerModalComponent implements AfterViewInit {
     }
   }
 
-  //TODO - Validar que al actualizar o crear no exista uno con el mismo documento
 
 }

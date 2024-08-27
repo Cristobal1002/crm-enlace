@@ -27,13 +27,11 @@ export class AuthServiceService {
       .pipe(
         tap(response => {
           let token = response.data.token;
-          console.log('response.data en el servicio:', token)
           localStorage.setItem('token', token);
           this.decodeToken(token);
 
         }),
         catchError(error => {
-          console.error('Login error', error);
           return of(null); // Manejo de errores
         })
       );
@@ -43,10 +41,7 @@ export class AuthServiceService {
     try {
       const decoded = jwtDecode<any>(token);
       this.currentUser.next(decoded);
-      console.log('current user',this.currentUser)
-      console.log('Decode:', decoded)
     } catch (error) {
-      console.error('Error decoding token', error);
       this.currentUser.next(null);
     }
   }
@@ -59,13 +54,13 @@ export class AuthServiceService {
       }
     }).pipe(
       tap(response => {
-        console.log('Token validado:', response);
+
       }),
       map(response => {
         return true;  // Retorna true si la validación es exitosa
       }),
       catchError(error => {
-        console.error('Error al validar el token', error);
+       // console.error('Error al validar el token', error);
         return of(false); // Retorna false en caso de error
       })
     );

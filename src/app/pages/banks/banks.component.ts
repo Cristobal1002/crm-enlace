@@ -23,7 +23,7 @@ export class BanksComponent {
   isModalOpen= false
   selectedBank: any = null
   page = 1;
-  pageSize = 5;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
   
@@ -33,8 +33,8 @@ export class BanksComponent {
   }
 
   closeModal() {
-    this.loadBankList()
     this.isModalOpen = false;
+    this.loadBankList()
   }
 
   showCreateModal() {
@@ -49,12 +49,10 @@ export class BanksComponent {
 }
 
 loadBankList() {
-  console.log('entra a load banks')
   let search: any
   if (!this.searchCriteria){
     search = null
   }else{ search = {[this.searchCriteria]: this.searchValue} }
-  console.log('Search:', search)
    this.bankService.getBankListPag(this.page, this.pageSize, search )
     .subscribe((response: any) => {
       console.log('response en load',response)

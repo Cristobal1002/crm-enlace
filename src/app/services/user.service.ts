@@ -1,26 +1,24 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { ConfigurationsService } from './configurations.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BankService {
+export class UserService {
   private baseUrl: string;
   private headers: HttpHeaders;
-
   constructor(private config: ConfigurationsService, private http: HttpClient, private router: Router) {
     this.baseUrl = config.getApiUrl();
     this.headers = config.getHeaders();
   }
 
-  createBank(bank: {
-    name: string, account_number: string,
-    additional_data?: string, pay_link?: string, status: boolean
-  }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/bank`, bank, { headers: this.headers })
+  createUser(user: {name: string, document: string, phone: string, roll: string, status: boolean, created_by: number, updated_by: number
+  }) {
+    console.log('Body en el servicio de create user', user)
+    return this.http.post(`${this.baseUrl}/user`, user, { headers: this.headers })
       .pipe(map((response: any) => {
         return { data: response, error: null };
       }),
@@ -34,7 +32,7 @@ export class BankService {
       )
   }
 
-  getBankListPag(page: number, pageSize: number, search?: { [key: string]: string }){
+  getUserListPag(page: number, pageSize: number, search?: { [key: string]: string }){
     let params: any = {
       page: page,
       pageSize: pageSize
@@ -49,15 +47,14 @@ export class BankService {
     }
 
     // Realizar la solicitud HTTP con los parámetros y encabezados
-    return this.http.get(`${this.baseUrl}/bank/list`, {
+    return this.http.get<any>(`${this.baseUrl}/user/list`, {
       params: params,
       headers: this.headers
     });
   }
-  
 
-  updateBank(id: number, data: {}){
-    return this.http.put(`${this.baseUrl}/bank/${id}`, data, { headers: this.headers }).pipe(
+  updateUser(id: number, data: {}){
+    return this.http.put(`${this.baseUrl}/user/${id}`, data, { headers: this.headers }).pipe(
       map((response: any) => {
         // Aquí puedes retornar la respuesta si la solicitud es exitosa
         return { data: response, error: null };

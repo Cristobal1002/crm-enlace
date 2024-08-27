@@ -24,7 +24,7 @@ export class CustomersComponent {
   isModalOpen = false;
   isEditMode = false;
   page = 1;
-  pageSize = 5;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
 
