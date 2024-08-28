@@ -82,6 +82,12 @@ export class CustomerService {
       })
     );
   }
+
+  getCustomerByDocument(document: string){
+    return this.http.get(`${this.baseUrl}/customer?document=${document}`, {
+      headers: this.headers
+    });
+  }
   
 
 

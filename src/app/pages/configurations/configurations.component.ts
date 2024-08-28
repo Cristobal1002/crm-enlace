@@ -48,7 +48,7 @@ export class ConfigurationsComponent {
     this.loadNoveltyList()
   }
 
-  loadReasonList() {
+  async loadReasonList() {
      this.reasonNoveltyService.getReasonListPag(this.page, this.pageSize)
       .subscribe((response: any) => {
         console.log('response en load',response)
@@ -58,7 +58,7 @@ export class ConfigurationsComponent {
       });
   }
 
-  loadNoveltyList() {
+  async loadNoveltyList() {
     this.reasonNoveltyService.getNoveltyListPag(this.pageNovelty, this.pageSizeNovelty)
      .subscribe((response: any) => {
        console.log('response en load de novelty',response)

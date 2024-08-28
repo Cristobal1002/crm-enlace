@@ -7,60 +7,42 @@ import moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { LocationService } from '../../services/location.service';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { CustomerService } from '../../services/customer.service';
+import { DateFormatPipe } from '../../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-donations',
   standalone: true,
-  imports: [SidebarComponent, HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule, SelectDropDownModule],
+  imports: [SidebarComponent, HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule, SelectDropDownModule, DateFormatPipe],
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css']
 })
 export class DonationsComponent implements AfterViewInit {
 
   donationForm: FormGroup;
+  searchForm: FormGroup;
   isCompany: boolean = false;
-  documentTypes = [{type: 'CC', name: 'Cedula de ciudadanía'},{type: 'NIT', name: 'Nit'}];
+  customer: any;
   countries: any[] = [];
   cities: any[] = [];
   states: any[]=[]
   selectedCountry = {}
   selectedCity = {}
   selectedState: any
-  countryConfig = {
-  displayFn: (item: any) => `${item.emoji} ${item.name}` || 'name', // Key to display in the dropdown
-  search: true, // Enable search
-  height: '200px', // Set a fixed height for the dropdown list
-  placeholder: 'Selecciona un país', // Placeholder text
-  searchPlaceholder: 'Buscar', // Placeholder text for the search input
-  noResultsFound: 'No results found!', // Text to display when no results are found
-  searchOnKey: 'name' // Key to perform the search on
-};
+  isLoading= false
+  noFound: boolean | undefined;
+  errorMessage = '';
+  existcustomer = false
+  customerName = ''
 
-cityConfig = {
-  displayFn: (item: any) => `${item.name} - ${item.state_name}`, // Key to display in the dropdown
-  search: true, // Enable search
-  height: '200px', // Set a fixed height for the dropdown list
-  placeholder: 'Selecciona una ciudad', // Placeholder text
-  searchPlaceholder: 'Buscar', // Placeholder text for the search input
-  noResultsFound: 'No results found!', // Text to display when no results are found
-  searchOnKey: 'name' // Key to perform the search on
-};
 
-stateConfig = {
-  displayFn: (item: any) => `${item.name}`, // Key to display in the dropdown
-  search: true, // Enable search
-  height: '200px', // Set a fixed height for the dropdown list
-  placeholder: 'Selecciona un departamento', // Placeholder text
-  searchPlaceholder: 'Buscar', // Placeholder text for the search input
-  noResultsFound: 'No results found!', // Text to display when no results are found
-  searchOnKey: 'name' // Key to perform the search on
-};
+  constructor(private fb: FormBuilder, private locationService: LocationService, private customerService: CustomerService) {
+    this.searchForm = this.fb.group({
+      documentNumber: ['', [Validators.required, Validators.minLength(8)]],
+    })
 
-  constructor(private fb: FormBuilder, private locationService: LocationService) {
-    this.getCountries()
     this.donationForm = this.fb.group({
       documentType: ['', Validators.required],
-      documentNumber: ['', Validators.required],
       companyName: [''],
       firstName: [''],
       lastName: [''],
@@ -72,101 +54,92 @@ stateConfig = {
     });
   }
 
-  @ViewChild('datepickerInput') datepickerInput: ElementRef<HTMLInputElement> | undefined;
-  @ViewChild('datepickerButton') datepickerButton: ElementRef<HTMLButtonElement> | undefined;
-  pikadayInstance: Pikaday | undefined;
+  //Getters
+  get documentNumberError(): string | null {
+    const documentControl = this.searchForm.get('documentNumber');
+    if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
+      if (documentControl.hasError('required')) {
+        return 'El número de documento es requerido.';
+      } else if (documentControl.hasError('minlength')) {
+        return 'El número de documento debe tener al menos 8 caracteres.';
+      } else if (documentControl.hasError('pattern')) {
+        return 'El número de documento solo admite números';
+      }
+    }
+    return null;
+  }
+
+  getCustomerName(): string {
+    const customer = this.customer
+    return customer.first_name && customer.last_name
+      ? this.customerName =`${customer.first_name} ${customer.last_name}`
+      : this.customerName = customer.company_name || 'Nombre no disponible';
+  }
+
+
+   getCustomerByDocument() {
+    const document = this.searchForm.get('documentNumber')?.value
+    if(document){
+      this.isLoading= true
+      this.customerService.getCustomerByDocument(document).subscribe((response:any) => {
+        console.log('response', response)
+        if (response.data) {
+          this.customer = response.data;
+          this.getCustomerName()
+          this.existcustomer = true
+          console.log('Customer en la busqueda', this.customer)
+          this.noFound = false
+        } else {
+          this.noFound = true
+          this.errorMessage = 'No encontramos un cliente con ese número de documento'
+          this.existcustomer = false
+         
+        }
+        this.isLoading = false;
+      },(error)=>{
+        this.isLoading = false;
+      })
+    }else {
+      console.error('Document number is required');
+    }
+  }
+
+
+
+
 
   ngOnInit(): void {
     
   }
 
   ngAfterViewInit(): void {
-    if (this.datepickerInput && this.datepickerButton) {
-      this.pikadayInstance = new Pikaday({
-        field: this.datepickerInput.nativeElement,
-        trigger: this.datepickerButton.nativeElement,
-        format: 'YYYY-MM-DD',
-        yearRange: [1900, 2100],
-        i18n: {
-          previousMonth: 'Mes Anterior',
-          nextMonth: 'Mes Siguiente',
-          months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-          weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-          weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
-        },
-        onSelect: (date: Date) => {
-          if (this.datepickerInput) {
-            this.datepickerInput.nativeElement.value = moment(date).format('YYYY-MM-DD');
-          }
-        }
-      });
 
-      this.datepickerButton.nativeElement.addEventListener('click', () => {
-        this.pikadayInstance?.show();
-      });
-    }
   }
 
-  onDocumentTypeChange(): void {
-    this.donationForm.get('documentType')?.valueChanges.subscribe((selectedType) => {
-      if (selectedType === 'NIT') {
-        this.isCompany = true;
-        this.donationForm.get('companyName')?.setValidators(Validators.required);
-        this.donationForm.get('firstName')?.clearValidators();
-        this.donationForm.get('lastName')?.clearValidators();
-      } else {
-        this.isCompany = false;
-        this.donationForm.get('companyName')?.clearValidators();
-        this.donationForm.get('firstName')?.setValidators(Validators.required);
-        this.donationForm.get('lastName')?.setValidators(Validators.required);
+  private markAllAsTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markAllAsTouched(control); // Recursivamente para los FormGroups anidados
       }
-
-      this.donationForm.get('companyName')?.updateValueAndValidity();
-      this.donationForm.get('firstName')?.updateValueAndValidity();
-      this.donationForm.get('lastName')?.updateValueAndValidity();
     });
   }
 
-  async getCountries(){
-    return this.locationService.getCountries().subscribe(response => {
-      this.countries = response.data
-    })
+  onSubmitSearch(){
+    console.log('Formulario search:', this.searchForm.value)
+    this.markAllAsTouched(this.searchForm);
+    if(this.searchForm.valid){
+      this.getCustomerByDocument()
+    }
   }
 
-  async getCitiesByCountry(id:any){
-    return this.locationService.getCitiesByCountry(id).subscribe(response => {
-      this.cities = response.data
-    })
-  }
+  onSubmit(){}
 
-  async getStateByCity(id:any){
-    return this.locationService.getStateByCity(id).subscribe(response => {
-      this.states = response.data
-      console.log('states',id, this.states)
-      this.selectedState = this.states[0]
-    })
-  }
+  showCreateModal(){}
 
-  onCountryChange(selectedCountry: any): void {
-    let countryCode: number;
-    this.selectedCountry = selectedCountry;
-    this.donationForm.get('country')?.setValue(selectedCountry);
-    countryCode = selectedCountry.value.id
-    this.getCitiesByCountry(countryCode)
-  }
+  showEditModal(){}
 
-  onCityChange(selectedCity:any){
-    let stateCode:number;
-    this.selectedCity = selectedCity;
-    this.donationForm.get('city')?.setValue(selectedCity);
-    stateCode = selectedCity.value.state_id
-    this.getStateByCity(stateCode)
-    
-  }
-  
-  onSubmit(){
-    console.log('Formulario:', this.donationForm.value)
-  }
+
  
   
 }
