@@ -102,7 +102,8 @@ export class ConfigurationsComponent {
           Swal.fire('Éxito', 'Motivo actualizado correctamente', 'success');
           // Desactiva el modo de edición
           reason.editando = false;
-          this.originalReasons[index] = { ...this.reasons[index] }; // Actualiza la copia original
+          this.originalReasons[index] = { ...this.reasons[index] };
+          this.loadReasonList() // Actualiza la copia original
         },
         error: err => {
           Swal.fire('Error', 'Hubo un problema al actualizar el motivo', 'error');

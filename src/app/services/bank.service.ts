@@ -73,5 +73,9 @@ export class BankService {
     );
   }
 
+  getActiveBank(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/bank/list/active`, { headers: this.headers })
+  }
+
 
 }

@@ -31,13 +31,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 .ngx-dropdown-button{
-  height: 40px;
+  height: 43px;
   border-color: #e5e7eb !important;
   border-width: 1px !important;
   border-radius: 0.5rem !important;
   font-weight: 600 !important;
     color: #475569 !important;
   letter-spacing: -0.025em !important;
+}
+
+
+.ngx-dropdown-list-container {
+  top: 100% !important; /* Despliega el dropdown hacia abajo */
+  bottom: auto !important; /* Evita que se despliegue hacia arriba */
+  z-index: 10 !important;
 }
 
 

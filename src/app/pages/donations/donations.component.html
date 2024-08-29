@@ -108,17 +108,27 @@
                 <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Indique los motivos de
                         oración</p>
-                    <div class="flex items-center w-full">
-                        <select
-                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
-                    </div>
+                        <div class="flex items-center w-full h-auto">
+                            <ngx-select-dropdown id="reasons" formControlName="reasons" 
+                                class="w-full font-nunito tracking-tigh text-sm font-semibold"
+                                [config]="dropdownConfig"
+                                [multiple]="true"
+                                [options]="reasonsList"
+                                [(ngModel)]="reasonsOptions"> >
+                            </ngx-select-dropdown>
+                        </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Novedades</p>
-                    <div class="flex items-center w-full">
-                        <select
-                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
-                    </div>
+                        <div class="flex items-center w-full h-auto">
+                            <ngx-select-dropdown id="novelties" formControlName="novelties" 
+                                class="w-full font-nunito tracking-tigh text-sm font-semibold"
+                                [config]="dropdownConfig"
+                                [multiple]="true"
+                                [options]="noveltiesList"
+                                [(ngModel)]="noveltiesOptions"> 
+                            </ngx-select-dropdown>
+                        </div>
                 </div>
             </div>
 
@@ -126,16 +136,16 @@
                 <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Petición</p>
                     <div class="flex items-center w-full">
-                        <textarea
-                            class="flex h-20 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <textarea formControlName="petition"
+                            class="flex h-20 w-full  rounded-lg border p-3  font-nunito text-sm tracking-tight"
                             name="" id="" cols="30" rows="10"></textarea>
                     </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Testimonio</p>
                     <div class="flex items-center w-full">
-                        <textarea
-                            class="flex h-20 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <textarea formControlName="testimony"
+                        class="flex h-20 w-full  rounded-lg border p-3  font-nunito text-sm tracking-tight"
                             name="" id="" cols="30" rows="10"></textarea>
                     </div>
                 </div>
@@ -147,24 +157,32 @@
             <!--Donacion-->
             <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
-                    <p class="text-sm font-nunito tracking-tight font-semibold">Indique los motivos de
-                        oración</p>
+                    <p class="text-sm font-nunito tracking-tight font-semibold">Selección de banco</p>
                     <div class="flex items-center w-full">
-                        <select
-                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
+                        <select formControlName="bank" *ngFor="let bank of banksList"
+                            class="flex h-10 w-full  rounded-lg border pl-3 font-nunito text-sm tracking-tight">
+                            <option value="">Seleccione un banco</option>
+                            <option  value="bank.id">{{bank.name}} - {{bank.account_number}} - {{bank.additional_data}}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Número de pagos</p>
                     <div class="flex items-center w-full">
-                        <select
-                            class="flex h-10 w-full  rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"></select>
+                        <select formControlName="quotes" (change)="totalAmount()"
+                            class="flex h-10 w-full  rounded-lg border pl-3 font-nunito text-sm tracking-tight">
+                            <option value="1">1 Cuota</option>
+                            <option value="2">2 Cuotas</option>
+                            <option value="3">3 Cuotas</option>
+                            <option value="4">4 Cuotas</option>
+                            <option value="5">5 Cuotas</option>
+                        </select>
                     </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Valor de la cuota</p>
                     <div class="flex items-center w-full">
-                        <input
+                        <input id="amountInput" formControlName="amount" (input)="totalAmount()" 
                             class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="text" placeholder="" />
                     </div>
@@ -172,8 +190,8 @@
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Total</p>
                     <div class="flex items-center w-full">
-                        <input disabled
-                            class="disabled:bg-blue-50 flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <input  formControlName="total" [value]="total | currencyFormat" readonly
+                            class="disabled:bg-blue-50 flex h-10 w-full rounded-lg border p-5  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="text" placeholder="" />
                     </div>
                 </div>
@@ -183,7 +201,7 @@
                 <div class="h-10 w-full flex items-center justify-center space-x-5">
                     <button
                         class="h-full w-1/2 flex bg-white shadow-lg shadow-blue-50 border font-nunito text-sm text-blue-400 font-semibold items-center justify-center rounded-xl">Cancelar</button>
-                    <button (click)="onSubmit()"
+                    <button (click)="onSubmitDonation()"
                         class="h-full w-1/2 flex bg-purple-400 shadow-lg shadow-purple-50 text-white border font-nunito text-sm font-semibold items-center justify-center rounded-xl">Guardar</button>
                 </div>
             </div>

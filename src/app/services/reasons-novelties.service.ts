@@ -36,10 +36,18 @@ export class ReasonsNoveltiesService {
 
   getReasonListPag(page: number, pageSize: number, search?:string): Observable<any> {
     if (search){
-      return this.http.get<any>(`${this.baseUrl}/reason/list?name=${search}&page=${page}&pageSize=${pageSize}`,{ headers: this.headers });
+      return this.http.get<any>(`${this.baseUrl}/reason/list?status=${search}&page=${page}&pageSize=${pageSize}`,{ headers: this.headers });
     }else{
-      return this.http.get<any>(`${this.baseUrl}/reason/list?page=${page}&pageSize=${pageSize}`,{ headers: this.headers });
+      return this.http.get<any>(`${this.baseUrl}/reason/list?paginate=true&page=${page}&pageSize=${pageSize}`,{ headers: this.headers });
     }
+  }
+
+  getActiveReasonList(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/reason/list/active`, { headers: this.headers })
+  }
+
+  getActiveNoveltyList(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/novelty/list/active`, { headers: this.headers })
   }
 
   createNovelty(novelty: { name: string, status: boolean, created_by: number, updated_by: number }): Observable<any> {
