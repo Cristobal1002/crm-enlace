@@ -13,11 +13,13 @@ import { ReasonsNoveltiesService } from '../../services/reasons-novelties.servic
 import { Observable } from 'rxjs';
 import { BankService } from '../../services/bank.service';
 import { CurrencyFormatPipe } from '../../pipes/currency-format.pipe';
+import { CustomerModalComponent } from '../../components/customer-modal/customer-modal.component';
 
 @Component({
   selector: 'app-donations',
   standalone: true,
-  imports: [SidebarComponent, HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule, SelectDropDownModule, DateFormatPipe, CurrencyFormatPipe],
+  imports: [SidebarComponent, HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule, 
+    SelectDropDownModule, DateFormatPipe, CurrencyFormatPipe, CustomerModalComponent],
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css']
 })
@@ -26,8 +28,10 @@ export class DonationsComponent  {
   donationForm: FormGroup;
   searchForm: FormGroup;
   total: number = 0;
-  isCompany: boolean = false;
   customer: any;
+  isModalOpen = false;
+  isEditMode = false;
+  selectedCustomer: any = null;
   isLoading= false
   noFound: boolean | undefined;
   errorMessage = '';
@@ -223,8 +227,22 @@ export class DonationsComponent  {
     this.donationForm.get('amount')?.setValue(formattedValue, { emitEvent: false });
   }
 
-  showCreateModal(){}
+  showCreateModal() {
+    this.isEditMode = false;
+    this.isModalOpen = true;
+  }
 
-  showEditModal(){}
+  showEditModal(customer: any) {
+    this.isEditMode = true;
+    this.selectedCustomer = customer; // Asegúrate que este 'customer' tenga datos
+    console.log('Customer seleccionado:', this.selectedCustomer);
+    this.isModalOpen = true;
+}
+
+  closeModal() {
+    console.log('Entra a close modal')
+    this.getCustomerByDocument()
+    this.isModalOpen = false;
+  }
   
 }

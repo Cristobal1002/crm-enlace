@@ -34,7 +34,7 @@
                         class="bg-white text-blue-400 font-nunito text-sm font-semibold items-center justify-center flex w-full lg:w-1/3 h-10 border shadow-lg shadow-blue-50 rounded-xl">
                         Crear donante
                     </button>
-                    <button type="button" *ngIf="existcustomer" (click)="showEditModal()"
+                    <button type="button" *ngIf="existcustomer" (click)="showEditModal(customer)"
                         class="bg-white text-blue-400 font-nunito text-sm font-semibold items-center justify-center flex w-full lg:w-1/3 h-10 border shadow-lg shadow-blue-50 rounded-xl">
                         Editar donante
                     </button>
@@ -208,5 +208,10 @@
 
         </form>
     </div>
+
+    <!-- Modal de creación y edición -->
+    <app-customer-modal *ngIf="isModalOpen" [customer]="selectedCustomer" [isEditMode]="isEditMode"
+    (close)="closeModal()">
+    </app-customer-modal>
 
 </div>
