@@ -45,49 +45,57 @@
 
         <!--Se pinta el error-->
         <div *ngIf="existcustomer" class="w-full flex p-5">
-            <div class="p-3 lg:h-auto h-auto border border-blue-50 w-full bg-gradient-to-tr from-white to-sky-50 rounded-xl shadow-lg shadow-sky-50 flex items-center relative">
-              <div class="flex flex-col w-full h-full">
-                <h3 class="font-nunito font-semibold text-sm tracking-tighter text-blue-400 pb-3">Tarjeta de donante</h3>
-                <div class="flex flex-col w-full">
-                  <div class="w-full flex space-x-2">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Documento: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.document}}</p>
-                  </div>
-                  <div class="w-full space-x-2 flex">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Nombre: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customerName}}</p>
-                  </div>
-                  <div class="w-full space-x-2 flex">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Fecha de nacimiento: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.birthday | dateFormat}}</p>
-                  </div>
-                  <div class="w-full space-x-2 flex">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Email: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.email}}</p>
-                  </div>
-                  <div class="w-full space-x-2 flex">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Celular: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.phone}}</p>
-                  </div>
-                  <div class="w-full space-x-2 flex">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Ciudad: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.CityModel.name}}</p>
-                  </div>
-                  <div class="w-full space-x-2 flex">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Barrio: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.neighborhood}}</p>
-                  </div>
-                  <div class="w-full space-x-2 flex">
-                    <p class="font-nunito text-sm font-semibold tracking-tight">Dirección: </p>
-                    <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.address}}</p>
-                  </div>
+            <div
+                class="p-3 lg:h-auto h-auto border border-blue-50 w-full bg-gradient-to-tr from-white to-sky-50 rounded-xl shadow-lg shadow-sky-50 flex items-center relative">
+                <div class="flex flex-col w-full h-full">
+                    <h3 class="font-nunito font-semibold text-sm tracking-tighter text-blue-400 pb-3">Tarjeta de donante
+                    </h3>
+                    <div class="flex flex-col w-full">
+                        <div class="w-full flex space-x-2">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Documento: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.document}}
+                            </p>
+                        </div>
+                        <div class="w-full space-x-2 flex">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Nombre: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customerName}}</p>
+                        </div>
+                        <div class="w-full space-x-2 flex">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Fecha de nacimiento: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.birthday |
+                                dateFormat}}</p>
+                        </div>
+                        <div class="w-full space-x-2 flex">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Email: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.email}}</p>
+                        </div>
+                        <div class="w-full space-x-2 flex">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Celular: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.phone}}</p>
+                        </div>
+                        <div class="w-full space-x-2 flex">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Ciudad: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">
+                                {{customer.CityModel.name}}</p>
+                        </div>
+                        <div class="w-full space-x-2 flex">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Barrio: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">
+                                {{customer.neighborhood}}</p>
+                        </div>
+                        <div class="w-full space-x-2 flex">
+                            <p class="font-nunito text-sm font-semibold tracking-tight">Dirección: </p>
+                            <p class="font-nunito text-sm tracking-tight text-slate-500 truncate">{{customer.address}}
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          
+        </div>
+
         <div *ngIf="noFound == true" class="p-5 flex">
-            <div class="p-3 h-24 border border-red-50  w-full bg-gradient-to-tr from-white to-red-50 rounded-xl shadow-lg shadow-red-50 flex items-center space-x-4">
+            <div
+                class="p-3 h-24 border border-red-50  w-full bg-gradient-to-tr from-white to-red-50 rounded-xl shadow-lg shadow-red-50 flex items-center space-x-4">
                 <div class="shrink-0">
                     <img class="size-12" src="/assets/images/burbujas-de-chat.png" alt="">
                 </div>
@@ -108,27 +116,27 @@
                 <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Indique los motivos de
                         oración</p>
-                        <div class="flex items-center w-full h-auto">
-                            <ngx-select-dropdown id="reasons" formControlName="reasons" 
-                                class="w-full font-nunito tracking-tigh text-sm font-semibold"
-                                [config]="dropdownConfig"
-                                [multiple]="true"
-                                [options]="reasonsList"
-                                [(ngModel)]="reasonsOptions"> >
-                            </ngx-select-dropdown>
-                        </div>
+                    <div class="flex items-center w-full h-auto">
+                        <ngx-select-dropdown id="reasons" formControlName="reasons"
+                            class="w-full font-nunito tracking-tigh text-sm font-semibold" [config]="dropdownConfig"
+                            [multiple]="true" [options]="reasonsList" > >
+                        </ngx-select-dropdown>
+                    </div>
+                    <div *ngIf="reasonsError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ reasonsError }}
+                    </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Novedades</p>
-                        <div class="flex items-center w-full h-auto">
-                            <ngx-select-dropdown id="novelties" formControlName="novelties" 
-                                class="w-full font-nunito tracking-tigh text-sm font-semibold"
-                                [config]="dropdownConfig"
-                                [multiple]="true"
-                                [options]="noveltiesList"
-                                [(ngModel)]="noveltiesOptions"> 
-                            </ngx-select-dropdown>
-                        </div>
+                    <div class="flex items-center w-full h-auto">
+                        <ngx-select-dropdown id="novelties" formControlName="novelties"
+                            class="w-full font-nunito tracking-tigh text-sm font-semibold" [config]="dropdownConfig"
+                            [multiple]="true" [options]="noveltiesList" >
+                        </ngx-select-dropdown>
+                    </div>
+                    <div *ngIf="noveltiesError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ noveltiesError }}
+                    </div>
                 </div>
             </div>
 
@@ -137,16 +145,19 @@
                     <p class="text-sm font-nunito tracking-tight font-semibold">Petición</p>
                     <div class="flex items-center w-full">
                         <textarea formControlName="petition"
-                            class="flex h-20 w-full  rounded-lg border p-3  font-nunito text-sm tracking-tight"
-                            name="" id="" cols="30" rows="10"></textarea>
+                            class="flex h-20 w-full  rounded-lg border p-3  font-nunito text-sm tracking-tight" name=""
+                            id="" cols="30" rows="10"></textarea>
+                    </div>
+                    <div *ngIf="petitionError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ petitionError }}
                     </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-2/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Testimonio</p>
                     <div class="flex items-center w-full">
                         <textarea formControlName="testimony"
-                        class="flex h-20 w-full  rounded-lg border p-3  font-nunito text-sm tracking-tight"
-                            name="" id="" cols="30" rows="10"></textarea>
+                            class="flex h-20 w-full  rounded-lg border p-3  font-nunito text-sm tracking-tight" name=""
+                            id="" cols="30" rows="10"></textarea>
                     </div>
                 </div>
             </div>
@@ -159,11 +170,15 @@
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Selección de banco</p>
                     <div class="flex items-center w-full">
-                        <select formControlName="bank" *ngFor="let bank of banksList"
+                        <select formControlName="bank" 
                             class="flex h-10 w-full  rounded-lg border pl-3 font-nunito text-sm tracking-tight">
                             <option value="">Seleccione un banco</option>
-                            <option  value="bank.id">{{bank.name}} - {{bank.account_number}} - {{bank.additional_data}}</option>
+                            <option *ngFor="let bank of banksList" value="{{bank.id}}">{{bank.name}} - {{bank.account_number}} - {{bank.additional_data}}
+                            </option>
                         </select>
+                    </div>
+                    <div *ngIf="bankError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ bankError }}
                     </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
@@ -178,19 +193,25 @@
                             <option value="5">5 Cuotas</option>
                         </select>
                     </div>
+                    <div *ngIf="quotesError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ quotesError }}
+                    </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Valor de la cuota</p>
                     <div class="flex items-center w-full">
-                        <input id="amountInput" formControlName="amount" (input)="totalAmount()" 
-                            class="flex h-10 w-full rounded-lg border p-5 pr-12  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
+                        <input id="amountInput" formControlName="amount" (input)="totalAmount()"
+                            class="flex h-10 w-full rounded-lg border p-5  "
                             type="text" placeholder="" />
+                    </div>
+                    <div *ngIf="amountError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ amountError }}
                     </div>
                 </div>
                 <div class="flex flex-col h-auto w-full lg:w-1/4 space-y-1">
                     <p class="text-sm font-nunito tracking-tight font-semibold">Total</p>
                     <div class="flex items-center w-full">
-                        <input  formControlName="total" [value]="total | currencyFormat" readonly
+                        <input formControlName="total" [value]="total | currencyFormat" readonly
                             class="disabled:bg-blue-50 flex h-10 w-full rounded-lg border p-5  placeholder:font-nunito placeholder:font-semibold placeholder:text-slate-500 placeholder:text-sm"
                             type="text" placeholder="" />
                     </div>
@@ -211,7 +232,7 @@
 
     <!-- Modal de creación y edición -->
     <app-customer-modal *ngIf="isModalOpen" [customer]="selectedCustomer" [isEditMode]="isEditMode"
-    (close)="closeModal()">
+        (close)="closeModal()">
     </app-customer-modal>
 
 </div>

@@ -26,4 +26,10 @@ export class DonationService {
       headers: this.headers
     });
   }
+
+  createDonation(donation: {campaign_id: number, petition:string, testimony?:string, 
+    account_id:number, customer_id:number, user_id:number, quotes: number, amount: number, 
+    total_amount:number, reasons:any[], novelties: any[]}){
+    return this.http.post<any>(`${this.baseUrl}/donation`, donation, { headers: this.headers })
+  }
 }

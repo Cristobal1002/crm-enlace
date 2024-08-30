@@ -1,11 +1,8 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
-import Pikaday from 'pikaday';
-import moment from 'moment';
 import { CommonModule } from '@angular/common';
-import { LocationService } from '../../services/location.service';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { CustomerService } from '../../services/customer.service';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
@@ -14,25 +11,31 @@ import { Observable } from 'rxjs';
 import { BankService } from '../../services/bank.service';
 import { CurrencyFormatPipe } from '../../pipes/currency-format.pipe';
 import { CustomerModalComponent } from '../../components/customer-modal/customer-modal.component';
+import { PodiumService } from '../../services/podium.service';
+import { AuthServiceService } from '../../services/auth-service.service';
+import Swal from 'sweetalert2';
+import { DonationService } from '../../services/donation.service';
+
 
 @Component({
   selector: 'app-donations',
   standalone: true,
-  imports: [SidebarComponent, HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule, 
+  imports: [SidebarComponent, HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule,
     SelectDropDownModule, DateFormatPipe, CurrencyFormatPipe, CustomerModalComponent],
   templateUrl: './donations.component.html',
   styleUrls: ['./donations.component.css']
 })
-export class DonationsComponent  {
+export class DonationsComponent {
 
   donationForm: FormGroup;
   searchForm: FormGroup;
-  total: number = 0;
+  activeCampaign: any;
+  total: any;
   customer: any;
   isModalOpen = false;
   isEditMode = false;
   selectedCustomer: any = null;
-  isLoading= false
+  isLoading = false
   noFound: boolean | undefined;
   errorMessage = '';
   existcustomer = false
@@ -45,8 +48,7 @@ export class DonationsComponent  {
   activeBanks$: Observable<any> = new Observable<any>();
   activeReasons$: Observable<any> = new Observable<any>();
   activeNovelties$: Observable<any> = new Observable<any>(); // Inicializar con un Observable vacío
-  // Inicializar con un Observable vacío
-  
+  currentUser: any;
 
   dropdownConfig = {
     displayKey: "name", // Si tus opciones son objetos, esta es la propiedad que se mostrará
@@ -64,32 +66,35 @@ export class DonationsComponent  {
     multiple: true,            // Permite la selección múltiple
   };
 
-  constructor(private fb: FormBuilder, private locationService: LocationService, private customerService: CustomerService,
-    private reasonNoveltyService: ReasonsNoveltiesService, private bankService: BankService) {
-    
+  constructor(private fb: FormBuilder, private customerService: CustomerService,
+    private reasonNoveltyService: ReasonsNoveltiesService, private bankService: BankService,
+    private podiumService: PodiumService, private authService: AuthServiceService,
+    private donationService: DonationService) {
+    this.currentUser = this.authService.getUserData()
     this.searchForm = this.fb.group({
-      documentNumber: ['', [Validators.required, Validators.minLength(8)]],
+      documentNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(10), Validators.pattern(/^\d+$/)]],
     })
 
     this.donationForm = this.fb.group({
-      reasons: ['', Validators.required],
-      novelties: [''],
-      petition: [''],
+      reasons: ['', [Validators.required]],
+      novelties: [[], [Validators.required]],
+      petition: [[], [Validators.required]],
       testimony: [''],
-      bank:[''],
-      quotes:[1],
-      amount:[],
-      total:[this.total]
+      bank: ['', [Validators.required]],
+      quotes: [1, [Validators.required]],
+      amount: ['', [Validators.required]],
+      total: ''
     });
   }
 
   ngOnInit(): void {
+    this.getActiveCampaign()
     this.loadActiveReasons();
     this.loadActiveNovelties();
     this.loadActiveBanks();
   }
 
-  //Getters
+  //Getters boton de buscar
   get documentNumberError(): string | null {
     const documentControl = this.searchForm.get('documentNumber');
     if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
@@ -97,6 +102,8 @@ export class DonationsComponent  {
         return 'El número de documento es requerido.';
       } else if (documentControl.hasError('minlength')) {
         return 'El número de documento debe tener al menos 8 caracteres.';
+      } else if (documentControl.hasError('maxlength')) {
+        return 'El número de documento debe tener máximo 10 caracteres.';
       } else if (documentControl.hasError('pattern')) {
         return 'El número de documento solo admite números';
       }
@@ -104,19 +111,81 @@ export class DonationsComponent  {
     return null;
   }
 
+  //Getter Donaciones
+  get reasonsError(): string | null {
+    const documentControl = this.donationForm.get('reasons');
+    if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
+      if (documentControl.hasError('required')) {
+        return 'Debe ingresar al menos un motivo';
+      }
+    }
+    return null;
+  }
+
+  get noveltiesError(): string | null {
+    const documentControl = this.donationForm.get('novelties');
+    if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
+      if (documentControl.hasError('required')) {
+        return 'Debe ingresar al menos una novedad';
+      }
+    }
+    return null;
+  }
+
+  get petitionError(): string | null {
+    const documentControl = this.donationForm.get('petition');
+    if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
+      if (documentControl.hasError('required')) {
+        return 'Le petición es obligatoria';
+      }
+    }
+    return null;
+  }
+
+  get bankError(): string | null {
+    const documentControl = this.donationForm.get('bank');
+    if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
+      if (documentControl.hasError('required')) {
+        return 'Debe seleccionar un banco';
+      }
+    }
+    return null;
+  }
+
+  get quotesError(): string | null {
+    const documentControl = this.donationForm.get('quotes');
+    if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
+      if (documentControl.hasError('required')) {
+        return 'Debe seleccional al menos una cuota';
+      }
+    }
+    return null;
+  }
+
+  get amountError(): string | null {
+    const documentControl = this.donationForm.get('amount');
+    if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
+      if (documentControl.hasError('required')) {
+        return 'Debe ingresar el monto';
+      }
+    }
+    return null;
+  }
+
+
   getCustomerName(): string {
     const customer = this.customer
     return customer.first_name && customer.last_name
-      ? this.customerName =`${customer.first_name} ${customer.last_name}`
+      ? this.customerName = `${customer.first_name} ${customer.last_name}`
       : this.customerName = customer.company_name || 'Nombre no disponible';
   }
 
 
-   getCustomerByDocument() {
+  getCustomerByDocument() {
     const document = this.searchForm.get('documentNumber')?.value
-    if(document){
-      this.isLoading= true
-      this.customerService.getCustomerByDocument(document).subscribe((response:any) => {
+    if (document) {
+      this.isLoading = true
+      this.customerService.getCustomerByDocument(document).subscribe((response: any) => {
         console.log('response', response)
         if (response.data) {
           this.customer = response.data;
@@ -128,13 +197,13 @@ export class DonationsComponent  {
           this.noFound = true
           this.errorMessage = 'No encontramos un cliente con ese número de documento'
           this.existcustomer = false
-         
+
         }
         this.isLoading = false;
-      },(error)=>{
+      }, (error) => {
         this.isLoading = false;
       })
-    }else {
+    } else {
       console.error('Document number is required');
     }
   }
@@ -148,15 +217,35 @@ export class DonationsComponent  {
     });
   }
 
-  onSubmitSearch(){
+  onSubmitSearch() {
     console.log('Formulario search:', this.searchForm.value)
     this.markAllAsTouched(this.searchForm);
-    if(this.searchForm.valid){
+    if (this.searchForm.valid) {
       this.getCustomerByDocument()
     }
   }
 
-  onSubmitDonation(){}
+  onSubmitDonation() {
+    console.log('Formulario donación:', this.donationForm)
+    this.markAllAsTouched(this.donationForm);
+
+    if (this.donationForm.valid) {
+      console.log('customer en el submit de donation', !this.customer)
+      if (!this.customer) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Debes agregar un donante',
+          confirmButtonText: 'Aceptar'
+        });
+      } else {
+        const data = this.setDonationData();
+        console.log('Data para enviar a crear donacion:', data)
+        this.createDonation(data)
+      }
+    }
+
+  }
 
   loadActiveReasons(): void {
     // Llamar al método del servicio para obtener los motivos activos (sin paginación)
@@ -237,12 +326,114 @@ export class DonationsComponent  {
     this.selectedCustomer = customer; // Asegúrate que este 'customer' tenga datos
     console.log('Customer seleccionado:', this.selectedCustomer);
     this.isModalOpen = true;
-}
+  }
 
   closeModal() {
     console.log('Entra a close modal')
     this.getCustomerByDocument()
     this.isModalOpen = false;
   }
-  
+
+  async getActiveCampaign() {
+    return this.podiumService.getActiveCampaign().subscribe((response: any) => {
+      console.log('response en Get Actve para ver campaña', response)
+      this.activeCampaign = response.data[0]
+    })
+  }
+
+  setDonationData() {
+    const data = this.donationForm.value
+    // Obtener el valor formateado del input
+    let formattedAmount = this.donationForm.get('amount')?.value;
+
+    // Quitar separadores de miles (asumiendo que usas comas)
+    let numericAmount = Number(formattedAmount.replace(/\./g, ''));
+
+    return {
+      campaign_id: this.activeCampaign.id,
+      petition: data.petition,
+      testimony: data.testimony,
+      account_id: data.bank,
+      customer_id: this.customer.id || null,
+      user_id: this.currentUser.user,
+      quotes: data.quotes,
+      amount: numericAmount,
+      total_amount: this.total,
+      reasons: data.reasons,
+      novelties: data.novelties
+    }
+  }
+
+  createDonation(data: any) {
+    this.isLoading = true; // Activar el estado de carga
+    try {
+      // Mostrar el GIF de carga
+      Swal.fire({
+        title: 'Enviando...',
+        html: 'Por favor, espere mientras se envían los datos.',
+        imageUrl: '/assets/gifs/loading-2.gif',
+        imageAlt: 'Cargando',
+        showConfirmButton: false,
+        allowOutsideClick: false
+      });
+      // Ejecutar la petición
+      this.donationService.createDonation(data).subscribe((response: any) => {
+        if (response.error) {
+          // Mostrar mensaje de error si el documento ya existe
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: response.error,
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito!',
+            text: 'Donante creado con éxito',
+            confirmButtonText: 'Aceptar'
+          }).then(() => {
+            this.closeModal();
+          });
+        }
+        if (response.error) {
+          // Mostrar mensaje de error si el documento ya existe
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: response.error,
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito!',
+            text: 'Donante creado con éxito',
+            confirmButtonText: 'Aceptar'
+          }).then(() => {
+            this.searchForm.reset()
+            this.donationForm.reset()
+            this.existcustomer =false
+            this.loadActiveReasons();
+            this.loadActiveNovelties();
+          });
+        }
+      })
+
+    } catch (error) {
+      // Mostrar mensaje de error genérico
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Hubo un problema al crear el donante. Por favor, intente nuevamente.',
+        confirmButtonText: 'Aceptar'
+      });
+    } finally {
+      this.isLoading = false; // Desactivar el estado de carga
+    }
+
+  }
+
 }
