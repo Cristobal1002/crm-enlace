@@ -57,7 +57,7 @@ export class LoginComponent {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
-  async onSubmit() {
+  onSubmit() {
     this.isLoading = true;
     if (this.loginForm.valid) {
       const { user, password } = this.loginForm.value;

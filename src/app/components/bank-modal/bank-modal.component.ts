@@ -121,7 +121,7 @@ export class BankModalComponent {
     });
   }
 
-createBank() {
+ createBank() {
     this.isLoading = true; // Activar el estado de carga
 
     try {
@@ -137,7 +137,7 @@ createBank() {
 
       // Ejecutar la petición
       console.log('Data armada:', this.setCreateData())
-      const response: any = this.bankService.createBank(this.setCreateData()).toPromise();
+      const response: any =  this.bankService.createBank(this.setCreateData()).toPromise();
       console.log('response en create customer:', response);
 
       if (response.error) {

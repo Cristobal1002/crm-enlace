@@ -49,7 +49,7 @@ export class CreateCampaignModalComponent implements OnChanges {
     }
   }
 
-  createCampaign() {
+   createCampaign() {
     if (this.campaignForm.value.status === true) {
       Swal.fire({
         title: 'Ya existe una campaña activa',
@@ -60,8 +60,8 @@ export class CreateCampaignModalComponent implements OnChanges {
         cancelButtonText: 'No, cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.inactivateCurrentCampaign().subscribe(() => {
-            this.podiumService.createCampaign(this.createCampaignData()).subscribe(() => {
+           this.inactivateCurrentCampaign().subscribe(() => {
+             this.podiumService.createCampaign(this.createCampaignData()).subscribe(() => {
               Swal.fire('Éxito!', 'Campaña creada y antigua inactivada con éxito.', 'success').then(() => {
                 this.closeModal();
               });
@@ -78,12 +78,12 @@ export class CreateCampaignModalComponent implements OnChanges {
     }
   }
 
-  updateCampaign() {
+   updateCampaign() {
     const {status} = this.campaignForm.value
     if(status === true){
       this.updateCampaignStatus(this.campaign)
     }
-    this.podiumService.updateCampaign(this.campaign.id, this.updateCampaignData()).subscribe(() => {
+     this.podiumService.updateCampaign(this.campaign.id, this.updateCampaignData()).subscribe(() => {
       Swal.fire('Éxito!', 'Campaña actualizada con éxito.', 'success').then(() => {
         this.closeModal();
       });

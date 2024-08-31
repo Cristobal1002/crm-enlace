@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { ConfigurationsService } from './configurations.service';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class UserService {
   }
 
   createUser(user: {name: string, document: string, phone: string, roll: string, status: boolean, created_by: number, updated_by: number
-  }) {
+  }): Observable<any>  {
     console.log('Body en el servicio de create user', user)
     return this.http.post(`${this.baseUrl}/user`, user, { headers: this.headers })
       .pipe(map((response: any) => {
@@ -32,7 +32,7 @@ export class UserService {
       )
   }
 
-  getUserListPag(page: number, pageSize: number, search?: { [key: string]: string }){
+  getUserListPag(page: number, pageSize: number, search?: { [key: string]: string }): Observable<any> {
     let params: any = {
       page: page,
       pageSize: pageSize
@@ -53,7 +53,7 @@ export class UserService {
     });
   }
 
-  updateUser(id: number, data: {}){
+  updateUser(id: number, data: {}): Observable<any> {
     return this.http.put(`${this.baseUrl}/user/${id}`, data, { headers: this.headers }).pipe(
       map((response: any) => {
         // Aquí puedes retornar la respuesta si la solicitud es exitosa

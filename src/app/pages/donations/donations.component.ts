@@ -15,6 +15,7 @@ import { PodiumService } from '../../services/podium.service';
 import { AuthServiceService } from '../../services/auth-service.service';
 import Swal from 'sweetalert2';
 import { DonationService } from '../../services/donation.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -69,7 +70,7 @@ export class DonationsComponent {
   constructor(private fb: FormBuilder, private customerService: CustomerService,
     private reasonNoveltyService: ReasonsNoveltiesService, private bankService: BankService,
     private podiumService: PodiumService, private authService: AuthServiceService,
-    private donationService: DonationService) {
+    private donationService: DonationService, private route: ActivatedRoute) {
     this.currentUser = this.authService.getUserData()
     this.searchForm = this.fb.group({
       documentNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(10), Validators.pattern(/^\d+$/)]],
@@ -88,6 +89,13 @@ export class DonationsComponent {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const document = params.get('document'); // Obtén el parámetro de la URL
+
+      if (document) {
+        this.loadCustomer(document);
+      }
+    });
     this.getActiveCampaign()
     this.loadActiveReasons();
     this.loadActiveNovelties();
@@ -217,6 +225,22 @@ export class DonationsComponent {
     });
   }
 
+  loadCustomer(document: string): void {
+    console.log('Document en load customer', document)
+    this.customerService.getCustomerByDocument(document).subscribe(
+      (response:any) => {
+        this.customer = response.data;
+          this.getCustomerName()
+          this.existcustomer = true
+          console.log('Customer en la llegada', this.customer)
+          this.noFound = false
+      },
+      (error) => {
+        console.error('Error al cargar el cliente:', error);
+      }
+    );
+  }
+
   onSubmitSearch() {
     console.log('Formulario search:', this.searchForm.value)
     this.markAllAsTouched(this.searchForm);
@@ -334,7 +358,7 @@ export class DonationsComponent {
     this.isModalOpen = false;
   }
 
-  async getActiveCampaign() {
+   getActiveCampaign() {
     return this.podiumService.getActiveCampaign().subscribe((response: any) => {
       console.log('response en Get Actve para ver campaña', response)
       this.activeCampaign = response.data[0]
@@ -413,11 +437,11 @@ export class DonationsComponent {
             text: 'Donante creado con éxito',
             confirmButtonText: 'Aceptar'
           }).then(() => {
-            this.searchForm.reset()
-            this.donationForm.reset()
             this.existcustomer =false
             this.loadActiveReasons();
             this.loadActiveNovelties();
+            this.searchForm.reset()
+            this.donationForm.reset()
           });
         }
       })

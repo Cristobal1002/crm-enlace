@@ -34,8 +34,8 @@ export class UsersComponent {
   }
 
   closeModal() {
-    this.loadUserList()
     this.isModalOpen = false;
+    this.loadUserList()
   }
 
   showCreateModal() {

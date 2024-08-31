@@ -28,7 +28,7 @@ export class ReasonsNoveltiesService {
       );
   }
 
-  updateReason(id:number, data:{}){
+  updateReason(id:number, data:{}): Observable<any> {
     return this.http.put(`${this.baseUrl}/reason/${id}`, data, { headers: this.headers }).pipe(
       catchError(this.handleError)
     );
@@ -57,7 +57,7 @@ export class ReasonsNoveltiesService {
       );
   }
 
-  updateNovelty(id:number, data:{}){
+  updateNovelty(id:number, data:{}): Observable<any> {
     return this.http.put(`${this.baseUrl}/novelty/${id}`, data, { headers: this.headers }).pipe(
       catchError(this.handleError)
     );

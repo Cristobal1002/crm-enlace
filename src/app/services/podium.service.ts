@@ -65,13 +65,13 @@ export class PodiumService {
     return throwError(() => new Error('Ocurrió un error en la solicitud'));
   }
 
-  updateCampaign(id:number, data:{}){
+  updateCampaign(id:number, data:{}): Observable<any> {
     return this.http.put(`${this.baseUrl}/campaign/${id}`, data, { headers: this.headers }).pipe(
       catchError(this.handleError)
     );
   }
 
-  activateCampaign(data:{id:number, updated_by:number}){
+  activateCampaign(data:{id:number, updated_by:number}): Observable<any> {
     return this.http.put(`${this.baseUrl}/campaign/activate`, data, { headers: this.headers }).pipe(
       catchError(this.handleError)
     );

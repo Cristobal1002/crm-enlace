@@ -20,16 +20,17 @@ export const routes: Routes = [
             { path: 'podium', component: PodiumComponent, canActivate: [authGuard, adminGuard] },
             {
                 path: 'donaciones', canActivate: [authGuard], children: [
-                    { path: 'donantes', canActivate: [authGuard], component: CustomersComponent },
-                    { path: 'manage', canActivate: [authGuard], component: DonationsComponent },
+                    { path: 'donantes', component: CustomersComponent },
+                    { path: 'manage', component: DonationsComponent },
+                    { path: 'manage/:document', component: DonationsComponent },
                 ]
             },
             { path: 'reportes', component: ReportsComponent, canActivate: [authGuard] },
             {
                 path: 'administracion', canActivate: [authGuard, adminGuard], children: [
-                    { path: 'usuarios', canActivate: [authGuard, adminGuard], component: UsersComponent },
-                    { path: 'bancos', canActivate: [authGuard, adminGuard], component: BanksComponent },
-                    { path: 'configuraciones', canActivate: [authGuard, adminGuard], component: ConfigurationsComponent }
+                    { path: 'usuarios', component: UsersComponent },
+                    { path: 'bancos', component: BanksComponent },
+                    { path: 'configuraciones', component: ConfigurationsComponent }
                 ]
             },
         ]

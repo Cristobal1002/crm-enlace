@@ -517,19 +517,19 @@ export class CustomerModalComponent implements AfterViewInit {
   }
 
 
-  async getCountries() {
+ getCountries() {
     return this.locationService.getCountries().subscribe(response => {
       this.countries = response.data
     })
   }
 
-  async getCitiesByCountry(id: any) {
+ getCitiesByCountry(id: any) {
     return this.locationService.getCitiesByCountry(id).subscribe(response => {
       this.cities = response.data
     })
   }
 
-  async getStateByCity(selectedState: any) {
+  getStateByCity(selectedState: any) {
     return this.locationService.getStateByCity(selectedState).subscribe(response => {
       this.states = response.data
       this.selectedState = this.states[0]

@@ -21,7 +21,7 @@ export class DonationService {
     return throwError(() => new Error('Ocurrió un error en la solicitud'));
   }
 
-  getCustomerByDocument(document: string){
+  getCustomerByDocument(document: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/customer?document=${document}`, {
       headers: this.headers
     });
@@ -29,7 +29,7 @@ export class DonationService {
 
   createDonation(donation: {campaign_id: number, petition:string, testimony?:string, 
     account_id:number, customer_id:number, user_id:number, quotes: number, amount: number, 
-    total_amount:number, reasons:any[], novelties: any[]}){
+    total_amount:number, reasons:any[], novelties: any[]}): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/donation`, donation, { headers: this.headers })
   }
 }

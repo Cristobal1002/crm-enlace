@@ -27,7 +27,7 @@ export class CustomerService {
     first_name?: string, last_name?: string, phone: string, email: string,
     birthday?: string, gender?: string, country_id: number, state_id: number, city_id: number,
     neighborhood: string, address: string, created_by: number, updated_by: number
-  }){
+  }): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/customer`, customer, { headers: this.headers })
       .pipe(
         map((response: any) => {
@@ -45,7 +45,7 @@ export class CustomerService {
       );
   }
 
-  getCustomerListPag(page: number, pageSize: number, search?: { [key: string]: string }) {
+  getCustomerListPag(page: number, pageSize: number, search?: { [key: string]: string }): Observable<any>  {
     let params: any = {
       page: page,
       pageSize: pageSize
@@ -66,7 +66,7 @@ export class CustomerService {
     });
   }
 
-  updateCustomer(id: number, data: {}){
+  updateCustomer(id: number, data: {}): Observable<any> {
     return this.http.put(`${this.baseUrl}/customer/${id}`, data, { headers: this.headers }).pipe(
       map((response: any) => {
         // Aquí puedes retornar la respuesta si la solicitud es exitosa
@@ -83,7 +83,7 @@ export class CustomerService {
     );
   }
 
-  getCustomerByDocument(document: string){
+  getCustomerByDocument(document: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/customer?document=${document}`, {
       headers: this.headers
     });

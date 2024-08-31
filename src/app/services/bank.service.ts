@@ -34,7 +34,7 @@ export class BankService {
       )
   }
 
-  getBankListPag(page: number, pageSize: number, search?: { [key: string]: string }){
+  getBankListPag(page: number, pageSize: number, search?: { [key: string]: string }): Observable<any> {
     let params: any = {
       page: page,
       pageSize: pageSize
@@ -56,7 +56,7 @@ export class BankService {
   }
   
 
-  updateBank(id: number, data: {}){
+  updateBank(id: number, data: {}): Observable<any> {
     return this.http.put(`${this.baseUrl}/bank/${id}`, data, { headers: this.headers }).pipe(
       map((response: any) => {
         // Aquí puedes retornar la respuesta si la solicitud es exitosa

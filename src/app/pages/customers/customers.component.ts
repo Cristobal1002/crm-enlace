@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CustomerModalComponent } from '../../components/customer-modal/customer-modal.component';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { CustomerService } from '../../services/customer.service';
@@ -29,7 +30,7 @@ export class CustomersComponent {
   totalPages = 0;
 
 
-  constructor(private customerService: CustomerService) {
+  constructor(private customerService: CustomerService, private router:Router) {
     this.loadCustomerList()
   }
 
@@ -39,6 +40,14 @@ export class CustomersComponent {
     return customer.first_name && customer.last_name
       ? `${customer.first_name} ${customer.last_name}`
       : customer.company_name || 'Nombre no disponible';
+  }
+
+
+  // Método que se ejecuta al hacer clic en el botón "plus"
+  redirectToDonations(customer: any) {
+    console.log('customer en la redireccion',customer)
+    const customerDocument = customer.document; // Asumiendo que usas el documento como identificador
+    this.router.navigate(['/donaciones/manage', customerDocument]);
   }
 
   showCreateModal() {
