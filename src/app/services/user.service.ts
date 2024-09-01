@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { ConfigurationsService } from './configurations.service';
 
 @Injectable({
@@ -56,16 +56,22 @@ export class UserService {
   updateUser(id: number, data: {}): Observable<any> {
     return this.http.put(`${this.baseUrl}/user/${id}`, data, { headers: this.headers }).pipe(
       map((response: any) => {
-        // Aquí puedes retornar la respuesta si la solicitud es exitosa
-        return { data: response, error: null };
+        // Aquí puedes devolver la respuesta directamente si es exitosa
+        return response;
       }),
       catchError((error) => {
         // Manejo de errores para que no rompa la ejecución
+        console.log('el bendito error',error)
         let errorMsg = 'Ocurrió un error en la solicitud';
-        if (error.status === 400 && error.error && error.error.error) {
+        if (error.status === 400 ) {
           errorMsg = error.error.error; // Mensaje de error desde el backend
+        } else if (error.status === 401) {
+          errorMsg = 'No autorizado. Por favor, inicia sesión.';
+        } else if (error.status === 500) {
+          errorMsg = 'Error interno del servidor. Intente nuevamente más tarde.';
         }
-        return of({ data: null, error: errorMsg });
+        // Puedes agregar más manejo de errores según sea necesario
+        return throwError(() => new Error(errorMsg));
       })
     );
   }

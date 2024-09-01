@@ -6,6 +6,7 @@ import { CreateCampaignModalComponent } from '../../components/create-campaign-m
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { StatusLabelPipe } from '../../pipes/status-label.pipe';
 import { AuthServiceService } from '../../services/auth-service.service';
+import { LoadingService } from '../../services/loading.service';
 import { PodiumService } from '../../services/podium.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
@@ -27,6 +28,8 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
   styleUrls: ['./podium.component.css']
 })
 export class PodiumComponent {
+  loadingCount = 0;
+
   activeCampaign: any = {};
   list: any[] = [];
   isModalOpen = false;
@@ -38,8 +41,14 @@ export class PodiumComponent {
   totalPages = 0;
   currentUser: any;
 
-  constructor(private podiumService: PodiumService, private authService: AuthServiceService) {
+  constructor(private podiumService: PodiumService, private authService: AuthServiceService,
+    private loadingService: LoadingService) {
     this.currentUser = this.authService.getUserData();
+    
+  }
+
+  ngOnInit(){
+    this.loadingService.show();
     this.getActiveCampaign();
     this.loadCampaignList();
   }
@@ -62,18 +71,24 @@ export class PodiumComponent {
   }
 
   loadCampaignList(name?:string) {
+    this.loadingCount++
     this.getActiveCampaign()
     this.podiumService.getCampaignListPag(this.page, this.pageSize, name).subscribe((response: any) => {
       this.list = response.data.items;
       this.totalItems = response.data.totalItems;
       this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+      this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
     });
   }
 
   getActiveCampaign() {
+    this.loadingCount++
     this.podiumService.getActiveCampaign().subscribe((response: any) => {
       console.log('get active ',response)
       this.activeCampaign = response.data[0] || {};
+      this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
     });
   }
 

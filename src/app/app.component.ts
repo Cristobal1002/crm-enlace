@@ -7,11 +7,12 @@ import { environment } from '../environments/environment';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GlobalLoadingComponent } from './components/global-loading/global-loading.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink,RouterModule, CommonModule, HttpClientModule,SidebarComponent, HeaderComponent, ReactiveFormsModule],
+  imports: [RouterOutlet, RouterLink,RouterModule, CommonModule, HttpClientModule,SidebarComponent, HeaderComponent, ReactiveFormsModule,GlobalLoadingComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

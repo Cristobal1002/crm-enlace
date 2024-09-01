@@ -7,12 +7,13 @@ import { ReasonsNoveltiesService } from '../../services/reasons-novelties.servic
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import Swal from 'sweetalert2';
+import { LoadingService } from '../../services/loading.service';
 
 interface Motivo {
   name: string;
   status: boolean;
   editando: boolean;
-  esNuevo:boolean
+  esNuevo: boolean
 }
 
 @Component({
@@ -23,11 +24,12 @@ interface Motivo {
   styleUrl: './configurations.component.css'
 })
 export class ConfigurationsComponent {
+  loadingCount = 0;
 
   reasons: any[] = [];
-  originalReasons: any[] =[ ];
+  originalReasons: any[] = [];
   novelties: any[] = [];
-  originalNovelties: any[] =[ ];
+  originalNovelties: any[] = [];
 
   page = 1;
   pageSize = 10;
@@ -42,35 +44,46 @@ export class ConfigurationsComponent {
   currentUser: any;
 
 
-  constructor(private authService: AuthServiceService, private reasonNoveltyService: ReasonsNoveltiesService){
+  constructor(private authService: AuthServiceService, private reasonNoveltyService: ReasonsNoveltiesService,
+    private loadingService: LoadingService) {
     this.currentUser = authService.getUserData()
+  }
+
+  ngOnInit() {
+    this.loadingService.show();
     this.loadReasonList()
     this.loadNoveltyList()
   }
 
   loadReasonList() {
-     this.reasonNoveltyService.getReasonListPag(this.page, this.pageSize)
+    this.loadingCount++
+    this.reasonNoveltyService.getReasonListPag(this.page, this.pageSize)
       .subscribe((response: any) => {
-        console.log('response en load',response)
+        console.log('response en load', response)
         this.reasons = response.data.items;
         this.totalItems = response.data.totalItems;
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+        this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
       });
   }
 
   loadNoveltyList() {
+    this.loadingCount++
     this.reasonNoveltyService.getNoveltyListPag(this.pageNovelty, this.pageSizeNovelty)
-     .subscribe((response: any) => {
-       console.log('response en load de novelty',response)
-       this.novelties = response.data.items;
-       this.totalItemsNovelty = response.data.totalItems;
-       this.totalPagesNovelty = Math.ceil(this.totalItemsNovelty / this.pageSizeNovelty);
-     });
- }
+      .subscribe((response: any) => {
+        console.log('response en load de novelty', response)
+        this.novelties = response.data.items;
+        this.totalItemsNovelty = response.data.totalItems;
+        this.totalPagesNovelty = Math.ceil(this.totalItemsNovelty / this.pageSizeNovelty);
+        this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
+      });
+  }
 
   saveReason(index: number) {
     const reason = this.reasons[index];
-    
+
     if (reason.esNuevo) {
       this.reasonNoveltyService.createReason({
         name: reason.name,
@@ -111,10 +124,10 @@ export class ConfigurationsComponent {
       });
     }
   }
-  
+
   saveNovelty(index: number) {
     const novelty = this.novelties[index];
-    
+
     if (novelty.esNuevo) {
       this.reasonNoveltyService.createNovelty({
         name: novelty.name,
@@ -156,10 +169,10 @@ export class ConfigurationsComponent {
   }
 
   // Método para agregar un nuevo motivo
-addReason() {
-  const nuevoMotivo = { name: '', status: true, editando: true, esNuevo: true };
-  this.reasons.unshift(nuevoMotivo);
-}
+  addReason() {
+    const nuevoMotivo = { name: '', status: true, editando: true, esNuevo: true };
+    this.reasons.unshift(nuevoMotivo);
+  }
 
   // Método para agregar un nuevo motivo
   addNovelty() {
@@ -167,28 +180,28 @@ addReason() {
     this.novelties.unshift(nuevaNovedad);
   }
 
-// Método para cancelar la edición o creación de un motivo
-cancelReason(index: number) {
-  if (this.reasons[index].esNuevo) {
-    // Elimina el motivo nuevo de la lista
-    this.reasons.splice(index, 1);
-  } else {
-    // Restaura el motivo original y desactiva el modo de edición
-    this.reasons[index] = { ...this.originalReasons[index] };
-    this.reasons[index].editando = false;
+  // Método para cancelar la edición o creación de un motivo
+  cancelReason(index: number) {
+    if (this.reasons[index].esNuevo) {
+      // Elimina el motivo nuevo de la lista
+      this.reasons.splice(index, 1);
+    } else {
+      // Restaura el motivo original y desactiva el modo de edición
+      this.reasons[index] = { ...this.originalReasons[index] };
+      this.reasons[index].editando = false;
+    }
   }
-}
 
-cancelNovelty(index: number) {
-  if (this.novelties[index].esNuevo) {
-    // Elimina el motivo nuevo de la lista
-    this.novelties.splice(index, 1);
-  } else {
-    // Restaura el motivo original y desactiva el modo de edición
-    this.novelties[index] = { ...this.originalNovelties[index] };
-    this.novelties[index].editando = false;
+  cancelNovelty(index: number) {
+    if (this.novelties[index].esNuevo) {
+      // Elimina el motivo nuevo de la lista
+      this.novelties.splice(index, 1);
+    } else {
+      // Restaura el motivo original y desactiva el modo de edición
+      this.novelties[index] = { ...this.originalNovelties[index] };
+      this.novelties[index].editando = false;
+    }
   }
-}
 
 
   editReason(index: number) {

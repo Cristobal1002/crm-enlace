@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CustomerModalComponent } from '../../components/customer-modal/customer-modal.component';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { CustomerService } from '../../services/customer.service';
+import { LoadingService } from '../../services/loading.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
@@ -16,6 +17,7 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
   styleUrl: './customers.component.css'
 })
 export class CustomersComponent {
+  loadingCount = 0;
   customers: any[] = [];
 
   searchCriteria: string = '';
@@ -30,10 +32,15 @@ export class CustomersComponent {
   totalPages = 0;
 
 
-  constructor(private customerService: CustomerService, private router:Router) {
-    this.loadCustomerList()
+  constructor(private customerService: CustomerService, private router: Router,
+    private loadingService: LoadingService) {
+
   }
 
+  ngOnInit() {
+    this.loadingService.show();
+    this.loadCustomerList()
+  }
 
   //getters
   getCustomerName(customer: any): string {
@@ -45,7 +52,7 @@ export class CustomersComponent {
 
   // Método que se ejecuta al hacer clic en el botón "plus"
   redirectToDonations(customer: any) {
-    console.log('customer en la redireccion',customer)
+    console.log('customer en la redireccion', customer)
     const customerDocument = customer.document; // Asumiendo que usas el documento como identificador
     this.router.navigate(['/donaciones/manage', customerDocument]);
   }
@@ -60,29 +67,31 @@ export class CustomersComponent {
     this.selectedCustomer = customer; // Asegúrate que este 'customer' tenga datos
     console.log('Customer seleccionado:', this.selectedCustomer);
     this.isModalOpen = true;
-}
+  }
 
   closeModal() {
     console.log('Entra a close modal')
-    
+
     this.isModalOpen = false;
     this.loadCustomerList()
   }
 
 
   loadCustomerList() {
-  
+    this.loadingCount++
     let search: any
-    if (!this.searchCriteria){
+    if (!this.searchCriteria) {
       search = null
-    }else{ search = {[this.searchCriteria]: this.searchValue} || null }
+    } else { search = { [this.searchCriteria]: this.searchValue } || null }
     console.log('Search:', search)
-    this.customerService.getCustomerListPag(this.page, this.pageSize, search )
+    this.customerService.getCustomerListPag(this.page, this.pageSize, search)
       .subscribe((response: any) => {
         console.log('response en load', response)
         this.customers = response.data.items;
         this.totalItems = response.data.totalItems;
         this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+        this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
       });
   }
 

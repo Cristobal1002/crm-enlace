@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { ConfigurationsService } from './configurations.service';
 import { jwtDecode } from 'jwt-decode';
 
@@ -22,20 +22,32 @@ export class AuthServiceService {
     }
   }
 
-  login(credentials: { user: string; password: string; }): Observable<any>  {
+  login(credentials: { user: string; password: string; }): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/auth/login`, credentials)
       .pipe(
         tap(response => {
-          let token = response.data.token;
+          const token = response.data.token;
           localStorage.setItem('token', token);
           this.decodeToken(token);
-
         }),
         catchError(error => {
-          return of(null); // Manejo de errores
+          let errorMsg = 'Ocurrió un error en la solicitud de login';
+          
+          if (error.status === 401) {
+            errorMsg = error.error.error
+          } else if (error.status === 400) {
+            errorMsg = error.error.message || 'Datos de entrada no válidos'; // Extrae el mensaje del error
+          } else if (error.status === 500) {
+            errorMsg = 'Error interno del servidor. Intente nuevamente más tarde.';
+          } else if (error.error && error.error.message) {
+            errorMsg = error.error.message;
+          }
+
+          return throwError(() => new Error(errorMsg));
         })
       );
   }
+  
 
   decodeToken(token: string) {
     try {

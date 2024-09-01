@@ -9,7 +9,7 @@ export const adminGuard: CanActivateFn = (route, state) => {
 
   return authService.getCurrentUser().pipe(
     map(user => {
-      if (user?.role === 'admin') {
+      if (user?.role === 'admin' || user?.role === 'infinity' ) {
         return true;
       } else {
         router.navigate(['/home']); // Redirigir si no tiene el rol adecuado

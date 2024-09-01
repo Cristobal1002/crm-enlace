@@ -47,4 +47,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   z-index: 10 !important;
 }
 
+.loader {
+  @apply w-16 h-16 border-4 border-t-4 border-gray-200 rounded-full animate-spin;
+  border-top-color: #3490dc;
+}
+
+
 

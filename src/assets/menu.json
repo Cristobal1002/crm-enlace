@@ -4,29 +4,29 @@
       "label": "Home",
       "icon": "/assets/svg/home-smile.svg",
       "routerLink": "/home",
-      "roles": ["admin", "basic"]
+      "roles": ["admin", "basic", "infinity"]
     },
     {
       "label": "Podium",
       "icon": "/assets/svg/podium.svg",
       "routerLink": "/podium",
-      "roles": ["admin"]
+      "roles": ["admin", "infinity"]
     },
     {
       "label": "Donaciones",
       "icon": "/assets/svg/donacion.svg",
       "routerLink": "/admindon",
-      "roles": ["admin", "basic"],
+      "roles": ["admin", "basic", "infinity"],
       "submenu":[
         {
           "label": "Donantes",
           "routerLink": "/donaciones/donantes",
-          "roles": ["admin", "basic"]
+          "roles": ["admin", "basic", "infinity"]
         },
         {
           "label": "Crear donación",
           "routerLink": "/donaciones/manage",
-          "roles": ["admin", "basic"]
+          "roles": ["admin", "basic", "infinity"]
         }
       ]
     },
@@ -34,28 +34,28 @@
       "label": "Reportes",
       "icon": "/assets/images/seo-report.png",
       "routerLink": "/reportes",
-      "roles": ["admin"]
+      "roles": ["admin", "infinity"]
     },
     {
       "label": "Administración",
       "icon": "/assets/svg/admin.svg",
       "routerLink": "/administracion",
-      "roles": ["admin"],
+      "roles": ["admin", "infinity"],
       "submenu": [
         {
           "label": "Usuarios",
           "routerLink": "/administracion/usuarios",
-          "roles": ["admin"]
+          "roles": ["admin", "infinity"]
         },
         {
           "label": "Bancos",
           "routerLink": "/administracion/bancos",
-          "roles": ["admin"]
+          "roles": ["admin", "infinity"]
         },
         {
           "label": "Configuración",
           "routerLink": "/administracion/configuraciones",
-          "roles": ["admin"]
+          "roles": ["admin", "infinity"]
         }
       ]
     }

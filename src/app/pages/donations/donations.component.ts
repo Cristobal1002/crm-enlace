@@ -15,7 +15,8 @@ import { PodiumService } from '../../services/podium.service';
 import { AuthServiceService } from '../../services/auth-service.service';
 import Swal from 'sweetalert2';
 import { DonationService } from '../../services/donation.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingService } from '../../services/loading.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./donations.component.css']
 })
 export class DonationsComponent {
+  loadingCount = 0;
 
   donationForm: FormGroup;
   searchForm: FormGroup;
@@ -70,7 +72,8 @@ export class DonationsComponent {
   constructor(private fb: FormBuilder, private customerService: CustomerService,
     private reasonNoveltyService: ReasonsNoveltiesService, private bankService: BankService,
     private podiumService: PodiumService, private authService: AuthServiceService,
-    private donationService: DonationService, private route: ActivatedRoute) {
+    private donationService: DonationService, private route: ActivatedRoute,
+    private loadingService: LoadingService, private router:Router) {
     this.currentUser = this.authService.getUserData()
     this.searchForm = this.fb.group({
       documentNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(10), Validators.pattern(/^\d+$/)]],
@@ -89,6 +92,7 @@ export class DonationsComponent {
   }
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.route.paramMap.subscribe(params => {
       const document = params.get('document'); // Obtén el parámetro de la URL
 
@@ -226,6 +230,7 @@ export class DonationsComponent {
   }
 
   loadCustomer(document: string): void {
+    this.loadingCount++
     console.log('Document en load customer', document)
     this.customerService.getCustomerByDocument(document).subscribe(
       (response:any) => {
@@ -234,6 +239,8 @@ export class DonationsComponent {
           this.existcustomer = true
           console.log('Customer en la llegada', this.customer)
           this.noFound = false
+          this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
       },
       (error) => {
         console.error('Error al cargar el cliente:', error);
@@ -250,11 +257,11 @@ export class DonationsComponent {
   }
 
   onSubmitDonation() {
-    console.log('Formulario donación:', this.donationForm)
+    console.log('Formulario donación:', this.donationForm);
     this.markAllAsTouched(this.donationForm);
-
+  
     if (this.donationForm.valid) {
-      console.log('customer en el submit de donation', !this.customer)
+      console.log('customer en el submit de donation', !this.customer);
       if (!this.customer) {
         Swal.fire({
           icon: 'error',
@@ -264,14 +271,58 @@ export class DonationsComponent {
         });
       } else {
         const data = this.setDonationData();
-        console.log('Data para enviar a crear donacion:', data)
-        this.createDonation(data)
+        console.log('Data para enviar a crear donacion:', data);
+  
+        // Llamada para crear la donación
+        this.donationService.createDonation(data).subscribe({
+          next: (response) => {
+            // Resetear el formulario con los valores predeterminados
+            this.donationForm.reset({
+              reasons: '',
+              novelties: [],
+              petition: [],
+              testimony: '',
+              bank: '',
+              quotes: 1,
+              amount: '',
+              total: ''
+            });
+  
+            // Restablecer otras variables relacionadas
+            this.customer = null;
+            this.customerName = '';
+            this.existcustomer = false;
+            this.noFound = undefined;
+            this.errorMessage = '';
+  
+            Swal.fire({
+              icon: 'success',
+              title: '¡Éxito!',
+              text: 'Donación guardada exitosamente',
+              confirmButtonText: 'Aceptar'
+            });
+  
+            // Redirigir a la página de donaciones sin el ID en la URL
+            this.router.navigate(['/donaciones/manage']);
+          },
+          error: (error) => {
+            console.error('Error al crear la donación:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al guardar la donación',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+        });
       }
     }
-
   }
+  
+  
 
   loadActiveReasons(): void {
+    this.loadingCount++
     // Llamar al método del servicio para obtener los motivos activos (sin paginación)
     this.activeReasons$ = this.reasonNoveltyService.getActiveReasonList();
 
@@ -280,6 +331,8 @@ export class DonationsComponent {
       next: (response) => {
         this.reasonsList = response.data; // Asume que `response.data` contiene los motivos activos
         console.log('Motivos activos:', this.reasonsList);
+        this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
       },
       error: (error) => {
         console.error('Error al cargar los motivos activos:', error);
@@ -288,6 +341,7 @@ export class DonationsComponent {
   }
 
   loadActiveNovelties(): void {
+    this.loadingCount++
     // Llamar al método del servicio para obtener los motivos activos (sin paginación)
     this.activeReasons$ = this.reasonNoveltyService.getActiveNoveltyList();
 
@@ -296,6 +350,8 @@ export class DonationsComponent {
       next: (response) => {
         this.noveltiesList = response.data; // Asume que `response.data` contiene los motivos activos
         console.log('Motivos activos:', this.noveltiesList);
+        this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
       },
       error: (error) => {
         console.error('Error al cargar los motivos activos:', error);
@@ -304,6 +360,7 @@ export class DonationsComponent {
   }
 
   loadActiveBanks(): void {
+    this.loadingCount++
     // Llamar al método del servicio para obtener los motivos activos (sin paginación)
     this.activeBanks$ = this.bankService.getActiveBank();
 
@@ -312,6 +369,8 @@ export class DonationsComponent {
       next: (response) => {
         this.banksList = response.data; // Asume que `response.data` contiene los motivos activos
         console.log('Bancos activos:', this.banksList);
+        this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
       },
       error: (error) => {
         console.error('Error al cargar los bancos activos:', error);
@@ -359,9 +418,12 @@ export class DonationsComponent {
   }
 
    getActiveCampaign() {
+    this.loadingCount++
     return this.podiumService.getActiveCampaign().subscribe((response: any) => {
       console.log('response en Get Actve para ver campaña', response)
       this.activeCampaign = response.data[0]
+      this.loadingCount--;
+        if (this.loadingCount === 0) this.loadingService.hide();
     })
   }
 

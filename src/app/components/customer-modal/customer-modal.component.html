@@ -148,12 +148,26 @@
             </div>
 
             <div class="w-full h-auto flex-col flex lg:flex-row lg:space-x-3 lg:space-y-0 space-y-2">
+                
+                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
+                    <label for="state" class="text-sm font-nunito tracking-tight font-semibold">Departamento</label>
+                    <div class="flex items-center w-full">
+                        <ngx-select-dropdown id="state" formControlName="state"
+                            class="w-full font-nunito tracking-tigh text-sm font-semibold" [options]="states"
+                            [config]="stateConfig" (change)="onStateChange($event)">
+                        </ngx-select-dropdown>
+                    </div>
+                    <div *ngIf="stateError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                        {{ stateError }}
+                    </div>
+                </div>
+                
                 <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
                     <label for="city" class="text-sm font-nunito tracking-tight font-semibold">Ciudad</label>
                     <div class="flex items-center w-full h-auto">
                         <ngx-select-dropdown id="city" formControlName="city"
                             class="w-full font-nunito tracking-tigh text-sm font-semibold" [options]="cities"
-                            [config]="cityConfig" (change)="onCityChange($event)">
+                            [config]="cityConfig" >
                         </ngx-select-dropdown>
                     </div>
                     <div *ngIf="cityError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
@@ -161,18 +175,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
-                    <label for="state" class="text-sm font-nunito tracking-tight font-semibold">Departamento</label>
-                    <div class="flex items-center w-full">
-                        <ngx-select-dropdown id="state" formControlName="state"
-                            class="w-full font-nunito tracking-tigh text-sm font-semibold" [options]="states"
-                            [config]="stateConfig">
-                        </ngx-select-dropdown>
-                    </div>
-                    <div *ngIf="stateError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
-                        {{ stateError }}
-                    </div>
-                </div>
+                
 
                 <div class="flex flex-col h-auto w-full lg:w-1/5 space-y-1">
                     <label for="neighborhood" class="text-sm font-nunito tracking-tight font-semibold">Barrio</label>

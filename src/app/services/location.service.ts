@@ -27,6 +27,16 @@ export class LocationService {
     .pipe(catchError(this.handleError));
   }
 
+  getStatesByCountry(id:number):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/location/states/by-country?countryId=${id}`, { headers: this.headers })
+    .pipe(catchError(this.handleError));
+  }
+
+  getCitiesByState(id:number):Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/location/cities/by-state?stateId=${id}`, { headers: this.headers })
+    .pipe(catchError(this.handleError));
+  }
+
   getCitiesByCountry(id:number):Observable<any>{
     return this.http.get<any>(`${this.baseUrl}/location/cities/by-country?countryId=${id}`, { headers: this.headers })
     .pipe(catchError(this.handleError));

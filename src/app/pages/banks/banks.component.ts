@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BankModalComponent } from '../../components/bank-modal/bank-modal.component';
+import { GlobalLoadingComponent } from '../../components/global-loading/global-loading.component';
 import { StatusLabelPipe } from '../../pipes/status-label.pipe';
 import { BankService } from '../../services/bank.service';
+import { LoadingService } from '../../services/loading.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 
@@ -15,6 +17,7 @@ import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
   styleUrl: './banks.component.css'
 })
 export class BanksComponent {
+  loadingCount = 0;
   banks: any[] = [];
 
   searchCriteria: string = '';
@@ -28,7 +31,10 @@ export class BanksComponent {
   totalPages = 0;
   
 
-  constructor(private bankService: BankService){
+  constructor(private bankService: BankService, private loadingService: LoadingService){}
+
+  ngOnInit() {
+    this.loadingService.show();
     this.loadBankList();
   }
 
@@ -50,6 +56,7 @@ export class BanksComponent {
 
 loadBankList() {
   let search: any
+  this.loadingCount++
   if (!this.searchCriteria){
     search = null
   }else{ search = {[this.searchCriteria]: this.searchValue} }
@@ -59,6 +66,8 @@ loadBankList() {
       this.banks = response.data.items;
       this.totalItems = response.data.totalItems;
       this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+      this.loadingCount--;
+      if (this.loadingCount === 0) this.loadingService.hide();
     });
 }
 

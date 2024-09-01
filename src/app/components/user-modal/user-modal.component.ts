@@ -191,7 +191,7 @@ export class UserModalComponent {
         })
       }
     } catch (error) {
-      console.error('Error en create customer:', error);
+      console.error('Error al crear usuario:', error);
 
       // Mostrar mensaje de error genérico
       Swal.fire({
@@ -208,56 +208,60 @@ export class UserModalComponent {
 
   updateUser() {
     this.isLoading = true; // Activar el estado de carga
-    let userToUpdate = this.user
-
-    try {
-      // Mostrar el GIF de carga
-      Swal.fire({
-        title: 'Enviando...',
-        html: 'Por favor, espere mientras se envían los datos.',
-        imageUrl: '/assets/gifs/loading-2.gif',
-        imageAlt: 'Cargando',
-        showConfirmButton: false,
-        allowOutsideClick: false
-      });
-
-      // Ejecutar la petición
-      console.log('Data armada:', this.setCreateData())
-      const response: any =  this.userService.updateUser(userToUpdate.id ,this.setUpdateUserData()).toPromise();
-      console.log('response en create customer:', response);
-
-      if (response.error) {
-        // Mostrar mensaje de error si el documento ya existe
+  
+    // Mostrar el GIF de carga
+    Swal.fire({
+      title: 'Enviando...',
+      html: 'Por favor, espere mientras se envían los datos.',
+      imageUrl: '/assets/gifs/loading-2.gif',
+      imageAlt: 'Cargando',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
+  
+    // Ejecutar la petición
+    console.log('Data armada:', this.setUpdateUserData());
+  
+    this.userService.updateUser(this.user.id, this.setUpdateUserData()).subscribe({
+      next: (response: any) => {
+        console.log('response en create user:', response);
+  
+        if (response.error) {
+          // Mostrar mensaje de error si hay un error en la respuesta
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: response.error,
+            confirmButtonText: 'Aceptar'
+          });
+        } else {
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito!',
+            text: 'Usuario actualizado con éxito',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error en create customer:', err);
+  
+        // Mostrar mensaje de error genérico
         Swal.fire({
           icon: 'error',
           title: 'Error!',
-          text: response.error,
+          text: err,
           confirmButtonText: 'Aceptar'
         });
-      } else {
-        // Mostrar mensaje de éxito
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito!',
-          text: 'Donante creado con éxito',
-          confirmButtonText: 'Aceptar'
-        })
+      },
+      complete: () => {
+        this.closeModal(); // Cerrar el modal cuando la operación finaliza
+        this.isLoading = false; // Desactivar el estado de carga
       }
-    } catch (error) {
-      console.error('Error en create customer:', error);
-
-      // Mostrar mensaje de error genérico
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'Hubo un problema al crear el banco. Por favor, intente nuevamente.',
-        confirmButtonText: 'Aceptar'
-      });
-    } finally {
-      this.closeModal();
-      this.isLoading = false; // Desactivar el estado de carga
-    }
+    });
   }
+  
 
   setCreateData() {
     const { name, document, phone, roll, status } = this.userForm.value

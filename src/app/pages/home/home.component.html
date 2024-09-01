@@ -1,74 +1,93 @@
-<div class="space-y-5 lg:flex-row lg:flex h-auto lg:h-full w-full lg:space-x-5 lg:space-y-0">
-    <div class="flex flex-col relative w-full lg:w-2/4 lg:h-1/2 h-4/6 bg-white rounded-xl pb-5">
-        <div class="h-5 w-5 absolute top-2 right-2">
-            <img class="w-full h-full object-contain" src="assets/svg/pin.svg" alt="">
-        </div>
-        <div class="h-1/5 w-full flex flex-col p-5 mt-3 justify-center">
-            <h1 class="font-nunito font-bold text-xl tracking-tighter">{{activeCampaign.name || 'No hay una campaña
-                activa'}} </h1>
-            <p class="font-nunito text-sm text-slate-500 tracking-tighter">{{activeCampaign.rhema || 'Debe activar una
-                campaña'}}</p>
-        </div>
-        <div class="w-full h-2/5 flex p-3">
-            <div
-                class="flex w-full h-full rounded-xl border border-purple-200 bg-purple-50 p-3 justify-center items-center ">
-                <p
-                    class="font-nunito text-sm  font-light text-slate-700 tracking-tighter text-ellipsis overflow-hidden">
-                    {{activeCampaign.phrase || 'Debe activar una campaña'}}</p>
-            </div>
-        </div>
-        <div class="flex flex-col justify-center items-start lg:flex-row w-full lg:h-2/5 h-full pl-5 pr-5">
+<div class="w-full h-full overflow-auto space-y-5">
 
-            <div class="flex w-full lg:w-1/2 pt-3 ">
-                <div class="flex  w-full flex-col space-y-5 justify-center items-center ">
-                    <div class="w-full flex h-1/2 items-center space-x-2">
-                        <div class="flex h-10 w-10 bg-emerald-100 rounded-full items-center justify-center">
-                            <img class="h-6 w-6" src="assets/svg/phone-calling.svg" alt="">
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="font-nunito text-sm font-bold tracking-tight">Meta</p>
-                            <p class="font-nunito text-sm font-thin tracking-tight">{{activeCampaign.goal || 0}} Llamadas
-                            </p>
-                        </div>
-                    </div>
-                    <div class="w-full flex h-1/2">
+    <div class="space-y-5 lg:flex-row lg:flex h-auto lg:h-1/2 w-full lg:space-x-5 lg:space-y-0">
+        <div class="flex flex-col relative w-full lg:w-2/4 lg:h-full h-4/6 bg-white rounded-xl pb-5">
+            <div class="h-5 w-5 absolute top-2 right-2">
+                <img class="w-full h-full object-contain" src="assets/svg/pin.svg" alt="">
+            </div>
+            <div class="h-1/5 w-full flex flex-col p-5 mt-3 justify-center">
+                <h1 class="font-nunito font-bold text-xl tracking-tighter">{{activeCampaign?.name || 'No hay una campaña
+                    activa'}} </h1>
+                <p class="font-nunito text-sm text-slate-500 tracking-tighter">{{activeCampaign?.rhema || 'Debe activar
+                    una
+                    campaña'}}</p>
+            </div>
+            <div class="w-full h-2/5 flex p-3">
+                <div
+                    class="flex w-full h-full rounded-xl border border-purple-200 bg-purple-50 p-3 justify-center items-center ">
+                    <p
+                        class="font-nunito text-sm  font-light text-slate-700 tracking-tighter text-ellipsis overflow-hidden">
+                        {{activeCampaign?.phrase || 'Debe activar una campaña'}}</p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center items-start lg:flex-row w-full lg:h-2/5 h-full pl-5 pr-5">
+
+                <div [ngClass]="{'lg:w-full': currentUser.role !== 'admin'}" class="flex w-full lg:w-1/2 pt-3 ">
+                    <div class="flex  w-full flex-col space-y-5 justify-center items-center ">
                         <div class="w-full flex h-1/2 items-center space-x-2">
-                            <div class="flex h-10 w-10 bg-orange-100 rounded-full items-center justify-center">
-                                <img class="h-6 w-6" src="assets/svg/phone-incoming.svg" alt="">
+                            <div class="flex h-10 w-10 bg-emerald-100 rounded-full items-center justify-center">
+                                <img class="h-6 w-6" src="assets/svg/phone-calling.svg" alt="">
                             </div>
                             <div class="flex flex-col">
-                                <p class="font-nunito text-sm font-bold tracking-tight">Llamadas registradas</p>
-                                <p class="font-nunito text-sm font-thin tracking-tight">{{totalRecords || 0}} Llamadas</p>
+                                <p class="font-nunito text-sm font-bold tracking-tight">Meta</p>
+                                <p class="font-nunito text-sm font-thin tracking-tight">{{activeCampaign?.goal || 0}}
+                                    Llamadas
+                                </p>
                             </div>
                         </div>
+                        <div class="w-full flex h-1/2">
+                            <div class="w-full flex h-1/2 items-center space-x-2">
+                                <div class="flex h-10 w-10 bg-orange-100 rounded-full items-center justify-center">
+                                    <img class="h-6 w-6" src="assets/svg/phone-incoming.svg" alt="">
+                                </div>
+                                <div class="flex flex-col">
+                                    <p class="font-nunito text-sm font-bold tracking-tight">Llamadas registradas</p>
+                                    <p class="font-nunito text-sm font-thin tracking-tight">{{totalRecords || 0}}
+                                        Llamadas</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
 
-            <div class="lg:w-1/2 lg:h-full p-3 w-full h-24 rounded-xl shadow-lg shadow-blue-50 border border-gray-100 flex flex-col">
-                <div class="h-full w-full flex items-start justify-center flex-col">
-                    <p class="font-nunito font-bold tracking-tight text-2xl">Recaudado</p>
-                    <p class="font-nunito font-bold tracking-tight text-2xl text-blue-500">{{totalPromise | currencyFormat}}</p>
+                <div [ngClass]="{'hidden': currentUser.role !== 'admin'}"
+                    class="lg:w-1/2 lg:h-full p-3 w-full h-24 rounded-xl  border border-gray-200 flex flex-col">
+                    <div *ngIf="currentUser.role === 'admin' "
+                        class="h-full w-full flex items-start justify-center flex-col">
+                        <p class="font-nunito font-bold tracking-tight text-2xl">Recaudado</p>
+                        <p class="font-nunito font-bold tracking-tight text-2xl text-blue-500">{{totalPromise |
+                            currencyFormat}}</p>
+                    </div>
                 </div>
+
             </div>
+        </div>
 
+        <div [ngClass]="{'lg:w-1/2': currentUser.role !== 'basic', 'lg:w-1/4': currentUser.role === 'admin' || currentUser.role === 'infinity'}"
+            class="w-full lg:h-full h-72 flex flex-col bg-white p-4 space-y-4 rounded-xl">
+            <p class="font-nunito font-semibold text-sm">Llamadas de la semana</p>
+            <div class="flex-1 flex items-center">
+                <canvas id="callsChart" class="w-full h-full"></canvas>
+            </div>
+        </div>
+
+        <div [ngClass]="{'hidden': currentUser.role == 'basic'}"
+            class="lg:w-1/4 w-full lg:h-full h-72 flex flex-col  bg-white p-4 space-y-4 rounded-xl">
+            <p class="font-nunito font-semibold text-sm">Recaudo de la semana</p>
+            <div class="flex-1 flex items-center">
+                <canvas id="paymentChart" class="w-full h-full"></canvas>
+            </div>
         </div>
     </div>
 
-    <div class="lg:w-1/4 w-full lg:h-1/2 h-72 flex flex-col  bg-white p-4 space-y-4 rounded-xl">
-        <p class="font-nunito font-semibold text-sm">Recaudo de la semana</p>
+    <div class="w-full h-72 bg-white rounded-xl p-5 flex flex-col">
+        
+            <p class="font-nunito font-bold text-base tracking-tight lg:w-2/6">Reporte consolidado diario</p>
+       
         <div class="flex-1 flex items-center">
-            <canvas id="paymentChart" class="w-full h-full"></canvas>
+            <canvas id="dailyChart" class="w-full h-full"></canvas>
         </div>
     </div>
-    <div class="lg:w-1/4 w-full lg:h-1/2 h-72 flex flex-col bg-white p-4 space-y-4 rounded-xl">
-        <p class="font-nunito font-semibold text-sm">Llamadas de la semana</p>
-        <div class="flex-1 flex items-center">
-            <canvas id="callsChart" class="w-full h-full"></canvas>
-        </div>
-    </div>
-
-
 
 </div>

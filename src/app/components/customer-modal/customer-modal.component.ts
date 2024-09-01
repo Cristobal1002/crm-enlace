@@ -8,6 +8,7 @@ import { LocationService } from '../../services/location.service';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { AuthServiceService } from '../../services/auth-service.service';
 import { CustomerService } from '../../services/customer.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-customer-modal',
@@ -42,7 +43,7 @@ export class CustomerModalComponent implements AfterViewInit {
   };
 
   cityConfig = {
-    displayFn: (item: any) => `${item.name} - ${item.state_name}`, // Key to display in the dropdown
+    displayFn: (item: any) => `${item.name}`, // Key to display in the dropdown
     search: true, // Enable search
     height: '200px', // Set a fixed height for the dropdown list
     placeholder: 'Selecciona una ciudad', // Placeholder text
@@ -68,9 +69,10 @@ export class CustomerModalComponent implements AfterViewInit {
   @Output() close = new EventEmitter<void>();
 
   constructor(private fb: FormBuilder, private locationService: LocationService,
-    private authService: AuthServiceService, private customerService: CustomerService) {
+    private authService: AuthServiceService, private customerService: CustomerService,
+    private loadingService: LoadingService) {
     this.currentUser = this.authService.getUserData();
-    this.getCountries()
+    
     this.customerForm = this.fb.group({
       documentType: ['CC', Validators.required],
       documentNumber: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^\d+$/)]],
@@ -89,6 +91,7 @@ export class CustomerModalComponent implements AfterViewInit {
     });
 
   }
+
 
   @ViewChild('datepickerInput') datepickerInput: ElementRef<HTMLInputElement> | undefined;
   @ViewChild('datepickerButton') datepickerButton: ElementRef<HTMLButtonElement> | undefined;
@@ -265,6 +268,7 @@ export class CustomerModalComponent implements AfterViewInit {
 
 
   ngOnInit() {
+    this.getCountries()
     if (this.isEditMode && this.customerData) {
       this.customerForm.patchValue(this.customerData);
 
@@ -523,6 +527,18 @@ export class CustomerModalComponent implements AfterViewInit {
     })
   }
 
+  getStatesByCountry(id:number){
+    return this.locationService.getStatesByCountry(id).subscribe(response => {
+      this.states = response.data
+    })
+  }
+
+  getCitiesByState(id:number){
+    return this.locationService.getCitiesByState(id).subscribe(response => {
+      this.cities = response.data
+    })
+  }
+
  getCitiesByCountry(id: any) {
     return this.locationService.getCitiesByCountry(id).subscribe(response => {
       this.cities = response.data
@@ -538,12 +554,23 @@ export class CustomerModalComponent implements AfterViewInit {
   }
 
   onCountryChange(selectedCountry: any): void {
-    let countryCode: number;
+    let countryId: number;
     this.selectedCountry = selectedCountry;
     this.customerForm.get('country')?.setValue(selectedCountry.value);
-    countryCode = selectedCountry.value.id
+    countryId = selectedCountry.value.id
     if (selectedCountry.value.length == 0) { this.getCountries() } else {
-      this.getCitiesByCountry(countryCode)
+      this.getStatesByCountry(countryId)
+    }
+  }
+
+  onStateChange(selectedState:any){
+    let stateId: number;
+    let countryId= this.customerForm.get('country')?.value.id
+    this.selectedState = selectedState
+    this.customerForm.get('state')?.setValue(selectedState.value);
+    stateId = selectedState.value.id
+    if (selectedState.value.length == 0) { this.getStatesByCountry(countryId) } else {
+      this.getCitiesByState(stateId)
     }
   }
 

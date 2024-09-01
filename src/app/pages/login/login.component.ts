@@ -59,32 +59,34 @@ export class LoginComponent {
 
   onSubmit() {
     this.isLoading = true;
+    
     if (this.loginForm.valid) {
       const { user, password } = this.loginForm.value;
-      this.authService.login({ user, password }).pipe(
-        catchError((error) => {
+      
+      this.authService.login({ user, password }).subscribe({
+        next: (response) => {
           this.isLoading = false;
-          this.alert = true;
-          this.alertMessage = error.error ? 'Usuario o contraseña incorrectos' : 'Error desconocido';
-          setTimeout(() => {
-            this.alert = false;
-          }, 3000);
-          return of(null);
-        })
-      ).subscribe((response) => {
-        this.isLoading = false;
-        if (response) {
           this.router.navigate(['/home']);
-        } else {
-          this.alert = true;
-          this.alertMessage = 'Usuario o contraseña incorrectos';
-          setTimeout(() => {
-            this.alert = false;
-          }, 3000);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.showAlert(err.message || 'Error desconocido');
         }
       });
+      
     } else {
       this.isLoading = false;
+      this.showAlert('Formulario inválido');
     }
   }
+  
+  // Método para mostrar la alerta y ocultarla después de 3 segundos
+  private showAlert(message: string) {
+    this.alert = true;
+    this.alertMessage = message;
+    setTimeout(() => {
+      this.alert = false;
+    }, 3000);
+  }
+  
 }

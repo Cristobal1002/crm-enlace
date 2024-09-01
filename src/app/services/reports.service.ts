@@ -30,6 +30,10 @@ export class ReportsService {
   }
 
   getTotalRecordsAndAmount(user: {user_id:number, role:string}): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/reports//total-records-amount`, user, { headers: this.headers })
+    return this.http.post<any>(`${this.baseUrl}/reports/total-records-amount`, user, { headers: this.headers })
+  }
+
+  getTotalByHoursOfDay(user: {user_id:number, role:string}): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/reports/daily-hour-consolidate`, user, { headers: this.headers })
   }
 }

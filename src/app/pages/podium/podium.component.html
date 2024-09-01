@@ -3,7 +3,7 @@
       <div class="flex h-1/6 w-full space-x-3 lg:space-x-5">
         <div class="h-full w-8/12 lg:w-10/12 flex flex-col rounded-xl border bg-banner-box bg-right-bottom bg-cover lg:pl-5 lg:pt-3 p-3">
           <p class="text-xs font-nunito tracking-tighter text-purple-950 font-bold">Campaña activa</p>
-          <h1 class="text-lg font-nunito tracking-tighter font-bold">{{activeCampaign.name || 'No exite una campaña activa'}}</h1>
+          <h1 class="text-lg font-nunito tracking-tighter font-bold">{{activeCampaign?.name || 'No exite una campaña activa'}}</h1>
         </div>
         <div class="h-full w-4/12 lg:w-2/12 flex rounded-xl border shadow-lg bg-blue-300 lg:p-2">
           <button class="flex flex-col w-full h-full p-3" (click)="showCreateModal()">
