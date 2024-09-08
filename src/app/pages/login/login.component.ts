@@ -58,6 +58,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    console.log('Entro onsubmit login:', this.loginForm.value)
     this.isLoading = true;
     
     if (this.loginForm.valid) {
