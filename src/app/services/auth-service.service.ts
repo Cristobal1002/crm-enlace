@@ -93,7 +93,7 @@ export class AuthServiceService {
 
   getUserData(){
     const {role} = this.currentUser.value
-    role === 'admin' ? this.currentUser.value.displayRole = 'Administrador' : this.currentUser.value.displayRole = 'Agente'
+    role === 'admin' || role === 'infinity' ? this.currentUser.value.displayRole = 'Administrador' : this.currentUser.value.displayRole = 'Agente'
     return this.currentUser.value
   }
 
