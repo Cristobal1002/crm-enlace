@@ -83,7 +83,7 @@ export class DonationsComponent {
 
     this.donationForm = this.fb.group({
       reasons: ['', [Validators.required]],
-      novelties: [[], [Validators.required]],
+      novelties: [[]],
       petition: [[], [Validators.required]],
       testimony: [''],
       bank: ['', [Validators.required]],
