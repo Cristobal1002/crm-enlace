@@ -52,6 +52,8 @@ export class DonationsComponent {
   activeReasons$: Observable<any> = new Observable<any>();
   activeNovelties$: Observable<any> = new Observable<any>(); // Inicializar con un Observable vacío
   currentUser: any;
+  documentNumber: string = ''; // o el tipo que necesites
+
 
   dropdownConfig = {
     displayKey: "name", // Si tus opciones son objetos, esta es la propiedad que se mostrará
@@ -134,7 +136,7 @@ export class DonationsComponent {
     return null;
   }
 
-  get noveltiesError(): string | null {
+  /*get noveltiesError(): string | null {
     const documentControl = this.donationForm.get('novelties');
     if (documentControl && (documentControl.touched || documentControl.dirty) && documentControl.invalid) {
       if (documentControl.hasError('required')) {
@@ -142,7 +144,7 @@ export class DonationsComponent {
       }
     }
     return null;
-  }
+  }*/
 
   get petitionError(): string | null {
     const documentControl = this.donationForm.get('petition');
@@ -400,9 +402,11 @@ export class DonationsComponent {
   }
 
   showCreateModal() {
-    this.isEditMode = false;
-    this.isModalOpen = true;
-  }
+    this.documentNumber = this.searchForm.get('documentNumber')?.value; // Obtiene el valor del formulario
+    this.isModalOpen = true; // Abre el modal
+    this.isEditMode = false; // Asegúrate de que sea modo de creación
+}
+
 
   showEditModal(customer: any) {
     this.isEditMode = true;
@@ -420,8 +424,13 @@ export class DonationsComponent {
    getActiveCampaign() {
     this.loadingCount++
     return this.podiumService.getActiveCampaign().subscribe((response: any) => {
-      console.log('response en Get Actve para ver campaña', response)
-      this.activeCampaign = response.data[0]
+      console.log('response en Get Actve para ver campaña', !response.data[0])
+      if(!response.data[0]){
+        this.noFound = true
+        this.errorMessage = 'No existe una campaña activa, por lo tanto los datos no se guardaran'
+      }else{
+        this.activeCampaign = response.data[0]
+      }
       this.loadingCount--;
         if (this.loadingCount === 0) this.loadingService.hide();
     })

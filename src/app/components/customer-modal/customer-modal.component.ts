@@ -31,6 +31,7 @@ export class CustomerModalComponent implements AfterViewInit {
   currentUser: any;
   isLoading = false;
   getCountry = {}
+  
 
   countryConfig = {
     displayFn: (item: any) => `${item.emoji} ${item.name}` || 'name', // Key to display in the dropdown
@@ -63,6 +64,7 @@ export class CustomerModalComponent implements AfterViewInit {
   };
 
   @Input() customerData: any;
+  @Input() documentNumber: string = '';
   isModalOpen = false;
   @Input() customer: any; // Donante para editar
   @Input() isEditMode: boolean = false; // Modo de edición
@@ -80,14 +82,14 @@ export class CustomerModalComponent implements AfterViewInit {
       firstName: [''],
       lastName: [''],
       phone: ['', [Validators.required, Validators.minLength(10), Validators.pattern(/^\d+$/)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [ Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       birthday: [{ value: '', disabled: this.isCompany }],
       gender: [{ value: '', disabled: this.isCompany }],
       country: ['', Validators.required],
       state: ['', Validators.required],
       city: ['', Validators.required],
-      neighborhood: ['', Validators.required],
-      address: ['', Validators.required],
+      neighborhood: [''],
+      address: [''],
     });
 
   }
@@ -268,21 +270,30 @@ export class CustomerModalComponent implements AfterViewInit {
 
 
   ngOnInit() {
-    this.getCountries()
+    this.getCountries();
+    
     if (this.isEditMode && this.customerData) {
-      this.customerForm.patchValue(this.customerData);
+        this.customerForm.patchValue(this.customerData);
 
-      // Determinar si es empresa o no
-      this.isCompany = this.customerData.documentType === 'NIT';
-      this.updateFieldsValidation();
+        // Determinar si es empresa o no
+        this.isCompany = this.customerData.documentType === 'NIT';
+        this.updateFieldsValidation();
+    } else {
+        // Si es modo de creación, establece el número de documento
+        if (this.documentNumber) {
+            this.customerForm.patchValue({
+              documentNumber: this.documentNumber
+            });
+        }
     }
 
     // Suscribirse a los cambios en el tipo de documento
     this.customerForm.get('documentType')?.valueChanges.subscribe((value) => {
-      this.isCompany = value === 'NIT';
-      this.updateFieldsValidation();
+        this.isCompany = value === 'NIT';
+        this.updateFieldsValidation();
     });
-  }
+}
+
 
 
 

@@ -134,9 +134,9 @@
                             [multiple]="true" [options]="noveltiesList" >
                         </ngx-select-dropdown>
                     </div>
-                    <div *ngIf="noveltiesError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
+                    <!--<div *ngIf="noveltiesError" class="font-nunito text-xs text-red-600 font-semibold tracking-tighter">
                         {{ noveltiesError }}
-                    </div>
+                    </div>-->
                 </div>
             </div>
 
@@ -231,8 +231,8 @@
     </div>
 
     <!-- Modal de creación y edición -->
-    <app-customer-modal *ngIf="isModalOpen" [customer]="selectedCustomer" [isEditMode]="isEditMode"
-        (close)="closeModal()">
+    <app-customer-modal *ngIf="isModalOpen" [documentNumber]="documentNumber" [isEditMode]="isEditMode" (close)="closeModal()">
     </app-customer-modal>
+    
 
 </div>
