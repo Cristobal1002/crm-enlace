@@ -5,7 +5,6 @@ import { ReportsService } from '../../services/reports.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import Swal from 'sweetalert2';
-import { saveAs } from 'file-saver';  
 import { LoadingService } from '../../services/loading.service';
 import { CommonModule } from '@angular/common';
 
@@ -83,28 +82,47 @@ export class ReportsComponent {
     }
    }
 
-   downloadReport(){
+   downloadReport() {
     this.loadingService.show();
-    const id = this.selectedCampaign.id
-    if(!id){
-      this.loadingService.hide()
-       // Mostrar mensaje de error genérico
-       Swal.fire({
+    const id = this.selectedCampaign?.id;
+  
+    if (!id) {
+      this.loadingService.hide();
+      // Mostrar mensaje de error genérico
+      Swal.fire({
         icon: 'error',
         title: 'Error!',
         text: 'Debe seleccionar una campaña',
         confirmButtonText: 'Aceptar'
       });
-    }else{
-      this.reportsService.exportDonationsByCampaign(id).subscribe(response => {
-        const blob = new Blob([response],{type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-        saveAs(blob, 'donations_report.xlsx');
-        this.loadingService.hide()
-      },
-      (error) => {
-        console.error('Error al descargar el reporte:', error);
-      })
+    } else {
+      this.reportsService.exportDonationsByCampaign(id).subscribe(
+        async (response: Blob) => {
+          const blob = new Blob([response], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          });
+  
+          // Importación dinámica de file-saver
+          const { saveAs } = await import('file-saver');
+          saveAs(blob, 'donations_report.xlsx');
+  
+          this.loadingService.hide();
+        },
+        (error) => {
+          console.error('Error al descargar el reporte:', error);
+          this.loadingService.hide(); // Asegúrate de esconder el loading incluso en caso de error
+  
+          // Mostrar mensaje de error
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Hubo un problema al generar el reporte',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      );
     }
-   }
+  }
+  
 
 }
