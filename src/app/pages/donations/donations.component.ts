@@ -278,34 +278,18 @@ export class DonationsComponent {
         // Llamada para crear la donación
         this.donationService.createDonation(data).subscribe({
           next: (response) => {
-            // Resetear el formulario con los valores predeterminados
-            this.donationForm.reset({
-              reasons: '',
-              novelties: [],
-              petition: [],
-              testimony: '',
-              bank: '',
-              quotes: 1,
-              amount: '',
-              total: ''
-            });
-  
-            // Restablecer otras variables relacionadas
-            this.customer = null;
-            this.customerName = '';
-            this.existcustomer = false;
-            this.noFound = undefined;
-            this.errorMessage = '';
-  
+            // Mostrar SweetAlert después de guardar exitosamente la donación
             Swal.fire({
               icon: 'success',
               title: '¡Éxito!',
               text: 'Donación guardada exitosamente',
               confirmButtonText: 'Aceptar'
+            }).then(() => {
+              // Solo después de que el usuario cierra el SweetAlert, navegar y recargar la página
+              this.router.navigate(['/donaciones/manage']).then(() => {
+                window.location.reload();
+              });
             });
-  
-            // Redirigir a la página de donaciones sin el ID en la URL
-            this.router.navigate(['/donaciones/manage']);
           },
           error: (error) => {
             console.error('Error al crear la donación:', error);
@@ -317,6 +301,7 @@ export class DonationsComponent {
             });
           }
         });
+          
       }
     }
   }
