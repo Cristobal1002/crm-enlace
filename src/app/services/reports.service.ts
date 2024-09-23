@@ -36,4 +36,15 @@ export class ReportsService {
   getTotalByHoursOfDay(user: {user_id:number, role:string}): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/reports/daily-hour-consolidate`, user, { headers: this.headers })
   }
+
+  getDonationsByCampaign(id: number){
+    return this.http.get<any>(`${this.baseUrl}/reports/donations-by-campaign?id=${id}`, { headers: this.headers })
+  }
+
+  exportDonationsByCampaign(id: number) {
+    return this.http.get(`${this.baseUrl}/reports/donations-by-campaign/export/${id}`, {
+      headers: this.headers,
+      responseType: 'blob'  // Indicamos que la respuesta es un archivo binario
+    });
+  }
 }
