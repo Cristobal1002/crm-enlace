@@ -78,7 +78,7 @@ export class DonationsComponent {
     private loadingService: LoadingService, private router:Router) {
     this.currentUser = this.authService.getUserData()
     this.searchForm = this.fb.group({
-      documentNumber: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(10), Validators.pattern(/^\d+$/)]],
+      documentNumber: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(10), Validators.pattern(/^\d+$/)]],
     })
 
     this.donationForm = this.fb.group({
@@ -115,7 +115,7 @@ export class DonationsComponent {
       if (documentControl.hasError('required')) {
         return 'El número de documento es requerido.';
       } else if (documentControl.hasError('minlength')) {
-        return 'El número de documento debe tener al menos 8 caracteres.';
+        return 'El número de documento debe tener al menos 7 caracteres.';
       } else if (documentControl.hasError('maxlength')) {
         return 'El número de documento debe tener máximo 10 caracteres.';
       } else if (documentControl.hasError('pattern')) {
