@@ -231,7 +231,7 @@
     </div>
 
     <!-- Modal de creación y edición -->
-    <app-customer-modal *ngIf="isModalOpen" [documentNumber]="documentNumber" [isEditMode]="isEditMode" (close)="closeModal()">
+    <app-customer-modal *ngIf="isModalOpen" [documentNumber]="documentNumber" [isEditMode]="isEditMode" [customer]="selectedCustomer" (close)="closeModal()">
     </app-customer-modal>
     
 
