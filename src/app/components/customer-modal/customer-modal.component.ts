@@ -77,7 +77,7 @@ export class CustomerModalComponent implements AfterViewInit {
     
     this.customerForm = this.fb.group({
       documentType: ['CC', Validators.required],
-      documentNumber: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^\d+$/)]],
+      documentNumber: ['', [Validators.required, Validators.minLength(7), Validators.pattern(/^\d+$/)]],
       companyName: [''],
       firstName: [''],
       lastName: [''],
@@ -107,7 +107,7 @@ export class CustomerModalComponent implements AfterViewInit {
       if (documentControl.hasError('required')) {
         return 'El número de documento es requerido.';
       } else if (documentControl.hasError('minlength')) {
-        return 'El número de documento debe tener al menos 8 caracteres.';
+        return 'El número de documento debe tener al menos 7 caracteres.';
       } else if (documentControl.hasError('pattern')) {
         return 'El número de documento solo admite números';
       }
